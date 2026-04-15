@@ -1,5 +1,8 @@
 import { Router } from "express";
 import { userInfo } from "../data/userData.js";
+import dotenv from "dotenv";
+import db from "../../db/connection.js";
+dotenv.config();
 
 const router = Router();
 
