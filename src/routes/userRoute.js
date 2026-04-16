@@ -17,7 +17,7 @@ router.get("/byId/:id", async (req, res) => {
 
 //add user
 router.post("/add-user", async (req, res) => {
-  const { name, email, password } = req.query;
+  const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({
       success: false,
@@ -34,6 +34,32 @@ router.post("/add-user", async (req, res) => {
   });
 });
 
+//edit user
+router.put("/edit-user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required fields: name, email, password",
+    });
+  }
+  const [updateResult] = await pool.query(
+    `UPDATE users SET uName=?, uEmail=?, uPassword=? WHERE uId=?`,
+    [name, email, password, id],
+  );
+
+  if (updateResult.affectedRows === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    message: "User updated successfully",
+  });
+});
 //delete user
 router.delete("/delete-user/:id", async (req, res) => {
   const { id } = req.params;
