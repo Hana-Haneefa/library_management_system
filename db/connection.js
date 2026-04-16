@@ -1,5 +1,6 @@
 import mysql from "mysql2/promise";
-
+import dotenv from "dotenv";
+dotenv.config();
 // module.exports = async function connect() {
 //   const connection = await mysql.createConnection({
 //     host: process.env.DB_HOST,
@@ -20,6 +21,27 @@ const pool = mysql.createPool({
   queueLimit: 0, // Unlimited queueing of connection requests (0 means no limit)
 });
 
-const promisePool = pool.promise(); // Create a promise-based pool for easier async/await usage
+async function getAllUsers() {
+  const [rows] = await pool.query(`SELECT * FROM users`);
+  return rows;
+}
 
-export default promisePool;
+//const result = await getAllUsers();
+
+//console.log(result);
+
+async function addUser(name, email, password) {
+  const [data] = await pool.query(
+    `INSERT INTO users (uName, uEmail, uPassword) VALUES (?,?,?)`,
+    [name, email, password],
+  );
+  return {
+    id: data.insertId, //get the uID from insertID
+    name,
+    email,
+  };
+}
+
+// const user = await addUser("nobara", "kugisaki@gmail.com", "2222");
+// console.log(user);
+export default pool;

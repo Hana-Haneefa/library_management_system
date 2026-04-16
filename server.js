@@ -5,6 +5,8 @@ import userRoute from "./src/routes/userRoute.js";
 const app = express();
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRoute);
 
 app.get("/", (_, res) => {
