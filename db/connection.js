@@ -19,29 +19,32 @@ const pool = mysql.createPool({
   waitForConnections: true, // Wait for connections when the pool is full without failing
   connectionLimit: 10, // Maximum number of connections in the pool
   queueLimit: 0, // Unlimited queueing of connection requests (0 means no limit)
+  ssl: false,
 });
-
-async function getAllUsers() {
-  const [rows] = await pool.query(`SELECT * FROM users`);
-  return rows;
-}
 
 //const result = await getAllUsers();
 
 //console.log(result);
 
-async function addUser(name, email, password) {
-  const [data] = await pool.query(
-    `INSERT INTO users (uName, uEmail, uPassword) VALUES (?,?,?)`,
-    [name, email, password],
-  );
-  return {
-    id: data.insertId, //get the uID from insertID
-    name,
-    email,
-  };
-}
+//get a user by Id
+// export async function getUserById(id) {
+//   const [row] = await pool.query(`SELECT * FROM users WHERE uId =?`, [id]);
+//   return row;
+// }
 
-// const user = await addUser("nobara", "kugisaki@gmail.com", "2222");
+// const user = await getUserById(2);
+// console.log(user);
+
+//add a user
+// export async function addUser(name, email, password) {
+//   const [data] = await pool.query(
+//     `INSERT INTO users (uName, uEmail, uPassword) VALUES (?,?,?)`,
+//     [name, email, password],
+//   );
+//   const id = data.insertId;
+//   return await getUserById(id);
+// }
+
+// const user = await addUser("sasi", "sasi@gmail.com", "8888");
 // console.log(user);
 export default pool;
