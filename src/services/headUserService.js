@@ -20,7 +20,7 @@ export async function addHeadUser(user) {
 }
 
 // login head user
-export async function loginAuth(email, password) {
+export async function loginAuth(email) {
   try {
     const [user] = await pool.query(
       `SELECT * FROM headusers WHERE hEmail = ?`,
@@ -29,7 +29,8 @@ export async function loginAuth(email, password) {
     if (!user) {
       return null;
     }
-    return user[0];
+    return user;
+    console.log(user[0]);
   } catch (err) {
     console.error("Error logging in head user:", err);
     throw err;

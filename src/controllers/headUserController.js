@@ -23,12 +23,19 @@ export async function loginAuthController(req, res) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   try {
-    const user = await loginAuth(email, password);
-    res.json({
-      message: "Login successful",
-      data: { id: user.hId, email: user.hEmail },
-    });
+    const userAuth = await loginAuth(email);
+    if (!userAuth) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (userAuth.hPassword !== password && userAuth.hEmail === email) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Login successful", data: userAuth });
   } catch (err) {
-    res.status(401).json({ error: "Invalid email or password" });
+    res
+      .status(500)
+      .json({ error: "Error logging in head user", msg: err.message });
   }
 }
