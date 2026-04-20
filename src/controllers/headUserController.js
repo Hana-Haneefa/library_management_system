@@ -1,4 +1,5 @@
 import { addHeadUser, loginAuth } from "../services/headUserService.js";
+import bcrypt from "bcrypt";
 
 // controller for add head user
 export async function addHeadUserController(req, res) {
@@ -27,12 +28,15 @@ export async function loginAuthController(req, res) {
     if (!userAuth) {
       return res.status(404).json({ error: "User not found" });
     }
-    if (userAuth.hPassword !== password && userAuth.hEmail === email) {
+    const isHashMach = await bcrypt.compare(password, userAuth.hPassword);
+    if (!isHashMach) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
+
+    const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
     return res
       .status(200)
-      .json({ message: "Login successful", data: userAuth });
+      .json({ message: "Login successful", data: userWithoutPassword });
   } catch (err) {
     res
       .status(500)

@@ -1,7 +1,10 @@
 import pool from "../../db/connection.js";
+import bcrypt from "bcrypt";
 
 export async function addHeadUser(user) {
   try {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
     const { name, email, password, role } = user;
     const [newUser] = await pool.query(
       `INSERT INTO headusers (hName, hEmail, hPassword, hRole) VALUES (?, ?, ?, ?)`,
@@ -29,8 +32,7 @@ export async function loginAuth(email) {
     if (!user) {
       return null;
     }
-    return user;
-    console.log(user[0]);
+    return user[0];
   } catch (err) {
     console.error("Error logging in head user:", err);
     throw err;
