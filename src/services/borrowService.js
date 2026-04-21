@@ -2,10 +2,17 @@ import pool from "../../db/connection.js";
 
 export async function addBorrowData(borrowData) {
   try {
-    const { studentId, MonitorId, returnDate, status } = borrowData;
+    const { studentId, MonitorId, status } = borrowData;
+    const returnDate = new Date();
+    returnDate.setDate(returnDate.getDate() + 14);
+    const formattedReturnDate = returnDate
+      .toISOString()
+      .slice(0, 19)
+      .replace("T", " ");
+
     const [result] = await pool.query(
       "INSERT INTO borrows (brStudentId, brMonitorId, brReturnDate, brStatus) VALUES (?, ?, ?, ?)",
-      [studentId, MonitorId, new Date(), returnDate, status],
+      [studentId, MonitorId, formattedReturnDate, status],
     );
     if (result.affectedRows === 0) {
       throw new Error("Failed to add borrow data");
