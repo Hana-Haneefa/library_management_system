@@ -20,16 +20,16 @@ export async function addHeadUserController(req, res) {
 // controller for login head user
 export async function loginAuthController(req, res) {
   const { email, password } = req.body;
-  if (!email.trim() || !password.trim()) {
+  if (!email || !password || !email.trim() || !password.trim()) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   try {
     const userAuth = await loginAuth(email);
     if (!userAuth) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "Invalid credentials" }); // User not found yet shows invalid credentials to avoid giving hints about which emails are registered
     }
-    const isHashMach = await bcrypt.compare(password, userAuth.hPassword);
-    if (!isHashMach) {
+    const isHashMatch = await bcrypt.compare(password, userAuth.hPassword);
+    if (!isHashMatch) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
@@ -38,8 +38,6 @@ export async function loginAuthController(req, res) {
       .status(200)
       .json({ message: "Login successful", data: userWithoutPassword });
   } catch (err) {
-    res
-      .status(500)
-      .json({ error: "Error logging in head user", msg: err.message });
+    res.status(500).json({ error: "Internal server error", msg: err.message });
   }
 }
