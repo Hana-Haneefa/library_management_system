@@ -5,6 +5,7 @@ import {
   addUserController,
   updateUserController,
   deleteUserController,
+  studentLoginController,
 } from "../controllers/userController.js";
 
 const router = Router();
@@ -22,5 +23,8 @@ router.put("/edit-user/:id", updateUserController);
 
 //delete user
 router.delete("/delete-user/:id", deleteUserController);
+
+//student login
+router.post("/student-login", studentLoginController);
 
 export default router;
