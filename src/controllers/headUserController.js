@@ -1,5 +1,10 @@
-import { addHeadUser, loginAuth } from "../services/headUserService.js";
+import {
+  addHeadUser,
+  allHeadUsers,
+  loginAuth,
+} from "../services/headUserService.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // controller for add head user
 export async function addHeadUserController(req, res) {
@@ -14,6 +19,31 @@ export async function addHeadUserController(req, res) {
       .json({ message: "Head user added successfully", data: { id: newUser } });
   } catch (err) {
     res.status(500).json({ error: "Error adding head user" });
+  }
+}
+
+//controller for view all head users
+export async function allHeadUsersController(req, res) {
+  try {
+    const users = await allHeadUsers();
+    if (!users) {
+      return res.status(404).json({
+        success: false,
+        message: "No head users to find",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "All head users fetched successfully",
+      users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: err.message,
+    });
   }
 }
 
@@ -33,6 +63,12 @@ export async function loginAuthController(req, res) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    //generate token for track user login
+    const token = jwt.sign(
+      { id: userAuth.hId, role: userAuth.hRole },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" },
+    );
     const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
     return res
       .status(200)

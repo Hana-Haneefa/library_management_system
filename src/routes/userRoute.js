@@ -7,24 +7,63 @@ import {
   deleteUserController,
   studentLoginController,
 } from "../controllers/userController.js";
+import {
+  authenticateToken,
+  authorizeAdmin,
+  authorizeLibrarian,
+  authorizeStudent,
+} from "../middleware/authMiddleware.js";
 
 const router = Router();
 //view all users
-router.get("/all-users", getAllUsersController);
+router.get(
+  "/all-users",
+  authenticateToken,
+  authorizeAdmin,
+  authorizeLibrarian,
+  getAllUsersController,
+);
 
 //view user by id
-router.get("/byId/:id", getUserByIdController);
+router.get(
+  "/byId/:id",
+  authenticateToken,
+  authorizeAdmin,
+  authorizeLibrarian,
+  getUserByIdController,
+);
 
 //add user
-router.post("/add-user", addUserController);
+router.post(
+  "/add-user",
+  authenticateToken,
+  authorizeAdmin,
+  authorizeLibrarian,
+  addUserController,
+);
 
 //edit user
-router.put("/edit-user/:id", updateUserController);
+router.put(
+  "/edit-user/:id",
+  authenticateToken,
+  authorizeAdmin,
+  updateUserController,
+);
 
 //delete user
-router.delete("/delete-user/:id", deleteUserController);
+router.delete(
+  "/delete-user/:id",
+  authenticateToken,
+  authorizeAdmin,
+  deleteUserController,
+);
 
 //student login
-router.post("/student-login", studentLoginController);
+router.post(
+  "/student-login",
+  authenticateToken,
+  authorizeStudent,
+  studentLoginController,
+);
 
 export default router;

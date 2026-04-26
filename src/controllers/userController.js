@@ -171,9 +171,13 @@ export async function studentLoginController(req, res) {
     }
 
     //generate token for track user login
-    const token = jwt.sign({ id: loginStudent.uId }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: loginStudent.uId, role: loginStudent.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
 
     const { uPassword, ...studentWithoutPassword } = loginStudent; // Exclude password from response
     res.status(200).json({

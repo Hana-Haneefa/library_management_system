@@ -22,6 +22,76 @@ export async function addHeadUser(user) {
   }
 }
 
+export async function allHeadUsers() {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM headusers`);
+    if (rows.length === 0) {
+      return null;
+    }
+    return rows;
+  } catch (err) {
+    throw new Error(`Error occured: ${err.message}`);
+  }
+}
+
+export async function headUserById(id) {
+  try {
+    const [user] = await pool.query(`SELECT * FROM headusers WHERE hId=?`, [
+      id,
+    ]);
+
+    if (user.length === 0) {
+      return null;
+    }
+
+    return user[0];
+  } catch (error) {
+    throw new Error(`Error occurs: ${error.message}`);
+  }
+}
+
+export async function editHeadUser(id, name, email, role) {
+  try {
+    const [user] = await pool.query(
+      `UPDATE headusers SET hName =?, hEmail =?, hRole=? WHERE hId =?`,
+      [name, email, role, id],
+    );
+    if (user.affectedRows === 0) {
+      return null;
+    }
+
+    const [updatedUser] = await pool.query(
+      `SELECT * FROM headusers WHERE hId =?`,
+      [id],
+    );
+    return updatedUser[0];
+  } catch (error) {
+    throw new Error(`Error occours: ${error.message}`);
+  }
+}
+
+//delete head user
+export async function deleteHeadUser(id) {
+  try {
+    const [target] = await pool.query(`SELECT * FROM headusers where hId=?`, [
+      id,
+    ]);
+    if (target.length === 0) {
+      return null;
+    }
+    const [deletedTarget] = await pool.query(
+      `DELETE FROM headusers WHERE hId=?`,
+      [id],
+    );
+    if (deletedTarget.affectedRows === 0) {
+      return null;
+    }
+
+    return target[0];
+  } catch (error) {
+    throw new Error(`Error occured: ${error.message}`);
+  }
+}
 // login head user
 export async function loginAuth(email) {
   try {
