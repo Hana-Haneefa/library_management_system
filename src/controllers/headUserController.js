@@ -12,16 +12,26 @@ import jwt from "jsonwebtoken";
 // controller for add head user
 export async function addHeadUserController(req, res) {
   const { name, email, password, role } = req.body;
-  if (!name.trim() || !email.trim() || !password.trim() || !role.trim()) {
+  if (!name?.trim() || !email?.trim() || !password?.trim() || !role?.trim()) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   try {
     const newUser = await addHeadUser({ name, email, password, role });
-    res
-      .status(201)
-      .json({ message: "Head user added successfully", data: { id: newUser } });
+    if (!newUser) {
+      return res.status(404).json({
+        success: false,
+        message: "Adding head user failed",
+      });
+    }
+    const { hPassword, ...safeHeadUser } = newUser;
+    res.status(201).json({
+      message: "Head user added successfully",
+      data: safeHeadUser,
+    });
   } catch (err) {
-    res.status(500).json({ error: "Error adding head user" });
+    res
+      .status(500)
+      .json({ error: "Error adding head user", message: err.message });
   }
 }
 
@@ -54,7 +64,7 @@ export async function allHeadUsersController(req, res) {
 export async function headUserByIdController(req, res) {
   try {
     const { id } = req.params;
-    const userById = await allHeadUsers(id);
+    const userById = await headUserById(id);
     if (!userById) {
       return res.status(404).json({
         success: false,
@@ -143,11 +153,13 @@ export async function deleteHeadUserController(req, res) {
 // controller for login head user
 export async function loginAuthController(req, res) {
   const { email, password } = req.body;
-  if (!email || !password || !email.trim() || !password.trim()) {
+  if (!email || !password || !email.trim()) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   try {
     const userAuth = await loginAuth(email);
+    console.log(userAuth);
+
     if (!userAuth) {
       return res.status(404).json({ error: "Invalid credentials" }); // User not found yet shows invalid credentials to avoid giving hints about which emails are registered
     }
@@ -165,7 +177,7 @@ export async function loginAuthController(req, res) {
     const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
     return res
       .status(200)
-      .json({ message: "Login successful", data: userWithoutPassword });
+      .json({ message: "Login successful", token, data: userWithoutPassword });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", msg: err.message });
   }

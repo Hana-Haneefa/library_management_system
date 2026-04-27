@@ -15,7 +15,7 @@ export async function addHeadUser(user) {
       `SELECT * FROM headusers WHERE hId = ?`,
       [newUser.insertId],
     );
-    return createdUser;
+    return createdUser[0];
   } catch (err) {
     console.error("Error adding head user:", err);
     throw err;

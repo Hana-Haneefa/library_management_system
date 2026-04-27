@@ -14,32 +14,37 @@ import {
 
 const router = Router();
 
+//head user login
 router.post("/login", loginAuthController);
-router.post(
-  "/add-headuser",
-  authenticateToken,
-  authorizeAdmin,
 
-  addHeadUserController,
-);
+//add head user
+router.post("/add-headuser", addHeadUserController);
+
+//view all head users
 router.get(
   "/all-headusers",
   authenticateToken,
   authorizeAdmin,
   allHeadUsersController,
 );
+
+//view head user by ID
 router.get(
   "/headuser-byId/:id",
   authenticateToken,
   authorizeAdmin,
   headUserByIdController,
 );
+
+//edit head users
 router.put(
   "/edit-headuser/:id",
   authenticateToken,
   authorizeAdmin,
   editHeadUserController,
 );
+
+//delete head users
 router.delete(
   "/delete-headuser/:id",
   authenticateToken,
