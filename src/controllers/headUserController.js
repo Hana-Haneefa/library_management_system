@@ -1,6 +1,9 @@
 import {
   addHeadUser,
   allHeadUsers,
+  headUserById,
+  editHeadUser,
+  deleteHeadUser,
   loginAuth,
 } from "../services/headUserService.js";
 import bcrypt from "bcrypt";
@@ -43,6 +46,96 @@ export async function allHeadUsersController(req, res) {
       success: false,
       message: "Internal server error",
       error: err.message,
+    });
+  }
+}
+
+//controller for view head users by id
+export async function headUserByIdController(req, res) {
+  try {
+    const { id } = req.params;
+    const userById = await allHeadUsers(id);
+    if (!userById) {
+      return res.status(404).json({
+        success: false,
+        message: "No user found on that ID",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      userById,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+}
+
+//controller for edit headuser
+export async function editHeadUserController(req, res) {
+  try {
+    const { id } = req.params;
+    const { name, email, role } = req.body;
+    if (!id || !name?.trim() || !email?.trim() || !role?.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Required feild missing : id, name, email, role",
+      });
+    }
+    const user = await editHeadUser(id, name, email, role);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No user found with that ID",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+}
+
+//delete headuser
+export async function deleteHeadUserController(req, res) {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Required field missing",
+      });
+    }
+
+    const target = await deleteHeadUser(id);
+    if (!target) {
+      return res.status(404).json({
+        success: false,
+        message: "No users found to delete",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      target,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
     });
   }
 }

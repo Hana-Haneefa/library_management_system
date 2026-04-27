@@ -15,6 +15,10 @@ import {
 } from "../middleware/authMiddleware.js";
 
 const router = Router();
+
+//student login
+router.post("/student-login", studentLoginController);
+
 //view all users
 router.get(
   "/all-users",
@@ -56,14 +60,6 @@ router.delete(
   authenticateToken,
   authorizeAdmin,
   deleteUserController,
-);
-
-//student login
-router.post(
-  "/student-login",
-  authenticateToken,
-  authorizeStudent,
-  studentLoginController,
 );
 
 export default router;

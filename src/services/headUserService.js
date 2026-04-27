@@ -1,6 +1,7 @@
 import pool from "../../db/connection.js";
 import bcrypt from "bcrypt";
 
+//add head user
 export async function addHeadUser(user) {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -22,6 +23,7 @@ export async function addHeadUser(user) {
   }
 }
 
+//view all head users
 export async function allHeadUsers() {
   try {
     const [rows] = await pool.query(`SELECT * FROM headusers`);
@@ -34,6 +36,7 @@ export async function allHeadUsers() {
   }
 }
 
+//view head users by id
 export async function headUserById(id) {
   try {
     const [user] = await pool.query(`SELECT * FROM headusers WHERE hId=?`, [
@@ -50,6 +53,7 @@ export async function headUserById(id) {
   }
 }
 
+//edit head users
 export async function editHeadUser(id, name, email, role) {
   try {
     const [user] = await pool.query(
@@ -92,6 +96,7 @@ export async function deleteHeadUser(id) {
     throw new Error(`Error occured: ${error.message}`);
   }
 }
+
 // login head user
 export async function loginAuth(email) {
   try {
