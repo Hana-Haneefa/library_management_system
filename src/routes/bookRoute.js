@@ -31,14 +31,12 @@ router.post(
   "/create-book",
   authenticateToken,
   authorizeAdmin,
-  authorizeLibrarian,
   createBookController,
 );
 router.put(
   "/update-book/:id",
   authenticateToken,
   authorizeAdmin,
-  authorizeLibrarian,
   updateBookController,
 );
 router.delete(
