@@ -21,9 +21,7 @@ export function authProvider({ children }) {
 
   return (
     <authContext.Provider value={{ token, user, login, logout }}>
-      {children} // this allows every content inside this tag can access all
-      above token, user, login and logout children means every component inside
-      this
+      {children}
     </authContext.Provider>
   );
 }
