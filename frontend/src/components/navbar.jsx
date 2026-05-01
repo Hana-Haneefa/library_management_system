@@ -1,4 +1,5 @@
 import logo from "../images/testimg.jpg";
+import DarkMode from "./theme.jsx";
 
 export function Navigation() {
   return (
@@ -21,7 +22,7 @@ export function Navigation() {
               </li>
             </ul>
           </div>
-          <div className="profile text-gray-300 text-md cursor-pointer hover:text-white transition-colors duration-300 flex gap-1 w-1/4">
+          <div className="profile text-gray-300 text-md cursor-pointer hover:text-white transition-colors duration-300 flex gap-1 w-1/3">
             <input
               type="search"
               placeholder="   Search here"
@@ -33,6 +34,8 @@ export function Navigation() {
               name="login"
               className="w-1/3 rounded bg-blue-800 hover:bg-blue-900 transition-colors duration-300"
             />
+
+            <DarkMode />
           </div>
         </div>
 
