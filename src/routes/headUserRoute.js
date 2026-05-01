@@ -18,7 +18,7 @@ const router = Router();
 router.post("/login", loginAuthController);
 
 //add head user
-router.post("/add-headuser", addHeadUserController);
+router.post("/register", addHeadUserController);
 
 //view all head users
 router.get(
