@@ -1,14 +1,13 @@
 import logo from "../images/testimg.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export function Footer() {
   return (
     <div className="footer w-full mt-10 text-white flex flex-col">
-      <div className="up flex flex-col md:flex-row md:justify-around items-center justify-center text-center md:text-left gap-0.5 bg-black">
+      <div className="up grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 bg-black px-8 py-10 text-center md:text-left">
         <div className="sec1 flex items-center gap-2 flex-col">
-          <img src={logo} alt="logo" className="w-56 h-full" />
+          <img src={logo} alt="logo" className="w-40 h-auto" />
           <h1 className="text-4xl font-serif mb-3">BOOKIE</h1>
         </div>
 
@@ -37,9 +36,10 @@ export function Footer() {
             </li>
           </ul>
         </div>
-        <div className="sec3 mt-4 md:mt-0 ">
-          <h1 className="text-xl font-semibold mb-5 ">Explore</h1>
-          <ul className="flex flex-col gap-5">
+
+        <div className="sec3">
+          <h1 className="text-xl font-semibold mb-5">Explore</h1>
+          <ul className="flex flex-col gap-4">
             <li>
               <a href="#" className="hover:text-blue-300">
                 Fictional
@@ -63,29 +63,27 @@ export function Footer() {
           </ul>
         </div>
 
-        <div className="sec4 mt-4 md:mt-0">
+        <div className="sec4">
           <h1 className="text-xl font-semibold mb-5">Contact Us</h1>
-          <ul className="flex flex-col ">
-            <span>
+          <ul className="flex flex-col gap-4">
+            <li className="flex items-center justify-center md:justify-start gap-2">
               <FontAwesomeIcon icon={faEnvelope} />
               <span>bookie@gmail.com</span>
-            </span>
-            <br />
-            <span>
+            </li>
+            <li className="flex items-center justify-center md:justify-start gap-2">
               <FontAwesomeIcon icon={faEnvelope} />
               <span>bookie@gmail.com</span>
-            </span>
-            <br />
-            <span>
+            </li>
+            <li className="flex items-center justify-center md:justify-start gap-2">
               <FontAwesomeIcon icon={faEnvelope} />
               <span>bookie@gmail.com</span>
-            </span>
-            <br />
+            </li>
           </ul>
         </div>
       </div>
-      <div className="down bg-blue-900 text-center pb-4">
-        <p className="text-center text-sm mt-4">All rights reserved.</p>
+
+      <div className="down bg-blue-900 text-center py-4">
+        <p className="text-sm">All rights reserved.</p>
       </div>
     </div>
   );

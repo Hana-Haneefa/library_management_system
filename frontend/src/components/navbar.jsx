@@ -1,6 +1,5 @@
 import { useState } from "react";
 import logo from "../images/testimg.jpg";
-import DarkMode from "./theme.jsx";
 
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
