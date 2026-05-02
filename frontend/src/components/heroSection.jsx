@@ -41,12 +41,12 @@ function HeroSec() {
           className="w-full h-full overflow-hidden object-cover relative"
         />
         <div className="left w-full mx-2 h-1/2 absolute top-4 left-0 bg-gradient-to-r from-black/80 to-black/0 p-2">
-          <div className="book w-2/3 h-full flex gap-1">
-            <div className="img w-1/2 h-full ">
+          <div className="book w-2/3 h-full flex gap-10 ">
+            <div className="img w-fit h-full overflow-hidden rounded-tl-2xl rounded-br-2xl">
               <img
                 src={slides[current].imgUrl}
                 alt="book-1"
-                className="w-full h-full object-contain overflow-hidden"
+                className="w-full h-full object-contain overflow-hidden "
               />
             </div>
             <div className="text w-1/2 h-full overflow-hidden flex items-center justify-center pr-2">
