@@ -49,10 +49,16 @@ function HeroSec() {
                 className="w-full h-full object-contain overflow-hidden"
               />
             </div>
-            <div className="text w-1/2 h-full overflow-hidden flex items-center justify-center pr-2">
+            <div className="text w-1/2 h-full overflow-hidden flex flex-col items-center justify-center p-4 ">
               <h3 className="font-semibold text-3xl text-white font-sans">
                 {slides[current].text}
               </h3>
+              <input
+                type="search"
+                placeholder=" Seek Knowledge.."
+                name="search"
+                className="w-full h-10 px-4 rounded-xl bg-white mt-5"
+              />
             </div>
           </div>
         </div>
