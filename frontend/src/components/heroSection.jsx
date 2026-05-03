@@ -46,7 +46,7 @@ function HeroSec() {
               <img
                 src={slides[current].imgUrl}
                 alt="book-1"
-                className="w-full h-full object-contain overflow-hidden "
+                className="w-full h-full object-contain overflow-hidden"
               />
             </div>
             <div className="text w-1/2 h-full overflow-hidden flex items-center justify-center pr-2">

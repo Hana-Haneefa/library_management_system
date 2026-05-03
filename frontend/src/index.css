@@ -7,6 +7,3 @@
     opacity: 1;
   }
 }
-@utility animate-fade {
-  animation: fade 1s ease-in-out;
-}
