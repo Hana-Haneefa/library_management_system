@@ -1,5 +1,25 @@
 import { useState } from "react";
 import logo from "../images/testimg.jpg";
+import DarkMode from "../components/darkmode.jsx";
+
+// Add this component
+// function DarkMode() {
+//   const [dark, setDark] = useState(false);
+
+//   const toggleDark = () => {
+//     setDark(!dark);
+//     document.documentElement.classList.toggle("dark");
+//   };
+
+//   return (
+//     <button
+//       onClick={toggleDark}
+//       className="px-2 py-1 rounded bg-gray-700 hover:bg-gray-600 text-white text-sm transition-colors duration-300"
+//     >
+//       {dark ? "☀️" : "🌙"}
+//     </button>
+//   );
+// }
 
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,7 +28,7 @@ export function Navigation() {
     <div>
       <nav className="sticky top-0 bg-black z-50">
         <div className="nav max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="logo flex items-center overflow-hidden h-10 gap-10">
+          <div className="logo flex items-center h-10 gap-10">
             <img src={logo} alt="myLogo" className="h-10 w-20 object-cover" />
             <ul className="nav-links hidden md:flex space-x-8 items-center text-white">
               <li className="hover:text-blue-500 transition-colors duration-300 cursor-pointer">

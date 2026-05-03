@@ -10,7 +10,10 @@ import HeroSec from "./components/heroSection.jsx";
 function App() {
   return (
     <div>
-      <HeroSec />
+      <Navigation />
+      <div className="pt-5">
+        <HeroSec />
+      </div>
     </div>
   );
 }

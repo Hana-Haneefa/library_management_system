@@ -34,13 +34,13 @@ function HeroSec() {
 
   return (
     <div>
-      <div className="container w-full h-100">
+      <div className="container w-full h-100 relative flex">
         <img
           src={hero}
           alt="hero-background-image"
           className="w-full h-full overflow-hidden object-cover relative"
         />
-        <div className="left w-full mx-2 h-1/2 absolute top-4 left-0 bg-gradient-to-r from-black/80 to-black/0 p-2">
+        <div className="left w-full mx-2 h-90 absolute bottom-5 left-0 bg-gradient-to-r from-black/80 to-black/0 p-4">
           <div className="book w-2/3 h-full flex gap-10 ">
             <div className="img w-fit h-full overflow-hidden rounded-tl-2xl rounded-br-2xl">
               <img
