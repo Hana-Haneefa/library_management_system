@@ -46,7 +46,7 @@ export function Navigation() {
           <div className="flex items-center gap-1 text-gray-300 text-md">
             <input
               type="search"
-              placeholder="Search here"
+              placeholder="   Search here"
               className="py-1 rounded bg-gray-200 text-black hidden sm:block"
             />
             <input
