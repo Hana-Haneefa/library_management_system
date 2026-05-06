@@ -5,6 +5,7 @@ import "./index.css";
 import { Navigation } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
 import HeroSec from "./components/heroSection.jsx";
+import HomePage from "./pages/homePage.jsx";
 // import { Button } from "flowbite-react";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Navigation />
       <div className="pt-5">
         <HeroSec />
+        <HomePage />
       </div>
     </div>
   );
