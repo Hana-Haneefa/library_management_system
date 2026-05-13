@@ -63,6 +63,7 @@ export async function createBookController(req, res) {
       year,
       quantity,
     });
+
     res
       .status(201)
       .json({ message: "Book created successfully", data: newBook });
