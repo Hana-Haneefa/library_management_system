@@ -10,6 +10,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials: true, //allow cookies and tokens when sent
   }), //vite default port
 );
 app.use(express.json());

@@ -6,16 +6,14 @@ import { Navigation } from "./components/navbar.jsx";
 import { Footer } from "./components/footer.jsx";
 import HeroSec from "./components/heroSection.jsx";
 import HomePage from "./pages/homePage.jsx";
+//book management
+import AddBookForm from "./components/bookManage/addBookForm.jsx";
 // import { Button } from "flowbite-react";
 
 function App() {
   return (
     <div>
-      <Navigation />
-      <div className="pt-5">
-        <HeroSec />
-        <HomePage />
-      </div>
+      <AddBookForm />
     </div>
   );
 }
