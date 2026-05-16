@@ -8,12 +8,12 @@ import HeroSec from "./components/heroSection.jsx";
 import HomePage from "./pages/homePage.jsx";
 //book management
 import AddBookForm from "./components/bookManage/addBookForm.jsx";
-// import { Button } from "flowbite-react";
-
+//student management
+import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
 function App() {
   return (
     <div>
-      <AddBookForm />
+      <AddStudentForm />
     </div>
   );
 }

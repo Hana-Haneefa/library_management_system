@@ -55,7 +55,7 @@ export async function addUserController(req, res) {
   if (!name?.trim() || !email?.trim() || !password?.trim()) {
     return res.status(400).json({
       success: false,
-      message: "Missing required fields: name, email, password",
+      error: "Missing required fields: name, email, password",
     });
   }
   try {
@@ -63,7 +63,7 @@ export async function addUserController(req, res) {
     if (!newSafeUser) {
       return res.status(400).json({
         success: false,
-        message: "Failed to add user",
+        error: "Failed to add user",
       });
     }
     const { uPassword, ...userWithoutPassword } = newSafeUser[0]; // Exclude password from response
@@ -76,7 +76,7 @@ export async function addUserController(req, res) {
     console.error("Error adding user:", error);
     res.status(500).json({
       success: false,
-      message: "An error occurred while adding the user",
+      error: "An error occurred while adding the user",
     });
   }
 }

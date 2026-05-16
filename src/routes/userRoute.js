@@ -40,9 +40,7 @@ router.get(
 //add user
 router.post(
   "/add-user",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+
   addUserController,
 );
 
