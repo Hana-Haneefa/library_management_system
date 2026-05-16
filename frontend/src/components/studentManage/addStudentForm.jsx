@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
+import bgimg from "../../images/formBg.jpg";
+import stimg from "../../images/stform.jpg";
 
 function AddStudentForm() {
   const [formData, setFormData] = useState({
@@ -47,14 +49,41 @@ function AddStudentForm() {
     }
   };
   return (
-    <div>
-      <div className="main">
-        <div className="left"></div>
-        <div className="right">
-          <form onSubmit={handleSubmit}>
+    <div
+      className="w-full h-screen flex items-center justify-center bg-cover px-20"
+      style={{ backgroundImage: `url(${bgimg})` }}
+    >
+      <div className="main flex w-2/3  h-150 bg-white/10 rounded-xl">
+        {/* left side */}
+        <div
+          className="left w-1/2 h-full bg-amber-800 rounded-xl bg-cover flex items-center justify-center"
+          style={{ backgroundImage: `url(${stimg})` }}
+        >
+          <div>
             <h2 className="col-span-2 w-full font-bold text-blue-500 text-center font-sans text-2xl">
               Add New Student
             </h2>
+            <div className="flex gap-4 items-center mt-4 mb-2">
+              <span className="w-4 h-4 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center font-bold">
+                1
+              </span>
+              <p className="text-white">Register the student</p>
+            </div>
+            <div className="flex gap-4 items-center mt-4 mb-2 opacity-40">
+              <span className="w-4 h-4 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center font-bold">
+                2
+              </span>
+              <p className="text-white">Login with credentials</p>
+            </div>
+          </div>
+        </div>
+        {/* right side */}
+        <div className="right flex flex-col w-1/2 h-full items-center justify-center px-5 text-white/80">
+          <h2 className="col-span-2 w-full font-bold text-blue-500 text-center font-sans text-2xl">
+            Sign Up
+          </h2>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full ">
             <div className=" w-full py-2">
               {error && <p className="text-red-500 text-center">{error}</p>}
               {success && <p className="text-green-500">{success}</p>}
