@@ -3,13 +3,12 @@ import axios from "axios";
 import bgimg from "../../images/formBg.jpg";
 import stimg from "../../images/stform.jpg";
 
-function AddStudentForm() {
+function StudentLogin() {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -29,25 +28,21 @@ function AddStudentForm() {
     setError(null);
 
     try {
-      const res = await axios.post("/api/users/add-user", formData); //send form data to backend
-      setSuccess("Student added successfully!"); //show success message
+      const res = await axios.post("/api/users/student-login", formData); //send form data to backend
+      setSuccess("Login successful!"); //show success message
 
-      //to clear the form after successful submission
+      //clear form data
       setFormData({
-        name: "",
         email: "",
         password: "",
-        confirmPassword: "",
       });
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-          "Failed to add the student, please try again.",
-      );
+      setError(err.response?.data?.error || "Login failed, please try again.");
     } finally {
       setLoading(false); //loading
     }
   };
+
   return (
     <div
       className="w-full h-screen flex items-center justify-center bg-cover px-20"
@@ -61,15 +56,15 @@ function AddStudentForm() {
         >
           <div>
             <h2 className="col-span-2 w-full font-bold text-blue-500 text-center font-sans text-2xl">
-              Add New Student
+              Welcome Back!
             </h2>
-            <div className="flex gap-4 items-center mt-4 mb-2">
+            <div className="flex gap-4 items-center mt-4 mb-2 opacity-40 line-through">
               <span className="w-4 h-4 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center font-bold">
                 1
               </span>
               <p className="text-white">Register the student</p>
             </div>
-            <div className="flex gap-4 items-center mt-4 mb-2 opacity-40">
+            <div className="flex gap-4 items-center mt-4 mb-2">
               <span className="w-4 h-4 rounded-full bg-blue-500 text-white text-sm flex items-center justify-center font-bold">
                 2
               </span>
@@ -80,7 +75,7 @@ function AddStudentForm() {
         {/* right side */}
         <div className="right flex flex-col w-1/2 h-full items-center justify-center px-5 text-white/80">
           <h2 className="col-span-2 w-full font-bold text-blue-500 text-center font-sans text-2xl">
-            Sign Up
+            Login
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full ">
@@ -89,17 +84,6 @@ function AddStudentForm() {
               {success && (
                 <p className="text-green-500 text-center">{success}</p>
               )}
-            </div>
-            <div>
-              <p className="">Name:</p>
-              <input
-                className="bg-gray-400/40 text-white px-3 py-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={formData.name}
-                onChange={handleChange}
-              />
             </div>
 
             <div>
@@ -126,24 +110,12 @@ function AddStudentForm() {
               />
             </div>
 
-            <div>
-              <p>Confirm Password:</p>
-              <input
-                className="bg-gray-400/40 text-white px-3 py-2 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            </div>
-
             <button
               className="bg-blue-500 text-white py-2 px-4 col-span-2 w-full mt-6 rounded-md hover:bg-blue-600"
               type="submit"
               disabled={loading}
             >
-              {loading ? "Adding..." : "Add Student"}
+              {loading ? "Loading..." : "Login"}
             </button>
           </form>
         </div>
@@ -152,4 +124,4 @@ function AddStudentForm() {
   );
 }
 
-export default AddStudentForm;
+export default StudentLogin;

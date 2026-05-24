@@ -10,10 +10,12 @@ import HomePage from "./pages/homePage.jsx";
 import AddBookForm from "./components/bookManage/addBookForm.jsx";
 //student management
 import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
+import StudentLogin from "./components/studentManage/studentLogin.jsx";
 function App() {
   return (
     <div>
       <AddStudentForm />
+      <StudentLogin />
     </div>
   );
 }
