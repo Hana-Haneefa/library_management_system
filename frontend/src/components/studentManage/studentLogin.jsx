@@ -19,6 +19,27 @@ function StudentLogin() {
       ...formData,
       [e.target.name]: e.target.value, //update the specific field that changed
     });
+
+    //validation
+    if (!formData.email.trim()) {
+      setError("Email is required");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      setError("Password is required");
+      setLoading(false);
+      return;
+    }
+
+    //email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
   };
 
   //run when form submits
@@ -29,6 +50,7 @@ function StudentLogin() {
 
     try {
       const res = await axios.post("/api/users/student-login", formData); //send form data to backend
+
       setSuccess("Login successful!"); //show success message
 
       //clear form data
