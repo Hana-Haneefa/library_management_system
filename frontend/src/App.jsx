@@ -14,7 +14,7 @@ import StudentLogin from "./components/studentManage/studentLogin.jsx";
 function App() {
   return (
     <div>
-      <AddStudentForm />
+      <StudentLogin />
     </div>
   );
 }
