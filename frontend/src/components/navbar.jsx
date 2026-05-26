@@ -1,6 +1,6 @@
 import { useState } from "react";
 import logo from "../images/testimg.jpg";
-import DarkMode from "../components/darkmode.jsx";
+import DarkMode from "./darkmode.jsx";
 
 // Add this component
 // function DarkMode() {

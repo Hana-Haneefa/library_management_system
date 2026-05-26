@@ -2,19 +2,25 @@ import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/authContext.jsx";
 import "./index.css";
-import { Navigation } from "./components/navbar.jsx";
-import { Footer } from "./components/footer.jsx";
-import HeroSec from "./components/heroSection.jsx";
-import HomePage from "./pages/homePage.jsx";
+import { Navigation } from "./components/Navbar.jsx";
+import { Footer } from "./components/Footer.jsx";
+import HeroSec from "./components/HeroSection.jsx";
+import HomePage from "./pages/HomePage.jsx";
 //book management
-import AddBookForm from "./components/bookManage/addBookForm.jsx";
+import AddBookForm from "./components/bookManage/AddBookForm.jsx";
 //student management
 import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
 import StudentLogin from "./components/studentManage/studentLogin.jsx";
+//librarian management
+import AddLibrarianForm from "./components/librarianManage/AddLibrarian.jsx";
+
+//admin management
+import AddAdminForm from "./components/adminManage/AddAdmin.jsx";
+
 function App() {
   return (
     <div>
-      <StudentLogin />
+      <AddAdminForm />
     </div>
   );
 }
