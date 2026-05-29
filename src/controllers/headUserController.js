@@ -152,7 +152,7 @@ export async function deleteHeadUserController(req, res) {
 
 // controller for login head user
 export async function loginAuthController(req, res) {
-  const { email, password } = req.body;
+  const { email, password, expectedRole } = req.body;
   if (!email || !password || !email.trim()) {
     return res.status(400).json({ error: "Missing required fields" });
   }
@@ -166,6 +166,13 @@ export async function loginAuthController(req, res) {
     const isHashMatch = await bcrypt.compare(password, userAuth.hPassword);
     if (!isHashMatch) {
       return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    //role check for security
+    if (expectedRole && userAuth.hRole !== expectedRole) {
+      return res.status(403).json({
+        error: "Access denied for this portal : Insufficient permissions",
+      });
     }
 
     //generate token for track user login

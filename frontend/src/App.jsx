@@ -13,6 +13,7 @@ import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
 import StudentLogin from "./components/studentManage/studentLogin.jsx";
 //librarian management
 import AddLibrarianForm from "./components/librarianManage/AddLibrarian.jsx";
+import LibrarianLogin from "./components/librarianManage/LibrarianLogin.jsx";
 
 //admin management
 import AddAdminForm from "./components/adminManage/AddAdmin.jsx";
@@ -20,7 +21,8 @@ import AddAdminForm from "./components/adminManage/AddAdmin.jsx";
 function App() {
   return (
     <div>
-      <AddAdminForm />
+      <AddLibrarianForm />
+      <LibrarianLogin />
     </div>
   );
 }
