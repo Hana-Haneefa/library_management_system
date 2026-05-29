@@ -53,7 +53,7 @@ export function Navigation() {
               type="button"
               value="Login"
               name="login"
-              className="px-3 py-1 rounded bg-blue-800 hover:bg-blue-900 transition-colors duration-300 hidden sm:block cursor-pointer"
+              className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
             />
             <DarkMode />
             <button
@@ -79,14 +79,14 @@ export function Navigation() {
                 type="button"
                 value="Login"
                 name="login"
-                className="px-3 rounded bg-blue-800 text-white hover:bg-blue-900 transition-colors duration-300 cursor-pointer"
+                className="px-3 rounded bg-purple-800 text-white hover:bg-purple-900 transition-colors duration-300 cursor-pointer"
               />
             </div>
             <ul>
               <li>
                 <a
                   href="./modal.html"
-                  className="block py-2 text-blue-500 hover:text-black transition-colors duration-300"
+                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
                 >
                   All Books
                 </a>
@@ -94,7 +94,7 @@ export function Navigation() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 text-blue-500 hover:text-black transition-colors duration-300"
+                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
                 >
                   New Arrivals
                 </a>
@@ -102,7 +102,7 @@ export function Navigation() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 text-blue-500 hover:text-black transition-colors duration-300"
+                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
                 >
                   About
                 </a>
@@ -111,7 +111,7 @@ export function Navigation() {
           </div>
         )}
 
-        <div className="w-full bg-blue-100">
+        <div className="w-full bg-purple-100">
           <h2 className="font-bold font-sans text-center p-1 pb-2">
             Welcome Guest!
           </h2>

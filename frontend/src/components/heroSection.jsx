@@ -1,7 +1,7 @@
 import hero from "../images/bg-hero.jpg";
-import book1 from "../images/book1.jpg";
-import book2 from "../images/book2.jpg";
-import book3 from "../images/book3.jpg";
+import book1 from "../images/booknobg.png";
+import book3 from "../images/booknobg.png";
+import book2 from "../images/booknobg.png";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -43,11 +43,11 @@ function HeroSec() {
         />
         <div className="left w-full mx-2 h-140 absolute bottom-5 left-0 bg-gradient-to-r from-black/80 to-black/0 p-4">
           <div className="book w-2/3 h-full flex gap-10 ">
-            <div className="img w-fit h-full overflow-hidden shadow-md rounded-bl-4xl rounded-tr-4xl">
+            <div className="img w-1/2 h-full overflow-hidden shadow-md rounded-bl-4xl rounded-tr-4xl bg-white/10">
               <img
                 src={slides[current].imgUrl}
                 alt="book-1"
-                className="w-full h-full object-fill overflow-hidden"
+                className="w-full h-full object-cover overflow-hidden hover:scale-110 transition-transform duration-500"
               />
             </div>
             <div className="text w-1/2 h-full overflow-hidden flex flex-col items-center justify-center p-4 ">
@@ -58,7 +58,7 @@ function HeroSec() {
                 type="search"
                 placeholder=" Seek Knowledge.."
                 name="search"
-                className="w-full h-10 px-4 rounded-xl bg-white mt-5"
+                className="w-full h-10 px-4 rounded-xl bg-white mt-5 focus-within:outline-none hover:focus-within:ring-2 hover:focus-within:ring-purple-500 transition-all duration-300"
               />
             </div>
           </div>
