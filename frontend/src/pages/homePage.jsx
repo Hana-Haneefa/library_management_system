@@ -82,6 +82,12 @@ function HomePage() {
           </div>
         </div>
       </div>
+      <div className="cards">
+        <h1 className="text-purple-800 text-xl font-bold text-center">
+          How to use the library?
+        </h1>
+        <p>No paperwork, no manual entry, just scan and go.</p>
+      </div>
     </div>
   );
 }
