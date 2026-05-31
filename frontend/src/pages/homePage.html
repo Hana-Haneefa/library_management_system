@@ -230,6 +230,63 @@
           </div>
         </div>
       </div>
+
+      <!-- trending books -->
+      <h1 class="text-purple-800 text-xl font-bold text-center mt-10">
+        Trending Books
+      </h1>
+      <div
+        class="bookCard innershadow w-50 h-72 mx-5 relative group overflow-hidden rounded-md"
+      >
+        <!-- image div -->
+        <img
+          src="../images/book1.jpg"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          alt=""
+        />
+
+        <!-- text div -->
+        <div
+          class="absolute bottom-0 left-0 w-full bg-white translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 transition-all duration-500 p-2 flex flex-col items-center justify-between gap-1"
+        >
+          <h3 class="text-lg font-bold">The Great Gatsby</h3>
+          <p class="text-sm text-gray-600">by F. Scott Fitzgerald</p>
+          <button
+            class="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300"
+          >
+            Read
+          </button>
+          <span class="text-green-600 font-semibold text-xs">Available</span>
+        </div>
+
+        <!-- genre badge -->
+        <div
+          class="absolute top-2 left-2 pb-1 px-3 bg-purple-700 text-white rounded-full text-xs font-medium"
+        >
+          <p class="italic">Science</p>
+        </div>
+        <div
+          class="quickAccess flex flex-col absolute top-2 right-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <div
+            class="qr w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center"
+          >
+            {qrcode}
+          </div>
+          <div
+            class="viewIcon w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center"
+          >
+            {viewIcon}
+          </div>
+          <div
+            class="favourite w-10 h-10 bg-gray-300 rounded-lg flex items-center justify-center"
+          >
+            {favourite}
+          </div>
+        </div>
+      </div>
+
+      <!-- end of new part -->
     </div>
   </body>
 </html>

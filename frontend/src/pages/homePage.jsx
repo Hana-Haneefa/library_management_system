@@ -1,4 +1,10 @@
 import image from "../images/books3.jpg";
+import step1 from "../images/icons/register.png";
+import step2 from "../images/icons/brows.png";
+import step3 from "../images/icons/qry.png";
+import step4 from "../images/icons/repeat.png";
+// component for home page
+import BookCard from "../components/Card.jsx";
 
 function HomePage() {
   return (
@@ -82,11 +88,100 @@ function HomePage() {
           </div>
         </div>
       </div>
+      {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯 ⁡⁡*/}
       <div className="cards">
-        <h1 className="text-purple-800 text-xl font-bold text-center">
+        <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
           How to use the library?
         </h1>
-        <p>No paperwork, no manual entry, just scan and go.</p>
+        <p className="text-center text-gray-600 text-sm font-semibold">
+          No paperwork, no manual entry, just scan and go.
+        </p>
+        {/* 𝘤𝘢𝘳𝘥 𝘴𝘦𝘵 */}
+        <div className="cardSet w-full h-60 grid grid-cols-4 gap-4 px-4 mt-5">
+          {/* ⁡⁣⁣⁢first card⁡ */}
+          <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
+            <div className="img w-15 h-15 rounded-lg">
+              <img
+                src={step1}
+                alt="Register Icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <p className="w-full text-center text-purple-600 font-semibold">
+              Step 1
+            </p>
+            <h3 className="text-center text-lg font-bold">Register</h3>
+            <p className="text-center text-sm text-gray-600">
+              Create your library account in minutes. Admin involvement required
+              for Registration.
+            </p>
+          </div>
+
+          {/* ⁡⁣⁣⁡⁣⁣⁢𝘴𝘦𝘤𝘰𝘯𝘥 𝘤𝘢𝘳𝘥⁡⁡ */}
+          <div className="rounded-2xl flex flex-col items-center justify-center bg-blue-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-blue-300">
+            <div className="img w-15 h-15 rounded-lg">
+              <img
+                src={step2}
+                alt="Browse Icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <p className="w-full text-center text-blue-600 font-semibold">
+              Step 2
+            </p>
+            <h3 className="text-center text-lg font-bold">
+              Browse the Catalog
+            </h3>
+            <p className="text-center text-sm text-gray-600">
+              Search for books, journals, and digital resources in our catalog.
+            </p>
+          </div>
+
+          {/* ⁡⁣⁣⁢𝘵𝘩𝘪𝘳𝘥 𝘤𝘢𝘳𝘥⁡ */}
+          <div className="rounded-2xl flex flex-col items-center justify-center bg-green-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-green-300">
+            <div className="img w-15 h-15 rounded-lg">
+              <img
+                src={step3}
+                alt="Scan Icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <p className="w-full text-center text-green-600 font-semibold">
+              Step 3
+            </p>
+            <h3 className="text-center text-lg font-bold">Scan and Borrow</h3>
+            <p className="text-center text-sm text-gray-600">
+              Use our easy-to-use scanning system to borrow books and other
+              resources.
+            </p>
+          </div>
+
+          {/* ⁡⁣⁣⁢𝘧𝘰𝘶𝘳𝘵𝘩 𝘤𝘢𝘳𝘥⁡ */}
+          <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
+            <div className="img w-15 h-15 rounded-lg">
+              <img
+                src={step4}
+                alt="Return Icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <p className="w-full text-center text-purple-600 font-semibold">
+              Step 4
+            </p>
+            <h3 className="text-center text-lg font-bold">Return & Repeat</h3>
+            <p className="text-center text-sm text-gray-600">
+              Return borrowed items on time and continue exploring our
+              collection.
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
+      <h1 class="text-purple-800 text-xl font-bold text-center mt-10">
+        Trending Books
+      </h1>
+      <div className="trendings">
+        <BookCard />
       </div>
     </div>
   );

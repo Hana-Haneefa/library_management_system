@@ -6,6 +6,7 @@ import { Navigation } from "./components/Navbar.jsx";
 import { Footer } from "./components/Footer.jsx";
 import HeroSec from "./components/HeroSection.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import BookCard from "./components/Card.jsx";
 //book management
 import AddBookForm from "./components/bookManage/AddBookForm.jsx";
 //student management
@@ -22,8 +23,6 @@ import AdminLogin from "./components/adminManage/AdminLogin.jsx";
 function App() {
   return (
     <div>
-      <Navigation />
-      <HeroSec />
       <HomePage />
     </div>
   );
