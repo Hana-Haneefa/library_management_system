@@ -177,10 +177,15 @@ function HomePage() {
         </div>
       </div>
       {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
-      <h1 class="text-purple-800 text-xl font-bold text-center mt-10">
+      <h1 class="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
         Trending Books
       </h1>
-      <div className="trendings">
+      <div className="trendings grid grid-cols-6 gap-4 ">
+        <BookCard />
+        <BookCard />
+        <BookCard />
+        <BookCard />
+        <BookCard />
         <BookCard />
       </div>
     </div>

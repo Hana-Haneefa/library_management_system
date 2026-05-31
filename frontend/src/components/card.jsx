@@ -3,10 +3,24 @@ import qrcode from "../images/icons/qrcode.png";
 import viewIcon from "../images/icons/viewIcon.png";
 import favourite from "../images/icons/heart.png";
 import favSelected from "../images/icons/heartSelected.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function BookCard({ imageSrc, title, author, availability, genre }) {
   const [isFav, setIsFav] = useState(false);
+  const [label, setLabel] = useState("Read");
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false); //fade out
+
+      setTimeout(() => {
+        setLabel((prev) => (prev === "Read" ? "Borrow" : "Read"));
+        setVisible(true); // පසුව fade in
+      }, 300); //text change + fade in
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   function toggleFav() {
     setIsFav(!isFav);
@@ -25,7 +39,16 @@ function BookCard({ imageSrc, title, author, availability, genre }) {
         <h3 className="text-lg font-bold">The Great Gatsby</h3>
         <p className="text-sm text-gray-600">by F. Scott Fitzgerald</p>
         <button className="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300">
-          Read
+          <span
+            style={{
+              display: "inline-block",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            {label}
+          </span>
         </button>
         <span className="text-green-600 font-semibold text-xs">Available</span>
       </div>
