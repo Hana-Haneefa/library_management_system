@@ -194,7 +194,7 @@ function HomePage() {
         <BookCard />
       </div>
 
-      {/* announcements and news section */}
+      {/* ⁡⁣⁣⁢announcements and news section⁡ */}
 
       <div className="topic flex items-center justify-center mt-10 mb-5 px-4">
         <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
@@ -207,8 +207,9 @@ function HomePage() {
 
       <div className="announcements bg-purple-800 text-white rounded-lg p-4 mx-4">
         <div className="container w-full h-96  flex items-start justify-center gap-4 px-4">
+          {/* ⁡⁣⁣⁢𝘯𝘦𝘸𝘴 𝘭𝘦𝘧𝘵 𝘥𝘪𝘷⁡ */}
           <div
-            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white flex flex-col gap-4"
+            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white flex flex-col gap-4 hover:scale-110 transition-transform duration-300 z-10"
             style={{
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
@@ -275,8 +276,9 @@ function HomePage() {
             </div>
           </div>
           <div className="right w-1/2 h-full rounded-lg flex flex-col gap-2">
+            {/* ⁡⁣⁣⁢news right top div⁡ */}
             <div
-              className="rtop w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white p-4"
+              className="rtop w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white flex hover:scale-110 transition-transform duration-300 hover:z-20"
               style={{
                 backdropFilter: "blur(16px)",
                 WebkitBackdropFilter: "blur(16px)",
@@ -286,9 +288,55 @@ function HomePage() {
                 boxShadow:
                   "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
               }}
-            ></div>
+            >
+              <div className="img w-1/4  rounded-l-lg h-full relative overflow-hidden">
+                <img
+                  src={newsLeft}
+                  alt="newly arrived images news"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 bg-red-700 text-red-300 rounded-full text-xs font-medium py-1 px-3">
+                  <img
+                    src={pinned}
+                    alt="Pinned Icon"
+                    className="w-4 h-4 inline-block mr-1"
+                  />
+                  Alert
+                </span>
+              </div>
+              <div className="text w-3/4 h-full p-2">
+                <h3 className="text-lg font-bold mt-2">
+                  System maintanance - June 5, 2.00pm-8.00pm
+                </h3>
+                <p className="text-sm text-gray-200 mt-1 mb-2.5">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, at. repudiandae! nostrum, tenetur fugiat accusantium?
+                </p>
+
+                <hr />
+
+                <div className="flex justify-between px-2 items-center">
+                  <span className="p-4 text-xs text-gray-300">
+                    <img
+                      src={calendar}
+                      alt="calendar Icon"
+                      className="w-4 h-4 inline-block mr-1 mb-1"
+                    />
+                    3rd June 2026
+                  </span>
+                  <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
+                    <img
+                      src={arrowRight}
+                      alt="calendar Icon"
+                      className="w-4 h-4 inline-block mr-1 mb-1"
+                    />
+                    Details
+                  </span>
+                </div>
+              </div>
+            </div>
             <div
-              className="rbottom w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white p-4"
+              className="rbottom w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white flex hover:scale-110 transition-transform duration-300 hover:z-20"
               style={{
                 backdropFilter: "blur(16px)",
                 WebkitBackdropFilter: "blur(16px)",
@@ -298,7 +346,53 @@ function HomePage() {
                 boxShadow:
                   "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
               }}
-            ></div>
+            >
+              <div className="img w-1/4 rounded-l-lg h-full relative overflow-hidden">
+                <img
+                  src={newsLeft}
+                  alt="newly arrived images news"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute top-2 left-2 bg-green-700 text-green-300 rounded-full text-xs font-medium py-1 px-3">
+                  <img
+                    src={pinned}
+                    alt="Pinned Icon"
+                    className="w-4 h-4 inline-block mr-1"
+                  />
+                  Update
+                </span>
+              </div>
+              <div className="text w-3/4 h-full p-2">
+                <h3 className="text-lg font-bold mt-2">
+                  QR scan for quick return process
+                </h3>
+                <p className="text-sm text-gray-200 mt-1 mb-2.5">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Itaque, at. repudiandae! nostrum, tenetur fugiat accusantium?
+                </p>
+
+                <hr />
+
+                <div className="flex justify-between px-2 items-center">
+                  <span className="p-4 text-xs text-gray-300">
+                    <img
+                      src={calendar}
+                      alt="calendar Icon"
+                      className="w-4 h-4 inline-block mr-1 mb-1"
+                    />
+                    4rd June 2026
+                  </span>
+                  <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
+                    <img
+                      src={arrowRight}
+                      alt="calendar Icon"
+                      className="w-4 h-4 inline-block mr-1 mb-1"
+                    />
+                    Details
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
