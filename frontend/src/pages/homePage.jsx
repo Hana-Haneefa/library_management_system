@@ -3,6 +3,11 @@ import step1 from "../images/icons/register.png";
 import step2 from "../images/icons/brows.png";
 import step3 from "../images/icons/qry.png";
 import step4 from "../images/icons/repeat.png";
+import newsLeft from "../images/newsLeft.jpg";
+import pinned from "../images/icons/pin.png";
+import bell from "../images/icons/bell.png";
+import calendar from "../images/icons/calendar.png";
+import arrowRight from "../images/icons/arrowRight.png";
 // component for home page
 import BookCard from "../components/Card.jsx";
 
@@ -203,7 +208,7 @@ function HomePage() {
       <div className="announcements bg-purple-800 text-white rounded-lg p-4 mx-4">
         <div className="container w-full h-96  flex items-start justify-center gap-4 px-4">
           <div
-            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white p-4 flex flex-col gap-4"
+            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white flex flex-col gap-4"
             style={{
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
@@ -213,10 +218,87 @@ function HomePage() {
               boxShadow:
                 "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
             }}
-          ></div>
+          >
+            <div className="img w-full h-1/2 rounded-t-lg overflow-hidden relative">
+              <img
+                src={newsLeft}
+                alt="newly arrived images news"
+                className="w-full h-full object-cover"
+              />
+              <span className="absolute top-2 left-2 bg-purple-700 text-white rounded-full text-xs font-medium py-1 px-3">
+                <img
+                  src={pinned}
+                  alt="Pinned Icon"
+                  className="w-4 h-4 inline-block mr-1"
+                />
+                Pinned
+              </span>
+            </div>
+            <div className="text flex flex-col p-2">
+              <span className=" bg-purple-200 text-purple-800 rounded-full text-xs w-36 font-medium py-1 px-3">
+                <img
+                  src={bell}
+                  alt="Pinned Icon"
+                  className="w-4 h-4 inline-block mr-1 my-0.5"
+                />
+                Announcement
+              </span>
+              <h3 className="text-lg font-bold mt-2">
+                45 new books added across 6 genres this week
+              </h3>
+              <p className="text-sm text-gray-200 mt-1 mb-2.5">
+                Our library has expanded its collection with 45 new books across
+                6 genres, including fiction, non-fiction, science, history, and
+                more. Explore the latest additions and discover your next great
+                read!
+              </p>
+              <hr></hr>
+
+              <div className="flex justify-between px-2 items-center">
+                <span className="p-4 text-xs text-gray-300">
+                  <img
+                    src={calendar}
+                    alt="calendar Icon"
+                    className="w-4 h-4 inline-block mr-1 mb-1"
+                  />
+                  3rd June 2026
+                </span>
+                <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
+                  <img
+                    src={arrowRight}
+                    alt="calendar Icon"
+                    className="w-4 h-4 inline-block mr-1 mb-1"
+                  />
+                  Read More
+                </span>
+              </div>
+            </div>
+          </div>
           <div className="right w-1/2 h-full rounded-lg flex flex-col gap-2">
-            <div className="rtop w-full h-1/2 rounded-lg border-2"></div>
-            <div className="rbottom w-full h-1/2 rounded-lg border-2"></div>
+            <div
+              className="rtop w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white p-4"
+              style={{
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                borderColor: "rgba(167, 139, 250, 0.4)",
+                borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+                borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+                boxShadow:
+                  "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
+              }}
+            ></div>
+            <div
+              className="rbottom w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white p-4"
+              style={{
+                backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
+                borderColor: "rgba(167, 139, 250, 0.4)",
+                borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+                borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+                boxShadow:
+                  "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
+              }}
+            ></div>
           </div>
         </div>
       </div>
