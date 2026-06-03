@@ -100,7 +100,7 @@ function HomePage() {
         <div className="cardSet w-full h-60 grid grid-cols-4 gap-4 px-4 mt-5">
           {/* ⁡⁣⁣⁢first card⁡ */}
           <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
-            <div className="img w-15 h-15 rounded-lg">
+            <div className="img w-10 h-10 rounded-lg">
               <img
                 src={step1}
                 alt="Register Icon"
@@ -119,7 +119,7 @@ function HomePage() {
 
           {/* ⁡⁣⁣⁡⁣⁣⁢𝘴𝘦𝘤𝘰𝘯𝘥 𝘤𝘢𝘳𝘥⁡⁡ */}
           <div className="rounded-2xl flex flex-col items-center justify-center bg-blue-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-blue-300">
-            <div className="img w-15 h-15 rounded-lg">
+            <div className="img w-10 h-10 rounded-lg">
               <img
                 src={step2}
                 alt="Browse Icon"
@@ -139,7 +139,7 @@ function HomePage() {
 
           {/* ⁡⁣⁣⁢𝘵𝘩𝘪𝘳𝘥 𝘤𝘢𝘳𝘥⁡ */}
           <div className="rounded-2xl flex flex-col items-center justify-center bg-green-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-green-300">
-            <div className="img w-15 h-15 rounded-lg">
+            <div className="img w-10 h-10 rounded-lg">
               <img
                 src={step3}
                 alt="Scan Icon"
@@ -158,7 +158,7 @@ function HomePage() {
 
           {/* ⁡⁣⁣⁢𝘧𝘰𝘶𝘳𝘵𝘩 𝘤𝘢𝘳𝘥⁡ */}
           <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
-            <div className="img w-15 h-15 rounded-lg">
+            <div className="img w-10 h-10 rounded-lg">
               <img
                 src={step4}
                 alt="Return Icon"
@@ -187,6 +187,38 @@ function HomePage() {
         <BookCard />
         <BookCard />
         <BookCard />
+      </div>
+
+      {/* announcements and news section */}
+
+      <div className="topic flex items-center justify-center mt-10 mb-5 px-4">
+        <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
+          Announcements & News
+        </h1>
+        <span className="bg-purple-700 text-white rounded-full text-xs font-medium py-1 px-3 italic">
+          2 new
+        </span>
+      </div>
+
+      <div className="announcements bg-purple-800 text-white rounded-lg p-4 mx-4">
+        <div className="container w-full h-96  flex items-start justify-center gap-4 px-4">
+          <div
+            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white p-4 flex flex-col gap-4"
+            style={{
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              borderColor: "rgba(167, 139, 250, 0.4)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.3)",
+              borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+              boxShadow:
+                "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          ></div>
+          <div className="right w-1/2 h-full rounded-lg flex flex-col gap-2">
+            <div className="rtop w-full h-1/2 rounded-lg border-2"></div>
+            <div className="rbottom w-full h-1/2 rounded-lg border-2"></div>
+          </div>
+        </div>
       </div>
     </div>
   );
