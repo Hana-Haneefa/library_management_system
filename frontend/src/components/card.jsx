@@ -72,6 +72,20 @@ function BookCard({ imageSrc, title, author, availability, genre }) {
           />
         </div>
       </div>
+      <div className="btn opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute bottom-2 left-1/2 transform -translate-x-1/2 w-11/12">
+        <button className="border-2 border-purple-800 w-full py-2 px-4 rounded-md bg-white/40 text-purple-800 font-semibold hover:text-purple-600 transition-colors duration-300 cursor-pointer">
+          <span
+            style={{
+              display: "inline-block",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            {label}
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
