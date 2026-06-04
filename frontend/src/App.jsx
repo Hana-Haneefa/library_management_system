@@ -19,14 +19,12 @@ import LibrarianLogin from "./components/librarianManage/LibrarianLogin.jsx";
 //admin management
 import AddAdminForm from "./components/adminManage/AddAdmin.jsx";
 import AdminLogin from "./components/adminManage/AdminLogin.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 function App() {
   return (
     <div>
-      <Navigation />
-
-      <HomePage />
-      <Footer />
+      <AdminDashboard />
     </div>
   );
 }
