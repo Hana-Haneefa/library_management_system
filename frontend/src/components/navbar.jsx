@@ -26,18 +26,18 @@ export function Navigation() {
 
   return (
     <div>
-      <nav className="sticky top-0 bg-black z-50">
+      <nav className="sticky top-0 bg-purple-950 z-50">
         <div className="nav max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="logo flex items-center h-10 gap-10">
             <img src={logo} alt="myLogo" className="h-10 w-20 object-cover" />
             <ul className="nav-links hidden md:flex space-x-8 items-center text-white">
-              <li className="hover:text-blue-500 transition-colors duration-300 cursor-pointer">
+              <li className="hover:text-purple-500 transition-colors duration-300 cursor-pointer">
                 <a href="./modal.html">All books</a>
               </li>
-              <li className="hover:text-blue-500 transition-colors duration-300 cursor-pointer">
+              <li className="hover:text-purple-500 transition-colors duration-300 cursor-pointer">
                 <a href="#">New Arrivals</a>
               </li>
-              <li className="hover:text-blue-500 transition-colors duration-300 cursor-pointer">
+              <li className="hover:text-purple-500 transition-colors duration-300 cursor-pointer">
                 <a href="#">About</a>
               </li>
             </ul>

@@ -10,10 +10,12 @@ import calendar from "../images/icons/calendar.png";
 import arrowRight from "../images/icons/arrowRight.png";
 // component for home page
 import BookCard from "../components/Card.jsx";
+import HeroSec from "../components/HeroSection.jsx";
 
 function HomePage() {
   return (
     <div className="mt-10">
+      <HeroSec />
       <div className="container w-full h-50 grid grid-cols-4 gap-2 px-4 ">
         <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
           <div className="img relative h-48 overflow-hidden rounded-xl">
@@ -182,6 +184,7 @@ function HomePage() {
         </div>
       </div>
       {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
+
       <h1 class="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
         Trending Books
       </h1>
@@ -189,6 +192,7 @@ function HomePage() {
         <BookCard />
         <BookCard />
         <BookCard />
+
         <BookCard />
         <BookCard />
         <BookCard />

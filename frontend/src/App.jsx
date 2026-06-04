@@ -11,7 +11,7 @@ import BookCard from "./components/Card.jsx";
 import AddBookForm from "./components/bookManage/AddBookForm.jsx";
 //student management
 import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
-import StudentLogin from "./components/studentManage/studentLogin.jsx";
+import StudentLogin from "./components/studentManage/StudentLogin.jsx";
 //librarian management
 import AddLibrarianForm from "./components/librarianManage/AddLibrarian.jsx";
 import LibrarianLogin from "./components/librarianManage/LibrarianLogin.jsx";
@@ -23,7 +23,10 @@ import AdminLogin from "./components/adminManage/AdminLogin.jsx";
 function App() {
   return (
     <div>
+      <Navigation />
+
       <HomePage />
+      <Footer />
     </div>
   );
 }

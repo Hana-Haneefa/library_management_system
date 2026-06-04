@@ -1,4 +1,4 @@
-import hero from "../images/bg-hero.jpg";
+import hero from "../images/bg-hero2.jpg";
 import book1 from "../images/booknobg.png";
 import book3 from "../images/booknobg.png";
 import book2 from "../images/booknobg.png";
