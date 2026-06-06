@@ -16,7 +16,7 @@ function BookCard({ imageSrc, title, author, availability, genre }) {
 
       setTimeout(() => {
         setLabel((prev) => (prev === "Read" ? "Borrow" : "Read"));
-        setVisible(true); // පසුව fade in
+        setVisible(true); // then fade in
       }, 300); //text change + fade in
     }, 2500);
     return () => clearInterval(interval);
