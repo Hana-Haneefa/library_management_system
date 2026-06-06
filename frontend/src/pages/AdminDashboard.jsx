@@ -1,11 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import img from "../images/testimg.jpg";
 import icon from "../images/icons/heart.png";
+import dashboardIcon from "../images/icons/dashboard.png";
+import booksIcon from "../images/icons/book.png";
+import membersIcon from "../images/icons/member.png";
+import borrowingsIcon from "../images/icons/borrow.png";
+import finesIcon from "../images/icons/bill.png";
+import reportsIcon from "../images/icons/doc.png";
+import settingsIcon from "../images/icons/setting.png";
 import bgimg from "../images/adminBg.jpg";
 
 function AdminDashboard() {
-  
-
   return (
     <div className="admin-dashboard">
       <div
@@ -53,7 +58,11 @@ function AdminDashboard() {
               className="bg-violet-400 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4"
             >
               <span>
-                <img src={icon} alt="dashboard icon" className="w-7 h-7" />
+                <img
+                  src={dashboardIcon}
+                  alt="dashboard icon"
+                  className="w-7 h-7"
+                />
               </span>
               Dashboard
             </p>
@@ -63,14 +72,22 @@ function AdminDashboard() {
               className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4"
             >
               <span>
-                <img src={icon} alt="Manage book icon" className="w-7 h-7" />
+                <img
+                  src={booksIcon}
+                  alt="Manage book icon"
+                  className="w-7 h-7"
+                />
               </span>
               Manage Books
             </p>
 
             <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
               <span>
-                <img src={icon} alt="Manage members icon" className="w-7 h-7" />
+                <img
+                  src={membersIcon}
+                  alt="Manage members icon"
+                  className="w-7 h-7"
+                />
               </span>
               Manage Members
             </p>
@@ -78,7 +95,7 @@ function AdminDashboard() {
             <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
               <span>
                 <img
-                  src={icon}
+                  src={borrowingsIcon}
                   alt="Manage borrowings icon"
                   className="w-7 h-7"
                 />
@@ -88,21 +105,29 @@ function AdminDashboard() {
 
             <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
               <span>
-                <img src={icon} alt="Manage fines icon" className="w-7 h-7" />
+                <img
+                  src={finesIcon}
+                  alt="Manage fines icon"
+                  className="w-7 h-7"
+                />
               </span>
               Manage Fines
             </p>
 
             <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
               <span>
-                <img src={icon} alt="Reports icon" className="w-7 h-7" />
+                <img src={reportsIcon} alt="Reports icon" className="w-7 h-7" />
               </span>
               Reports
             </p>
 
             <p className="bg-violet-400/40 hover:bg-violet-500 transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4">
               <span>
-                <img src={icon} alt="Settings icon" className="w-7 h-7" />
+                <img
+                  src={settingsIcon}
+                  alt="Settings icon"
+                  className="w-7 h-7"
+                />
               </span>
               Settings
             </p>
