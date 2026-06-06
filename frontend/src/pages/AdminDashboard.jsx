@@ -11,9 +11,67 @@ import settingsIcon from "../images/icons/setting.png";
 import bgimg from "../images/adminBg.jpg";
 
 function AdminDashboard() {
+  const containerRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const settingRef = useRef(null);
+  const cardRef = useRef(null);
+  const graphRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const left = leftRef.current;
+    const right = rightRef.current;
+    const setting = settingRef.current;
+    const card = cardRef.current;
+    const graph = graphRef.current;
+
+    container.style.opacity = "0";
+    left.style.opacity = "0";
+    left.style.transform = "translateX(-50px)";
+    right.style.opacity = "0";
+    right.style.transform = "translateX(50px)";
+    setting.style.opacity = "0";
+    setting.style.transform = "translateY(20px)";
+    card.style.opacity = "0";
+    card.style.transform = "translateY(-50px)";
+    graph.style.opacity = "0";
+    graph.style.transform = "translateY(100px)";
+
+    requestAnimationFrame(() => {
+      container.style.transition = "opacity 0.5s ease";
+      container.style.opacity = "1";
+
+      setTimeout(() => {
+        left.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        left.style.opacity = "1";
+        left.style.transform = "translateX(0)";
+        setTimeout(() => {
+          right.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          right.style.opacity = "1";
+          right.style.transform = "translateX(0)";
+          setting.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          setting.style.opacity = "1";
+          setting.style.transform = "translateY(0)";
+          setTimeout(() => {
+            card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+            setTimeout(() => {
+              graph.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+              graph.style.opacity = "1";
+              graph.style.transform = "translateY(0)";
+            }, 300);
+          }, 400);
+        }, 500);
+      }, 600);
+    });
+  }, []);
+
   return (
     <div className="admin-dashboard">
       <div
+        ref={containerRef}
         className="container w-full h-screen flex p-2 bg-purple-900 gap-2"
         style={{
           backgroundImage: `url(${bgimg})`,
@@ -23,6 +81,7 @@ function AdminDashboard() {
       >
         <div
           id="dashSideMenu"
+          ref={leftRef}
           className="w-1/6 h-full left hidden md:block md:w-96 relative pb-5 md:pb-0 rounded-2xl border-b-2 border-white bg-white/20"
           style={{
             backdropFilter: "blur(16px)",
@@ -135,14 +194,20 @@ function AdminDashboard() {
         </div>
         {/*⁡⁣⁣⁢ 𝘮𝘢𝘪𝘯 𝘤𝘰𝘯𝘵𝘦𝘯𝘵⁡ */}
         <div className="main-content w-5/6 h-full flex flex-col gap-2">
-          <div className="topNav w-full h-32 bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 rounded-2xl py-4 px-6 flex flex-col items-start justify-center ">
+          <div
+            ref={rightRef}
+            className="topNav w-full h-32 bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 rounded-2xl py-4 px-6 flex flex-col items-start justify-center "
+          >
             <h1 className="text-3xl font-bold font-serif text-white">
               Hello, Admin!
             </h1>
             <span className="text-white/70">Admin Account</span>
           </div>
           {/* ⁡⁣⁣⁢𝘴𝘦𝘵 𝘰𝘧 𝘧𝘪𝘭𝘵𝘦𝘳𝘴⁡ */}
-          <div className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between">
+          <div
+            ref={settingRef}
+            className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between"
+          >
             {/* ⁡⁣⁣⁢𝘭𝘦𝘧𝘵 𝘴𝘪𝘥𝘦 𝘰𝘧 𝘵𝘩𝘦 𝘴𝘦𝘵𝘵𝘪𝘯𝘨 𝘰𝘱𝘵𝘪𝘰𝘯 𝘥𝘪𝘷⁡ */}
             <div className="setLeft flex gap-8">
               <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
@@ -172,7 +237,10 @@ function AdminDashboard() {
           </div>
 
           {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ */}
-          <div className="cards w-full h-50 grid grid-cols-4 gap-4">
+          <div
+            ref={cardRef}
+            className="cards w-full h-50 grid grid-cols-4 gap-4"
+          >
             <div className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group ">
               <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
                 <img
@@ -259,7 +327,9 @@ function AdminDashboard() {
             </div>
           </div>
 
-          <div className="graphs flex h-100  gap-4 mt-2">
+          {/* ⁡⁣⁣⁢𝘨𝘳𝘢𝘱𝘩 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ */}
+
+          <div ref={graphRef} className="graphs flex h-100  gap-4 mt-2">
             <div className="w-2/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
             <div className="w-1/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
           </div>
