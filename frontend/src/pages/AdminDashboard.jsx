@@ -10,33 +10,26 @@ import reportsIcon from "../images/icons/doc.png";
 import settingsIcon from "../images/icons/setting.png";
 import bgimg from "../images/adminBg.jpg";
 
+// content component import
+import DashboardSec from "../components/adminManage/DashboardSec";
+
 function AdminDashboard() {
+  const [activeSection, setActiveSection] = useState("dashboard");
+
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
-  const settingRef = useRef(null);
-  const cardRef = useRef(null);
-  const graphRef = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
     const left = leftRef.current;
     const right = rightRef.current;
-    const setting = settingRef.current;
-    const card = cardRef.current;
-    const graph = graphRef.current;
 
     container.style.opacity = "0";
     left.style.opacity = "0";
     left.style.transform = "translateX(-50px)";
     right.style.opacity = "0";
     right.style.transform = "translateX(50px)";
-    setting.style.opacity = "0";
-    setting.style.transform = "translateY(20px)";
-    card.style.opacity = "0";
-    card.style.transform = "translateY(-50px)";
-    graph.style.opacity = "0";
-    graph.style.transform = "translateY(100px)";
 
     requestAnimationFrame(() => {
       container.style.transition = "opacity 0.5s ease";
@@ -50,19 +43,6 @@ function AdminDashboard() {
           right.style.transition = "opacity 0.5s ease, transform 0.5s ease";
           right.style.opacity = "1";
           right.style.transform = "translateX(0)";
-          setting.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-          setting.style.opacity = "1";
-          setting.style.transform = "translateY(0)";
-          setTimeout(() => {
-            card.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-            setTimeout(() => {
-              graph.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-              graph.style.opacity = "1";
-              graph.style.transform = "translateY(0)";
-            }, 300);
-          }, 400);
         }, 500);
       }, 600);
     });
@@ -113,8 +93,8 @@ function AdminDashboard() {
 
           <div className="tabs flex flex-col items-start gap-4 mt-12 font-semibold text-lg px-5 w-full text-white">
             <p
-              onclick="loadSection('dashboard')"
-              className="bg-violet-400 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4"
+              onClick={() => setActiveSection("dashboard")}
+              className={` ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
@@ -127,8 +107,8 @@ function AdminDashboard() {
             </p>
 
             <p
-              onclick="loadSection('books')"
-              className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4"
+              onClick={() => setActiveSection("books")}
+              className={`${activeSection === "books" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
@@ -140,7 +120,10 @@ function AdminDashboard() {
               Manage Books
             </p>
 
-            <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
+            <p
+              onClick={() => setActiveSection("members")}
+              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "members" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+            >
               <span>
                 <img
                   src={membersIcon}
@@ -151,7 +134,10 @@ function AdminDashboard() {
               Manage Members
             </p>
 
-            <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
+            <p
+              onClick={() => setActiveSection("borrows")}
+              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+            >
               <span>
                 <img
                   src={borrowingsIcon}
@@ -162,7 +148,10 @@ function AdminDashboard() {
               Manage Borrowings
             </p>
 
-            <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
+            <p
+              onClick={() => setActiveSection("fines")}
+              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+            >
               <span>
                 <img
                   src={finesIcon}
@@ -173,14 +162,20 @@ function AdminDashboard() {
               Manage Fines
             </p>
 
-            <p className="bg-violet-400/40 hover:bg-violet-500 w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4">
+            <p
+              onClick={() => setActiveSection("reports")}
+              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+            >
               <span>
                 <img src={reportsIcon} alt="Reports icon" className="w-7 h-7" />
               </span>
               Reports
             </p>
 
-            <p className="bg-violet-400/40 hover:bg-violet-500 transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4">
+            <p
+              onClick={() => setActiveSection("settings")}
+              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"}transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4`}
+            >
               <span>
                 <img
                   src={settingsIcon}
@@ -203,136 +198,10 @@ function AdminDashboard() {
             </h1>
             <span className="text-white/70">Admin Account</span>
           </div>
-          {/* ⁡⁣⁣⁢𝘴𝘦𝘵 𝘰𝘧 𝘧𝘪𝘭𝘵𝘦𝘳𝘴⁡ */}
-          <div
-            ref={settingRef}
-            className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between"
-          >
-            {/* ⁡⁣⁣⁢𝘭𝘦𝘧𝘵 𝘴𝘪𝘥𝘦 𝘰𝘧 𝘵𝘩𝘦 𝘴𝘦𝘵𝘵𝘪𝘯𝘨 𝘰𝘱𝘵𝘪𝘰𝘯 𝘥𝘪𝘷⁡ */}
-            <div className="setLeft flex gap-8">
-              <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-                Table
-              </button>
-              <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-                Graph
-              </button>
-              <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-                Charts
-              </button>
-            </div>
-            {/* ⁡⁣⁣⁢⁡⁣⁣⁢𝘳𝘪𝘨𝘩𝘵 𝘴𝘪𝘥𝘦 𝘰𝘧 𝘵𝘩𝘦 𝘴𝘦𝘵𝘵𝘪𝘯𝘨 𝘰𝘱𝘵𝘪𝘰𝘯 𝘥𝘪𝘷⁡⁡ */}
-            <div className="setRight flex gap-8">
-              <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-                Filter
-              </button>
-              <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-                <input
-                  type="search"
-                  placeholder="Search..."
-                  className="bg-transparent focus:outline-none pb-1 pl-2"
-                />
-                Search
-              </button>
-            </div>
-          </div>
 
-          {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ */}
-          <div
-            ref={cardRef}
-            className="cards w-full h-50 grid grid-cols-4 gap-4"
-          >
-            <div className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group ">
-              <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
-                <img
-                  src={icon}
-                  alt="Total books icon"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="content p-4 ">
-                <h2 className="text-xl font-semibold text-white">
-                  Total Books
-                </h2>
-                <p className="text-3xl font-bold text-white">1,234</p>
-              </div>
-              <span className="absolute bottom-2 right-4 text-xs text-white/70">
-                +5% from last month
-              </span>
-              <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Read more
-              </span>
-            </div>
-            <div className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group ">
-              <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
-                <img
-                  src={icon}
-                  alt="Total books icon"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="content p-4 ">
-                <h2 className="text-xl font-semibold text-white">
-                  Total Books
-                </h2>
-                <p className="text-3xl font-bold text-white">1,234</p>
-              </div>
-              <span className="absolute bottom-2 right-4 text-xs text-white/70">
-                +5% from last month
-              </span>
-              <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Read more
-              </span>
-            </div>
-            <div className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group ">
-              <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
-                <img
-                  src={icon}
-                  alt="Total books icon"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="content p-4 ">
-                <h2 className="text-xl font-semibold text-white">
-                  Total Books
-                </h2>
-                <p className="text-3xl font-bold text-white">1,234</p>
-              </div>
-              <span className="absolute bottom-2 right-4 text-xs text-white/70">
-                +5% from last month
-              </span>
-              <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Read more
-              </span>
-            </div>
-            <div className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group ">
-              <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
-                <img
-                  src={icon}
-                  alt="Total books icon"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="content p-4 ">
-                <h2 className="text-xl font-semibold text-white">
-                  Total Books
-                </h2>
-                <p className="text-3xl font-bold text-white">1,234</p>
-              </div>
-              <span className="absolute bottom-2 right-4 text-xs text-white/70">
-                +5% from last month
-              </span>
-              <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Read more
-              </span>
-            </div>
-          </div>
+          {/* ⁡⁢⁢⁣𝙘𝙝𝙖𝙣𝙜𝙞𝙣𝙜 𝙘𝙤𝙣𝙩𝙚𝙣𝙩⁡ */}
 
-          {/* ⁡⁣⁣⁢𝘨𝘳𝘢𝘱𝘩 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ */}
-
-          <div ref={graphRef} className="graphs flex h-100  gap-4 mt-2">
-            <div className="w-2/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
-            <div className="w-1/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
-          </div>
+          {activeSection === "dashboard" && <DashboardSec />}
         </div>
       </div>
     </div>
