@@ -201,7 +201,148 @@ function AdminDashboard() {
 
           {/* ⁡⁢⁢⁣𝙘𝙝𝙖𝙣𝙜𝙞𝙣𝙜 𝙘𝙤𝙣𝙩𝙚𝙣𝙩⁡ */}
 
-          {activeSection === "dashboard" && <DashboardSec />}
+          {/* {activeSection === "dashboard" && <DashboardSec />} */}
+          <div className="booksMng">
+            {/* ⁡⁣⁣⁢𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤⁡ */}
+            <div className="options flex gap-2 justify-end">
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg ">
+                Import
+              </button>
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg">
+                Add Book
+              </button>
+            </div>
+
+            {/* 𝘤𝘢𝘳𝘥𝘴 */}
+            <div className="cards w-full h-60 grid grid-cols-4 gap-4 mt-2">
+              {[
+                "Total Titles",
+                "Available",
+                "Borrowed",
+                "Overdue",
+                "QR generated",
+              ].map((title, i) => (
+                <div
+                  key={i}
+                  className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
+                >
+                  <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
+                    <img
+                      src={icon}
+                      alt={title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="content p-4">
+                    <h2 className="text-xl font-semibold text-white">
+                      {title}
+                    </h2>
+                    <p className="text-3xl font-bold text-white">1,234</p>
+                  </div>
+                  <span className="absolute bottom-2 right-4 text-xs text-white/70">
+                    +5% from last month
+                  </span>
+                  <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Read more
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="searchSec flex flex-col mt-4 mb-4">
+              <input
+                type="search"
+                placeholder="Search books by Title, Author, Genre..."
+                className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2"
+              />
+              <div className="flex gap-2">
+                <select
+                  name="category"
+                  id="category"
+                  className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
+                >
+                  <option
+                    value="allCategories"
+                    className="text-black backdrop:blur-2xl"
+                  >
+                    All Categories
+                  </option>
+
+                  <optgroup label="Sciences" className="bg-purple-950">
+                    <option value="computerScience">Computer Science</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                    <option value="engineering">Engineering</option>
+                  </optgroup>
+
+                  <optgroup label="Humanities & Social Sciences">
+                    <option value="history">History</option>
+                    <option value="geography">Geography</option>
+                    <option value="philosophy">Philosophy</option>
+                    <option value="psychology">Psychology</option>
+                    <option value="sociology">Sociology</option>
+                    <option value="politicalScience">Political Science</option>
+                    <option value="economics">Economics</option>
+                  </optgroup>
+
+                  <optgroup label="Language & Literature">
+                    <option value="sinhalaLiterature">
+                      Sinhala Literature
+                    </option>
+                    <option value="englisLliterature">
+                      English Literature
+                    </option>
+                    <option value="tamilLiterature">Tamil Literature</option>
+                    <option value="poetry">Poetry</option>
+                    <option value="drama">Drama</option>
+                  </optgroup>
+
+                  <optgroup label="Religion & Culture">
+                    <option value="buddhism">Buddhism</option>
+                    <option value="hinduism">Hinduism</option>
+                    <option value="islam">Islam</option>
+                    <option value="christianity">Christianity</option>
+                  </optgroup>
+
+                  <optgroup label="Arts & Media">
+                    <option value="artDesign">Art & Design</option>
+                    <option value="music">Music</option>
+                    <option value="filmMedia">Film & Media</option>
+                  </optgroup>
+
+                  <optgroup label="General / Reference">
+                    <option value="encyclopedia">
+                      Encyclopedia & Reference
+                    </option>
+                    <option value="dictionary">Dictionary & Language</option>
+                    <option value="magazines">Magazines & Journals</option>
+                    <option value="biography">Biography & Autobiography</option>
+                    <option value="childrens">Children's Books</option>
+                  </optgroup>
+                </select>
+
+                <select
+                  name="status"
+                  id="status"
+                  className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
+                >
+                  <option value="allStatus">All Statuses</option>
+                  <option value="borrowed">Borrowed</option>
+                  <option value="available">Available</option>
+                  <option value="lost">Lost</option>
+                </select>
+              </div>
+            </div>
+            <div className="filterSec flex gap-2 justify-start">
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg ">
+                Import
+              </button>
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg">
+                Add Book
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

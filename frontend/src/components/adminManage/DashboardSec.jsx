@@ -21,7 +21,7 @@ function DashboardSec() {
   return (
     <div ref={contentRef}>
       {/* filters */}
-      <div className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between">
+      <div className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between mb-2">
         <div className="setLeft flex gap-8">
           <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
             Table
@@ -49,7 +49,7 @@ function DashboardSec() {
       </div>
 
       {/* cards */}
-      <div className="cards w-full h-50 grid grid-cols-4 gap-4">
+      <div className="cards w-full h-40 grid grid-cols-4 gap-4">
         {[
           "Total Books",
           "Total Members",
@@ -60,7 +60,7 @@ function DashboardSec() {
             key={i}
             className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
-            <div className="icon w-15 h-15 rounded-full absolute top-4 right-4 bg-white/30 border-2 border-white shadow-md shadow-gray-800">
+            <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
               <img
                 src={icon}
                 alt={title}
