@@ -52,7 +52,7 @@ function AdminDashboard() {
     <div className="admin-dashboard">
       <div
         ref={containerRef}
-        className="container w-full h-screen flex p-2 bg-purple-900 gap-2"
+        className="container w-full min-h-screen flex p-2 gap-2"
         style={{
           backgroundImage: `url(${bgimg})`,
           backgroundSize: "cover",
@@ -336,11 +336,49 @@ function AdminDashboard() {
             </div>
             <div className="filterSec flex gap-2 justify-start">
               <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg ">
-                Import
+                Filter
               </button>
               <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg">
-                Add Book
+                Sort
               </button>
+            </div>
+            <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
+              <table className="w-full text-white text-center table-fixed">
+                <thead>
+                  <tr>
+                    <th className="py-4">ISBN</th>
+                    <th>Cover</th>
+                    <th className="w-36">Title</th>
+                    <th className="w-32">Author</th>
+                    <th>Copies</th>
+                    <th>Status</th>
+                    <th>QR</th>
+                    <th className="w-32" colSpan={2}>
+                      Operations
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>0012</td>
+                    <td>
+                      <img src={img} alt="" className="w-15 h-auto mx-auto" />
+                    </td>
+                    <td>TITLE</td>
+                    <td>Mony</td>
+                    <td>3</td>
+                    <td>Available</td>
+                    <td></td>
+                    <td>
+                      <img src={icon} alt="" className="w-5 h-auto mx-auto" />
+                    </td>
+                    <td>
+                      <img src={icon} alt="" className="w-5 h-auto mx-auto" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
