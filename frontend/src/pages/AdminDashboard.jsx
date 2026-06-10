@@ -14,6 +14,7 @@ import bgimg from "../images/adminBg.jpg";
 // content component import
 import DashboardSec from "../components/adminManage/DashboardSec";
 import BookManageSec from "../components/adminManage/BookManageSec";
+import MemberManage from "../components/adminManage/MemberManage";
 
 function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -205,6 +206,7 @@ function AdminDashboard() {
 
           {activeSection === "dashboard" && <DashboardSec />}
           {activeSection === "books" && <BookManageSec />}
+          {activeSection === "members" && <MemberManage />}
         </div>
       </div>
     </div>
