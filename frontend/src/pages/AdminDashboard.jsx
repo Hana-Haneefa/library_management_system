@@ -8,6 +8,12 @@ import borrowingsIcon from "../images/icons/borrow.png";
 import finesIcon from "../images/icons/bill.png";
 import reportsIcon from "../images/icons/doc.png";
 import settingsIcon from "../images/icons/setting.png";
+import exportIcon from "../images/icons/export.png";
+import plusIcon from "../images/icons/plus.png";
+import editIcon from "../images/icons/edit.png";
+import deleteIcon from "../images/icons/delete.png";
+import filterIcon from "../images/icons/filter.png";
+import sortIcon from "../images/icons/sort.png";
 import bgimg from "../images/adminBg.jpg";
 
 // content component import
@@ -62,7 +68,7 @@ function AdminDashboard() {
         <div
           id="dashSideMenu"
           ref={leftRef}
-          className="w-1/6 h-full left hidden md:block md:w-96 relative pb-5 md:pb-0 rounded-2xl border-b-2 border-white bg-white/20"
+          className="w-1/6 h-screen left hidden md:block md:w-96 relative pb-5 md:pb-0 rounded-2xl border-b-2 border-white bg-white/20"
           style={{
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)", //help in safari
@@ -91,7 +97,7 @@ function AdminDashboard() {
             ID:12345
           </p>
 
-          <div className="tabs flex flex-col items-start gap-4 mt-12 font-semibold text-lg px-5 w-full text-white">
+          <div className="tabs pb-5 flex flex-col items-start gap-4 mt-12 font-semibold text-lg px-5 w-full text-white">
             <p
               onClick={() => setActiveSection("dashboard")}
               className={` ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
@@ -205,11 +211,17 @@ function AdminDashboard() {
           <div className="booksMng">
             {/* ⁡⁣⁣⁢𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤⁡ */}
             <div className="options flex gap-2 justify-end">
-              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg ">
-                Import
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center ">
+                <span>
+                  <img src={exportIcon} alt="" className="w-5 h-5" />
+                </span>
+                <p>Import</p>
               </button>
-              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg">
-                Add Book
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center">
+                <span>
+                  <img src={plusIcon} alt="" className="w-5 h-5" />
+                </span>
+                <p>Add Book</p>
               </button>
             </div>
 
@@ -252,17 +264,17 @@ function AdminDashboard() {
               <input
                 type="search"
                 placeholder="Search books by Title, Author, Genre..."
-                className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2"
+                className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2 focus:outline-none"
               />
               <div className="flex gap-2">
                 <select
                   name="category"
                   id="category"
-                  className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
+                  className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
                 >
                   <option
                     value="allCategories"
-                    className="text-black backdrop:blur-2xl"
+                    className="bg-black backdrop:blur-2xl focus:outline-none"
                   >
                     All Categories
                   </option>
@@ -276,7 +288,10 @@ function AdminDashboard() {
                     <option value="engineering">Engineering</option>
                   </optgroup>
 
-                  <optgroup label="Humanities & Social Sciences">
+                  <optgroup
+                    label="Humanities & Social Sciences"
+                    className="bg-purple-900"
+                  >
                     <option value="history">History</option>
                     <option value="geography">Geography</option>
                     <option value="philosophy">Philosophy</option>
@@ -286,7 +301,10 @@ function AdminDashboard() {
                     <option value="economics">Economics</option>
                   </optgroup>
 
-                  <optgroup label="Language & Literature">
+                  <optgroup
+                    label="Language & Literature"
+                    className="bg-purple-950"
+                  >
                     <option value="sinhalaLiterature">
                       Sinhala Literature
                     </option>
@@ -298,20 +316,26 @@ function AdminDashboard() {
                     <option value="drama">Drama</option>
                   </optgroup>
 
-                  <optgroup label="Religion & Culture">
+                  <optgroup
+                    label="Religion & Culture"
+                    className="bg-purple-900"
+                  >
                     <option value="buddhism">Buddhism</option>
                     <option value="hinduism">Hinduism</option>
                     <option value="islam">Islam</option>
                     <option value="christianity">Christianity</option>
                   </optgroup>
 
-                  <optgroup label="Arts & Media">
+                  <optgroup label="Arts & Media" className="bg-purple-950">
                     <option value="artDesign">Art & Design</option>
                     <option value="music">Music</option>
                     <option value="filmMedia">Film & Media</option>
                   </optgroup>
 
-                  <optgroup label="General / Reference">
+                  <optgroup
+                    label="General / Reference"
+                    className="bg-purple-900"
+                  >
                     <option value="encyclopedia">
                       Encyclopedia & Reference
                     </option>
@@ -327,25 +351,40 @@ function AdminDashboard() {
                   id="status"
                   className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
                 >
-                  <option value="allStatus">All Statuses</option>
-                  <option value="borrowed">Borrowed</option>
-                  <option value="available">Available</option>
-                  <option value="lost">Lost</option>
+                  <option value="allStatus" className="bg-purple-950 ">
+                    All Statuses
+                  </option>
+                  <option value="borrowed" className="bg-purple-950 ">
+                    Borrowed
+                  </option>
+                  <option value="available" className="bg-purple-950 ">
+                    Available
+                  </option>
+                  <option value="lost" className="bg-purple-950 ">
+                    Lost
+                  </option>
                 </select>
               </div>
             </div>
             <div className="filterSec flex gap-2 justify-start">
-              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg ">
-                Filter
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center">
+                <p>Filter</p>
+                <span>
+                  <img src={filterIcon} alt="filter icon" className="w-5 h-5" />
+                </span>
               </button>
-              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg">
-                Sort
+              <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center">
+                <p>Sort</p>
+                <span>
+                  <img src={sortIcon} alt="sort icon" className="w-5 h-5" />
+                </span>
               </button>
             </div>
             <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
               <table className="w-full text-white text-center table-fixed">
                 <thead>
                   <tr>
+                    <th className="w-3 overflow-hidden"></th>
                     <th className="py-4">ISBN</th>
                     <th>Cover</th>
                     <th className="w-36">Title</th>
@@ -360,21 +399,72 @@ function AdminDashboard() {
                 </thead>
 
                 <tbody>
-                  <tr>
+                  <tr className="border-t-2 border-white/50">
+                    <td className="bg-blue-400"></td>
                     <td>0012</td>
-                    <td>
-                      <img src={img} alt="" className="w-15 h-auto mx-auto" />
+                    <td className="py-2 h-20">
+                      <img
+                        src={img}
+                        alt=""
+                        className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
+                      />
                     </td>
                     <td>TITLE</td>
                     <td>Mony</td>
                     <td>3</td>
-                    <td>Available</td>
+                    <td>
+                      <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500">
+                        Available
+                      </p>
+                    </td>
                     <td></td>
                     <td>
-                      <img src={icon} alt="" className="w-5 h-auto mx-auto" />
+                      <img
+                        src={editIcon}
+                        alt="edit icon"
+                        className="w-5 mx-auto"
+                      />
                     </td>
                     <td>
-                      <img src={icon} alt="" className="w-5 h-auto mx-auto" />
+                      <img
+                        src={deleteIcon}
+                        alt="delete icon"
+                        className="w-5 mx-auto"
+                      />
+                    </td>
+                  </tr>
+                  <tr className="border-t-2 border-white/50">
+                    <td className="bg-green-400 rounded-bl-2xl"></td>
+                    <td>0012</td>
+                    <td className="py-2 h-20">
+                      <img
+                        src={img}
+                        alt=""
+                        className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
+                      />
+                    </td>
+                    <td>TITLE</td>
+                    <td>Mony</td>
+                    <td>3</td>
+                    <td>
+                      <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500">
+                        Borrowed
+                      </p>
+                    </td>
+                    <td></td>
+                    <td>
+                      <img
+                        src={editIcon}
+                        alt="edit icon"
+                        className="w-5 h-auto mx-auto"
+                      />
+                    </td>
+                    <td>
+                      <img
+                        src={deleteIcon}
+                        alt="delete"
+                        className="w-5 h-auto mx-auto"
+                      />
                     </td>
                   </tr>
                 </tbody>
