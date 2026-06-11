@@ -1,5 +1,6 @@
 import { useState } from "react";
 import StudentManage from "../adminManage/StudentManage.jsx";
+import LibrarianManage from "../adminManage/LibrarianManage.jsx";
 
 function MemberManage() {
   const [activeTab, setActiveTab] = useState("students");
@@ -34,12 +35,7 @@ function MemberManage() {
       {/* ⁡⁣⁣⁢𝘛𝘢𝘣 𝘊𝘰𝘯𝘵𝘦𝘯𝘵⁡ */}
       {activeTab === "students" && <StudentManage />}
 
-      {activeTab === "librarians" && (
-        <div className="librariansTab">
-          {/* librarians table / content */}
-          <p className="text-white">Librarians content here...</p>
-        </div>
-      )}
+      {activeTab === "librarians" && <LibrarianManage />}
     </div>
   );
 }

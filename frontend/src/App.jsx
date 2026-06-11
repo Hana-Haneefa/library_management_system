@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useAuth } from "./context/authContext.jsx";
 import "./index.css";
 import { Navigation } from "./components/Navbar.jsx";
@@ -23,9 +22,10 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 function App() {
   return (
-    <div>
-      <AdminDashboard />
-    </div>
+    <Routes>
+      <Route path="/" element={<AdminDashboard />} />
+      <Route path="/add-student" element={<AddStudentForm />} />
+    </Routes>
   );
 }
 

@@ -5,14 +5,30 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
+import img from "../../images/testimg.jpg";
+import { useRef, useEffect, useState } from "react";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
+//components
+import StudentRegister from "../../components/studentManage/AddStudentForm.jsx";
 
-function StudentManage() {
-  const studentTab = Animation(500);
+function LibrarianManage() {
+  const [showForm, setShowForm] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  const openForm = () => {
+    setShowForm(true);
+    setTimeout(() => setAnimate(true), 10);
+  };
+
+  const closeForm = () => {
+    setAnimate(false);
+    setTimeout(() => setShowForm(false), 300);
+  };
+  const librarianTab = Animation(500);
 
   return (
-    <div className="studentTab" ref={studentTab}>
+    <div className="librarianTab" ref={librarianTab}>
       {/* ⁡⁣⁣⁢𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤⁡ */}
       <div className="options flex gap-2 justify-end">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
@@ -22,23 +38,23 @@ function StudentManage() {
           <p>Import</p>
         </button>
         <button
-          onClick={() => window.open("/add-student", "_blank")}
+          onClick={openForm}
           className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer"
         >
           <span>
             <img src={plusIcon} alt="" className="w-5 h-5" />
           </span>
-          <p>Add Student</p>
+          <p>Add Librarian</p>
         </button>
       </div>
 
       {/* 𝘤𝘢𝘳𝘥𝘴 */}
       <div className="cards w-full h-40 grid grid-cols-4 gap-4 mt-2">
         {[
-          "Total Registered Students",
-          "Currently Active Students",
-          "Total Book Borrowed Students",
-          "Overdue Students",
+          "Total Registered Librarians",
+          "Currently Active Librarians",
+          "Librarians Salary Manage",
+          "Past Librarians",
         ].map((title, i) => (
           <div
             key={i}
@@ -76,14 +92,17 @@ function StudentManage() {
             id="sort"
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
           >
-            <option value="allStudents" className="bg-purple-950 ">
-              All Students
+            <option value="allLibrarians" className="bg-purple-950 ">
+              All Librarians
             </option>
-            <option value="borrowed" className="bg-purple-900 ">
-              Book Borrowed Students
+            <option value="active" className="bg-purple-900 ">
+              Active Librarians
             </option>
-            <option value="overdue" className="bg-purple-950 ">
-              Overdue Students
+            <option value="paid" className="bg-purple-950 ">
+              Paid Librarians
+            </option>
+            <option value="nonpaid" className="bg-purple-950 ">
+              Non-paid Librarians
             </option>
           </select>
         </div>
@@ -107,10 +126,10 @@ function StudentManage() {
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4 w-20">StId</th>
+              <th className="py-4 w-20">LibrarianId</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Department</th>
+              <th>Payment Statement</th>
               <th>Status</th>
               <th className="w-40" colSpan={2}>
                 Operations
@@ -125,7 +144,9 @@ function StudentManage() {
 
               <td>Yuji</td>
               <td>yuji@gmail.com</td>
-              <td>IT</td>
+              <td>
+                <p className="font-semibold text-green-600 text-sm">Paid</p>
+              </td>
               <td className="py-2 flex items-center justify-center">
                 <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500 w-2/3">
                   Active
@@ -148,7 +169,9 @@ function StudentManage() {
 
               <td>Megumi</td>
               <td>megu@gmail.com</td>
-              <td>Science</td>
+              <td>
+                <p className="font-semibold text-green-600 text-sm">Paid</p>
+              </td>
               <td className="py-2 flex items-center justify-center">
                 <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500 w-2/3">
                   Borrowed
@@ -176,4 +199,4 @@ function StudentManage() {
   );
 }
 
-export default StudentManage;
+export default LibrarianManage;
