@@ -16,6 +16,7 @@ import bgimg from "../images/adminBg.jpg";
 import DashboardSec from "../components/adminManage/DashboardSec";
 import BookManageSec from "../components/adminManage/BookManageSec";
 import MemberManage from "../components/adminManage/MemberManage";
+import BorrowManageSec from "../components/adminManage/BorrowManageSec";
 
 function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -218,6 +219,7 @@ function AdminDashboard() {
           {activeSection === "dashboard" && <DashboardSec />}
           {activeSection === "books" && <BookManageSec />}
           {activeSection === "members" && <MemberManage />}
+          {activeSection === "borrows" && <BorrowManageSec />}
         </div>
       </div>
     </div>
