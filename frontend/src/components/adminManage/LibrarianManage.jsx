@@ -68,7 +68,7 @@ function LibrarianManage() {
       <div className="searchSec flex flex-col mt-4 mb-4">
         <input
           type="search"
-          placeholder="Search books by Title, Author, Genre..."
+          placeholder="Search Librarian by ID, Name or Email"
           className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2 focus:outline-none"
         />
         <div className="flex gap-2">
