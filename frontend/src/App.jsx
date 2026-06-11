@@ -23,8 +23,12 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 function App() {
   return (
     <Routes>
+      {/* student management */}
       <Route path="/" element={<AdminDashboard />} />
       <Route path="/add-student" element={<AddStudentForm />} />
+
+      {/* librarian management */}
+      <Route path="/add-librarian" element={<AddLibrarianForm />} />
     </Routes>
   );
 }

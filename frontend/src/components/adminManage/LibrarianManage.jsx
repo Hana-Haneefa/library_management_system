@@ -5,26 +5,11 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
-import img from "../../images/testimg.jpg";
-import { useRef, useEffect, useState } from "react";
+import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
-//components
-import StudentRegister from "../../components/studentManage/AddStudentForm.jsx";
 
 function LibrarianManage() {
-  const [showForm, setShowForm] = useState(false);
-  const [animate, setAnimate] = useState(false);
-
-  const openForm = () => {
-    setShowForm(true);
-    setTimeout(() => setAnimate(true), 10);
-  };
-
-  const closeForm = () => {
-    setAnimate(false);
-    setTimeout(() => setShowForm(false), 300);
-  };
   const librarianTab = Animation(500);
 
   return (
@@ -38,7 +23,7 @@ function LibrarianManage() {
           <p>Import</p>
         </button>
         <button
-          onClick={openForm}
+          onClick={() => window.open("/add-librarian", "_blank")}
           className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer"
         >
           <span>
@@ -131,7 +116,7 @@ function LibrarianManage() {
               <th>Email</th>
               <th>Payment Statement</th>
               <th>Status</th>
-              <th className="w-40" colSpan={2}>
+              <th className="w-40" colSpan={3}>
                 Operations
               </th>
             </tr>
@@ -153,13 +138,24 @@ function LibrarianManage() {
                 </p>
               </td>
               <td>
-                <img src={editIcon} alt="edit icon" className="w-5 mx-auto" />
+                <img
+                  src={editIcon}
+                  alt="edit icon"
+                  className="w-5 mx-auto cursor-pointer"
+                />
+              </td>
+              <td>
+                <img
+                  src={eyeIcon}
+                  alt="view"
+                  className="w-5 h-auto mx-auto cursor-pointer"
+                />
               </td>
               <td>
                 <img
                   src={deleteIcon}
                   alt="delete icon"
-                  className="w-5 mx-auto"
+                  className="w-5 mx-auto cursor-pointer"
                 />
               </td>
             </tr>
@@ -181,14 +177,21 @@ function LibrarianManage() {
                 <img
                   src={editIcon}
                   alt="edit icon"
-                  className="w-5 h-auto mx-auto"
+                  className="w-5 h-auto mx-auto cursor-pointer"
+                />
+              </td>
+              <td>
+                <img
+                  src={eyeIcon}
+                  alt="view"
+                  className="w-5 h-auto mx-auto cursor-pointer"
                 />
               </td>
               <td>
                 <img
                   src={deleteIcon}
                   alt="delete"
-                  className="w-5 h-auto mx-auto"
+                  className="w-5 h-auto mx-auto cursor-pointer"
                 />
               </td>
             </tr>

@@ -5,6 +5,7 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
+import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
@@ -112,7 +113,7 @@ function StudentManage() {
               <th>Email</th>
               <th>Department</th>
               <th>Status</th>
-              <th className="w-40" colSpan={2}>
+              <th className="w-40" colSpan={3}>
                 Operations
               </th>
             </tr>
@@ -132,13 +133,24 @@ function StudentManage() {
                 </p>
               </td>
               <td>
-                <img src={editIcon} alt="edit icon" className="w-5 mx-auto" />
+                <img
+                  src={editIcon}
+                  alt="edit icon"
+                  className="w-5 mx-auto cursor-pointer"
+                />
+              </td>
+              <td>
+                <img
+                  src={eyeIcon}
+                  alt="view"
+                  className="w-5  mx-auto cursor-pointer"
+                />
               </td>
               <td>
                 <img
                   src={deleteIcon}
                   alt="delete icon"
-                  className="w-5 mx-auto"
+                  className="w-5 mx-auto cursor-pointer"
                 />
               </td>
             </tr>
@@ -150,22 +162,29 @@ function StudentManage() {
               <td>megu@gmail.com</td>
               <td>Science</td>
               <td className="py-2 flex items-center justify-center">
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500 w-2/3">
-                  Borrowed
+                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-red-600 text-red-500 w-2/3">
+                  Overdue
                 </p>
               </td>
               <td>
                 <img
                   src={editIcon}
                   alt="edit icon"
-                  className="w-5 h-auto mx-auto"
+                  className="w-5 h-auto mx-auto cursor-pointer"
+                />
+              </td>
+              <td>
+                <img
+                  src={eyeIcon}
+                  alt="view"
+                  className="w-5 mx-auto cursor-pointer"
                 />
               </td>
               <td>
                 <img
                   src={deleteIcon}
                   alt="delete"
-                  className="w-5 h-auto mx-auto"
+                  className="w-5 mx-auto cursor-pointer"
                 />
               </td>
             </tr>
