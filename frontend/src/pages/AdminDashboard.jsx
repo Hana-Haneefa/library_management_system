@@ -82,7 +82,7 @@ function AdminDashboard() {
             id="dashClose"
             className="md:hidden flex justify-end w-full text-lg mt-5 mr-8 text-gray-400"
           >
-            <i class="fa-solid fa-xmark"></i>
+            X
           </button>
 
           <div className="img w-24 h-24 rounded-full mx-auto mt-14 md:mt-10 border-4 border-white shadow-md shadow-gray-800 overflow-hidden">

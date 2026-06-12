@@ -170,9 +170,9 @@ function BorrowManageSec() {
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4">ISBN</th>
-              <th>StId</th>
-              <th className="w-36">Title</th>
+              <th className="py-4 w-28">ISBN</th>
+              <th className="w-28">StId</th>
+              <th className="w-44">Title</th>
 
               <th>Copies</th>
               <th>Status</th>
@@ -191,8 +191,8 @@ function BorrowManageSec() {
               <td>TITLE</td>
 
               <td>3</td>
-              <td>
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500">
+              <td className="py-2 flex items-center justify-center">
+                <p className="border w-full py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500">
                   Available
                 </p>
               </td>
@@ -214,11 +214,11 @@ function BorrowManageSec() {
             <tr className="border-t-2 border-white/50">
               <td className="bg-green-400 rounded-bl-2xl"></td>
               <td>0012</td>
-              <td className="py-2 h-20">St552</td>
+              <td>St552</td>
               <td>TITLE</td>
               <td>3</td>
-              <td>
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500">
+              <td className="py-2 flex items-center justify-center">
+                <p className="border w-full py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500">
                   Borrowed
                 </p>
               </td>
