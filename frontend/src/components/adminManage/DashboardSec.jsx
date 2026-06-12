@@ -2,6 +2,8 @@ import icon from "../../images/icons/heart.png";
 import { useState, useRef, useEffect } from "react";
 
 function DashboardSec() {
+  const [activeTab, setActiveTab] = useState("Charts");
+
   const contentRef = useRef(null);
 
   useEffect(() => {
@@ -22,22 +24,47 @@ function DashboardSec() {
     <div ref={contentRef}>
       {/* filters */}
       <div className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between mb-2">
-        <div className="setLeft flex gap-8">
-          <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-            Table
-          </button>
-          <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
-            Graph
-          </button>
-          <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
+        <div className="setLeft flex gap-2 border-b border-white/30 mb-6">
+          <button
+            onClick={() => setActiveTab("charts")}
+            className={`px-6 py-2 font-semibold transition-all duration-300
+        ${
+          activeTab === "charts"
+            ? "border-b-2 border-purple-400 text-purple-400" // active style
+            : "text-white/50 hover:text-white" // inactive style
+        }`}
+          >
             Charts
           </button>
+          <button
+            onClick={() => setActiveTab("tables")}
+            className={`px-6 py-2 font-semibold transition-all duration-300
+        ${
+          activeTab === "tables"
+            ? "border-b-2 border-purple-400 text-purple-400"
+            : "text-white/50 hover:text-white"
+        }`}
+          >
+            Tables
+          </button>
+          <button
+            onClick={() => setActiveTab("graphs")}
+            className={`px-6 py-2 font-semibold transition-all duration-300
+        ${
+          activeTab === "graphs"
+            ? "border-b-2 border-purple-400 text-purple-400"
+            : "text-white/50 hover:text-white"
+        }`}
+          >
+            Graphs
+          </button>
         </div>
-        <div className="setRight flex gap-8">
-          <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
+
+        <div className="setRight flex h-10 gap-8">
+          <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
             Filter
           </button>
-          <button className="border-t-2 border-r-2 border-white/20 px-2 py-1 rounded-md cursor-pointer hover:text-white transition-colors duration-300 bg-white/10">
+          <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
             <input
               type="search"
               placeholder="Search..."
