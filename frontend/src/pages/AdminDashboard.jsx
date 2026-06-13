@@ -127,7 +127,7 @@ function AdminDashboard() {
 
             <p
               onClick={() => setActiveSection("members")}
-              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "members" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+              className={` ${activeSection == "members" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
@@ -141,7 +141,7 @@ function AdminDashboard() {
 
             <p
               onClick={() => setActiveSection("borrows")}
-              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "borrows" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+              className={` ${activeSection == "borrows" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
@@ -155,7 +155,7 @@ function AdminDashboard() {
 
             <p
               onClick={() => setActiveSection("fines")}
-              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "fines" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+              className={` ${activeSection == "fines" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
@@ -169,7 +169,7 @@ function AdminDashboard() {
 
             <p
               onClick={() => setActiveSection("reports")}
-              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "reports" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
+              className={` ${activeSection == "reports" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img src={reportsIcon} alt="Reports icon" className="w-7 h-7" />
@@ -179,7 +179,7 @@ function AdminDashboard() {
 
             <p
               onClick={() => setActiveSection("settings")}
-              className={`bg-violet-400/40 hover:bg-violet-500 ${activeSection == "settings" ? "bg-violet-400" : "bg-violet-400/40"} transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4`}
+              className={` ${activeSection == "settings" ? "bg-violet-400" : "bg-violet-400/40"} transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4`}
             >
               <span>
                 <img
