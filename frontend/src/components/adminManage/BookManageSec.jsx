@@ -5,15 +5,15 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
-import img from "../../images/testimg.jpg";
-import { useRef, useEffect, useState } from "react";
-// import animation function
+import { useEffect, useState } from "react";
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
 function BookManageSec() {
   const [showForm, setShowForm] = useState(false);
   const [coverImg, setCoverImg] = useState(null);
   const [animate, setAnimate] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -23,27 +23,59 @@ function BookManageSec() {
     year: "",
     quantity: "",
   });
-  const [loading, setLoading] = useState(false);
 
   const bookmng = Animation(500);
+
+  // ── fetch all books ──────────────────────────────────────────────────────
+  const fetchBooks = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/books/all-books", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const result = await res.json();
+      if (res.ok) setBooks(result.data);
+    } catch (err) {
+      console.error("Failed to fetch books:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  // ── form open / close ────────────────────────────────────────────────────
   const openForm = () => {
     setShowForm(true);
-    setTimeout(() => setAnimate(true), 10); //small delay for trigger animation
+    setTimeout(() => setAnimate(true), 10);
   };
 
   const closeForm = () => {
-    setShowForm(false);
-    setTimeout(() => setAnimate(false), 300); //end transition and remove from dom
+    setAnimate(false);
+    setTimeout(() => {
+      setShowForm(false);
+      setFormData({
+        title: "",
+        author: "",
+        isbn: "",
+        genre: "",
+        publisher: "",
+        year: "",
+        quantity: "",
+      });
+      setCoverImg(null);
+    }, 300);
   };
 
-  //handle state updates
+  // ── input change ─────────────────────────────────────────────────────────
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //api call
+  // ── submit ───────────────────────────────────────────────────────────────
   const handleSubmit = async () => {
-    const data = new FormData(); //multer file
+    const data = new FormData();
     data.append("title", formData.title);
     data.append("author", formData.author);
     data.append("isbn", formData.isbn);
@@ -51,14 +83,14 @@ function BookManageSec() {
     data.append("publisher", formData.publisher);
     data.append("year", formData.year);
     data.append("quantity", formData.quantity);
-    if (coverImg) data.append("coverImg", coverImg); //the file object
+    if (coverImg) data.append("coverImg", coverImg);
 
     try {
       setLoading(true);
       const res = await fetch("http://localhost:5000/api/books/create-book", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, //my JWT token
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: data,
       });
@@ -67,6 +99,7 @@ function BookManageSec() {
       if (!res.ok) throw new Error(result.error);
 
       alert("Book added successfully!");
+      fetchBooks(); // refresh table
       closeForm();
     } catch (err) {
       alert("Error: " + err.message);
@@ -75,28 +108,31 @@ function BookManageSec() {
     }
   };
 
+  // ── status badge color ───────────────────────────────────────────────────
+  const statusStyle = (status) => {
+    if (status === "borrowed") return "border-orange-600 text-orange-500";
+    if (status === "lost") return "border-red-600 text-red-500";
+    return "border-green-600 text-green-500";
+  };
+
   return (
     <div className="booksMng" ref={bookmng}>
-      {/* ⁡⁣⁣⁢𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤⁡ */}
+      {/* options */}
       <div className="options flex gap-2 justify-end">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
-          <span>
-            <img src={exportIcon} alt="" className="w-5 h-5" />
-          </span>
+          <img src={exportIcon} alt="" className="w-5 h-5" />
           <p>Import</p>
         </button>
         <button
           onClick={openForm}
           className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer"
         >
-          <span>
-            <img src={plusIcon} alt="" className="w-5 h-5" />
-          </span>
+          <img src={plusIcon} alt="" className="w-5 h-5" />
           <p>Add Book</p>
         </button>
       </div>
 
-      {/* 𝘤𝘢𝘳𝘥𝘴 */}
+      {/* stat cards */}
       <div className="cards w-full h-60 grid grid-cols-4 gap-4 mt-2">
         {[
           "Total Titles",
@@ -129,6 +165,8 @@ function BookManageSec() {
           </div>
         ))}
       </div>
+
+      {/* search */}
       <div className="searchSec flex flex-col mt-4 mb-4">
         <input
           type="search"
@@ -138,16 +176,11 @@ function BookManageSec() {
         <div className="flex gap-2">
           <select
             name="category"
-            id="category"
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
           >
-            <option
-              value="allCategories"
-              className="bg-black backdrop:blur-2xl focus:outline-none"
-            >
+            <option value="allCategories" className="bg-black">
               All Categories
             </option>
-
             <optgroup label="Sciences" className="bg-purple-950">
               <option value="computerScience">Computer Science</option>
               <option value="mathematics">Mathematics</option>
@@ -156,7 +189,6 @@ function BookManageSec() {
               <option value="biology">Biology</option>
               <option value="engineering">Engineering</option>
             </optgroup>
-
             <optgroup
               label="Humanities & Social Sciences"
               className="bg-purple-900"
@@ -169,28 +201,24 @@ function BookManageSec() {
               <option value="politicalScience">Political Science</option>
               <option value="economics">Economics</option>
             </optgroup>
-
             <optgroup label="Language & Literature" className="bg-purple-950">
               <option value="sinhalaLiterature">Sinhala Literature</option>
-              <option value="englisLliterature">English Literature</option>
+              <option value="englishLiterature">English Literature</option>
               <option value="tamilLiterature">Tamil Literature</option>
               <option value="poetry">Poetry</option>
               <option value="drama">Drama</option>
             </optgroup>
-
             <optgroup label="Religion & Culture" className="bg-purple-900">
               <option value="buddhism">Buddhism</option>
               <option value="hinduism">Hinduism</option>
               <option value="islam">Islam</option>
               <option value="christianity">Christianity</option>
             </optgroup>
-
             <optgroup label="Arts & Media" className="bg-purple-950">
               <option value="artDesign">Art & Design</option>
               <option value="music">Music</option>
               <option value="filmMedia">Film & Media</option>
             </optgroup>
-
             <optgroup label="General / Reference" className="bg-purple-900">
               <option value="encyclopedia">Encyclopedia & Reference</option>
               <option value="dictionary">Dictionary & Language</option>
@@ -202,38 +230,37 @@ function BookManageSec() {
 
           <select
             name="status"
-            id="status"
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
           >
-            <option value="allStatus" className="bg-purple-950 ">
+            <option value="allStatus" className="bg-purple-950">
               All Statuses
             </option>
-            <option value="borrowed" className="bg-purple-950 ">
+            <option value="borrowed" className="bg-purple-950">
               Borrowed
             </option>
-            <option value="available" className="bg-purple-950 ">
+            <option value="available" className="bg-purple-950">
               Available
             </option>
-            <option value="lost" className="bg-purple-950 ">
+            <option value="lost" className="bg-purple-950">
               Lost
             </option>
           </select>
         </div>
       </div>
+
+      {/* filter / sort */}
       <div className="filterSec flex gap-2 justify-start">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <p>Filter</p>
-          <span>
-            <img src={filterIcon} alt="filter icon" className="w-5 h-5" />
-          </span>
+          <img src={filterIcon} alt="filter icon" className="w-5 h-5" />
         </button>
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <p>Sort</p>
-          <span>
-            <img src={sortIcon} alt="sort icon" className="w-5 h-5" />
-          </span>
+          <img src={sortIcon} alt="sort icon" className="w-5 h-5" />
         </button>
       </div>
+
+      {/* book table */}
       <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
         <table className="w-full text-white text-center table-fixed">
           <thead>
@@ -251,97 +278,77 @@ function BookManageSec() {
               </th>
             </tr>
           </thead>
-
           <tbody>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-blue-400"></td>
-              <td>0012</td>
-              <td className="py-2 h-20">
-                <img
-                  src={img}
-                  alt=""
-                  className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
-                />
-              </td>
-              <td>TITLE</td>
-              <td>Mony</td>
-              <td>3</td>
-              <td>
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500">
-                  Available
-                </p>
-              </td>
-              <td></td>
-              <td>
-                <img src={editIcon} alt="edit icon" className="w-5 mx-auto" />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete icon"
-                  className="w-5 mx-auto"
-                />
-              </td>
-            </tr>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-green-400 rounded-bl-2xl"></td>
-              <td>0012</td>
-              <td className="py-2 h-20">
-                <img
-                  src={img}
-                  alt=""
-                  className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
-                />
-              </td>
-              <td>TITLE</td>
-              <td>Mony</td>
-              <td>3</td>
-              <td>
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500">
-                  Borrowed
-                </p>
-              </td>
-              <td></td>
-              <td>
-                <img
-                  src={editIcon}
-                  alt="edit icon"
-                  className="w-5 h-auto mx-auto"
-                />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete"
-                  className="w-5 h-auto mx-auto"
-                />
-              </td>
-            </tr>
+            {books.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={10}
+                  className="text-center py-8 text-white/40 italic"
+                >
+                  No books found
+                </td>
+              </tr>
+            ) : (
+              books.map((book) => (
+                <tr key={book.bId} className="border-t-2 border-white/50">
+                  <td className="bg-blue-400"></td>
+                  <td>{book.bIsbn}</td>
+                  <td className="py-2 h-20">
+                    {book.coverImage ? (
+                      <img
+                        src={`http://localhost:5000/uploads/covers/${book.coverImage}`}
+                        alt="cover"
+                        className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
+                      />
+                    ) : (
+                      <span className="text-white/30 text-xs">No cover</span>
+                    )}
+                  </td>
+                  <td>{book.bTitle}</td>
+                  <td>{book.bAuthor}</td>
+                  <td>{book.bQuantity}</td>
+                  <td>
+                    <p
+                      className={`border py-1 pb-1.5 text-sm rounded-2xl ${statusStyle(book.bStatus)}`}
+                    >
+                      {book.bStatus ?? "Available"}
+                    </p>
+                  </td>
+                  <td></td>
+                  <td>
+                    <img
+                      src={editIcon}
+                      alt="edit"
+                      className="w-5 mx-auto cursor-pointer"
+                    />
+                  </td>
+                  <td>
+                    <img
+                      src={deleteIcon}
+                      alt="delete"
+                      className="w-5 mx-auto cursor-pointer"
+                    />
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* ⁡⁣⁣⁢model form for adding books⁡ */}
+      {/* add book modal */}
       {showForm && (
         <>
-          {/* background blur overlay */}
           <div
-            className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40
-            transition-opacity duration-300
-            ${animate ? "opacity-100" : "opacity-0"}`}
+            className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300
+              ${animate ? "opacity-100" : "opacity-0"}`}
           />
-
-          {/* form box */}
           <div
             className={`fixed top-1/3 left-1/2 -translate-x-1/2 z-50
-            bg-white/10 backdrop-blur-md border border-white/30
-            rounded-2xl p-8 w-125 text-white shadow-2xl
-            transition-all duration-300
-            ${
-              animate
-                ? "-translate-y-1/2 opacity-100"
-                : "translate-y-[-40%] opacity-0"
-            }`}
+              bg-white/10 backdrop-blur-md border border-white/30
+              rounded-2xl p-8 w-125 text-white shadow-2xl
+              transition-all duration-300
+              ${animate ? "-translate-y-1/2 opacity-100" : "translate-y-[-40%] opacity-0"}`}
           >
             <h2 className="text-2xl font-bold mb-6">Add New Book</h2>
 
@@ -379,12 +386,24 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               >
-                <option className="bg-purple-950">Select Category</option>
-                <option className="bg-purple-950">Computer Science</option>
-                <option className="bg-purple-950">IT</option>
-                <option className="bg-purple-950">History</option>
-                <option className="bg-purple-950">Mathamatics</option>
-                <option className="bg-purple-950">Machine Learning</option>
+                <option value="" className="bg-purple-950">
+                  Select Category
+                </option>
+                <option value="Computer Science" className="bg-purple-950">
+                  Computer Science
+                </option>
+                <option value="IT" className="bg-purple-950">
+                  IT
+                </option>
+                <option value="History" className="bg-purple-950">
+                  History
+                </option>
+                <option value="Mathematics" className="bg-purple-950">
+                  Mathematics
+                </option>
+                <option value="Machine Learning" className="bg-purple-950">
+                  Machine Learning
+                </option>
               </select>
 
               <input
@@ -414,10 +433,10 @@ function BookManageSec() {
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
             </div>
-            {/* ⁡⁣⁣⁢Cover Image Upload⁡ */}
-            <div className="flex flex-col gap-2 items-center">
-              <label className="text-white/70 text-sm">Cover Image</label>
 
+            {/* cover image upload */}
+            <div className="flex flex-col gap-2 items-center mt-4">
+              <label className="text-white/70 text-sm">Cover Image</label>
               <input
                 type="file"
                 name="coverImg"
@@ -426,20 +445,15 @@ function BookManageSec() {
                 id="coverImgInput"
                 onChange={(e) => setCoverImg(e.target.files[0])}
               />
-
-              {/* ⁡⁣⁣⁢Custom styled button to hide input and trigger⁡ */}
               <label
                 htmlFor="coverImgInput"
-                className="flex items-center gap-3 bg-white/20 border border-white/30 
-               rounded-lg px-4 py-2 cursor-pointer hover:bg-white/30 transition-all"
+                className="flex items-center gap-3 bg-white/20 border border-white/30 rounded-lg px-4 py-2 cursor-pointer hover:bg-white/30 transition-all"
               >
                 <span>📁</span>
                 <span className="text-white/70 text-sm">
                   {coverImg ? coverImg.name : "Choose image from PC..."}
                 </span>
               </label>
-
-              {/* ⁡⁣⁣⁢Preview⁡ */}
               {coverImg && (
                 <img
                   src={URL.createObjectURL(coverImg)}
@@ -449,7 +463,7 @@ function BookManageSec() {
               )}
             </div>
 
-            {/* ⁡⁣⁣⁢buttons⁡ */}
+            {/* buttons */}
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 onClick={closeForm}
@@ -460,7 +474,7 @@ function BookManageSec() {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold"
+                className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold disabled:opacity-50"
               >
                 {loading ? "Adding..." : "Add Book"}
               </button>
