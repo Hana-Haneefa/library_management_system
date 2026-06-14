@@ -42,6 +42,7 @@ export async function getBookByIdController(req, res) {
 // controller for create book
 export async function createBookController(req, res) {
   const { title, author, isbn, genre, publisher, year, quantity } = req.body;
+  const coverImg = req.file ? req.file.filename : null;
   if (
     !title?.trim() ||
     !author?.trim() ||
@@ -62,6 +63,7 @@ export async function createBookController(req, res) {
       publisher,
       year,
       quantity,
+      coverImg,
     });
 
     res

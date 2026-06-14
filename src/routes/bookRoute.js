@@ -11,6 +11,8 @@ import {
   authorizeAdmin,
   authorizeLibrarian,
 } from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
+
 const router = Router();
 
 router.get(
@@ -29,8 +31,9 @@ router.get(
 );
 router.post(
   "/create-book",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
+  upload.single("coverImg"),
   createBookController,
 );
 router.put(

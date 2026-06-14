@@ -14,6 +14,16 @@ function BookManageSec() {
   const [showForm, setShowForm] = useState(false);
   const [coverImg, setCoverImg] = useState(null);
   const [animate, setAnimate] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    author: "",
+    isbn: "",
+    genre: "",
+    publisher: "",
+    year: "",
+    quantity: "",
+  });
+  const [loading, setLoading] = useState(false);
 
   const bookmng = Animation(500);
   const openForm = () => {
@@ -24,6 +34,45 @@ function BookManageSec() {
   const closeForm = () => {
     setShowForm(false);
     setTimeout(() => setAnimate(false), 300); //end transition and remove from dom
+  };
+
+  //handle state updates
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  //api call
+  const handleSubmit = async () => {
+    const data = new FormData(); //multer file
+    data.append("title", formData.title);
+    data.append("author", formData.author);
+    data.append("isbn", formData.isbn);
+    data.append("genre", formData.genre);
+    data.append("publisher", formData.publisher);
+    data.append("year", formData.year);
+    data.append("quantity", formData.quantity);
+    if (coverImg) data.append("coverImg", coverImg); //the file object
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/books/create-book", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, //my JWT token
+        },
+        body: data,
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error);
+
+      alert("Book added successfully!");
+      closeForm();
+    } catch (err) {
+      alert("Error: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -299,46 +348,86 @@ function BookManageSec() {
             <div className="flex flex-col gap-4">
               <input
                 type="text"
-                placeholder="ISBN"
-                className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
-              />
-
-              <input
-                type="text"
+                name="title"
                 placeholder="Title"
+                value={formData.title}
+                onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
 
               <input
                 type="text"
+                name="author"
                 placeholder="Author"
+                value={formData.author}
+                onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
 
-              <select className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30">
+              <input
+                type="text"
+                name="isbn"
+                placeholder="ISBN"
+                value={formData.isbn}
+                onChange={handleChange}
+                className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
+              />
+
+              <select
+                name="genre"
+                value={formData.genre}
+                onChange={handleChange}
+                className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
+              >
                 <option className="bg-purple-950">Select Category</option>
                 <option className="bg-purple-950">Computer Science</option>
+                <option className="bg-purple-950">IT</option>
+                <option className="bg-purple-950">History</option>
+                <option className="bg-purple-950">Mathamatics</option>
+                <option className="bg-purple-950">Machine Learning</option>
               </select>
 
               <input
+                type="text"
+                name="publisher"
+                placeholder="Publisher"
+                value={formData.publisher}
+                onChange={handleChange}
+                className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
+              />
+
+              <input
+                type="text"
+                name="year"
+                placeholder="Published Year"
+                value={formData.year}
+                onChange={handleChange}
+                className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
+              />
+
+              <input
                 type="number"
+                name="quantity"
                 placeholder="Number of Copies"
+                value={formData.quantity}
+                onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
             </div>
-            {/* Cover Image Upload */}
+            {/* ⁡⁣⁣⁢Cover Image Upload⁡ */}
             <div className="flex flex-col gap-2 items-center">
               <label className="text-white/70 text-sm">Cover Image</label>
 
               <input
                 type="file"
+                name="coverImg"
                 accept="image/*"
                 className="hidden"
                 id="coverImgInput"
                 onChange={(e) => setCoverImg(e.target.files[0])}
               />
 
-              {/* Custom styled button to hide input and trigger */}
+              {/* ⁡⁣⁣⁢Custom styled button to hide input and trigger⁡ */}
               <label
                 htmlFor="coverImgInput"
                 className="flex items-center gap-3 bg-white/20 border border-white/30 
@@ -350,7 +439,7 @@ function BookManageSec() {
                 </span>
               </label>
 
-              {/* Preview */}
+              {/* ⁡⁣⁣⁢Preview⁡ */}
               {coverImg && (
                 <img
                   src={URL.createObjectURL(coverImg)}
@@ -360,7 +449,7 @@ function BookManageSec() {
               )}
             </div>
 
-            {/* buttons */}
+            {/* ⁡⁣⁣⁢buttons⁡ */}
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 onClick={closeForm}
@@ -368,8 +457,12 @@ function BookManageSec() {
               >
                 Cancel
               </button>
-              <button className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold">
-                Add Book
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold"
+              >
+                {loading ? "Adding..." : "Add Book"}
               </button>
             </div>
           </div>

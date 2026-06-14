@@ -23,11 +23,12 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   try {
-    const { title, author, isbn, genre, publisher, year, quantity } = book;
+    const { title, author, isbn, genre, publisher, year, quantity, coverImg } =
+      book;
 
     const [result] = await pool.query(
-      "INSERT INTO books (bTitle, bAuthor, bIsbn, bGenre, bPublisher, bYear, bQuantity) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [title, author, isbn, genre, publisher, year, quantity],
+      "INSERT INTO books (bTitle, bAuthor, bIsbn, bGenre, bPublisher, bYear, bQuantity, coverImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, author, isbn, genre, publisher, year, quantity, coverImg],
     );
 
     const bookId = result.insertId;
