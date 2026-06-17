@@ -20,10 +20,13 @@ import AddAdminForm from "./components/adminManage/AddAdmin.jsx";
 import AdminLogin from "./components/adminManage/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 
+import BookView from "./components/BookView.jsx";
+
 function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/detail" element={<BookView />} />
 
       {/* student management */}
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
