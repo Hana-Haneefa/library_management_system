@@ -4,6 +4,10 @@ import readIcon from "../images/icons/book.png";
 import eyeIcon from "../images/icons/eye.png";
 import star from "../images/icons/star.png";
 import starFill from "../images/icons/starFill.png";
+import faceIcon from "../images/icons/face.png";
+import replyIcon from "../images/icons/reply.png";
+import msgIcon from "../images/icons/msg.png";
+import sendIcon from "../images/icons/send.png";
 
 import qr from "../images/icons/qrcode.png";
 import testimg from "../images/testimg.jpg";
@@ -184,9 +188,9 @@ function BookView() {
                   </p>
                 </div>
                 <div className="icons flex gap-4 justify-end items-center mb-5">
-                  <img src={icon} alt="" className="w-5 h-5" />
-                  <img src={icon} alt="" className="w-5 h-5" />
-                  <img src={icon} alt="" className="w-5 h-5" />
+                  <img src={faceIcon} alt="emote icon" className="w-5 h-5" />
+                  <img src={replyIcon} alt="reply icon" className="w-5 h-5" />
+                  <img src={msgIcon} alt="msg icon" className="w-5 h-5" />
                 </div>
                 <div className="flex justify-between items-start gap-5">
                   <div className="w-1/12 h-14 border rounded-full overflow-hidden">
@@ -205,9 +209,9 @@ function BookView() {
                   </p>
                 </div>
                 <div className="icons flex gap-4 justify-end items-center">
-                  <img src={icon} alt="" className="w-5 h-5" />
-                  <img src={icon} alt="" className="w-5 h-5" />
-                  <img src={icon} alt="" className="w-5 h-5" />
+                  <img src={faceIcon} alt="emote icon" className="w-5 h-5" />
+                  <img src={replyIcon} alt="reply icon" className="w-5 h-5" />
+                  <img src={msgIcon} alt="msg icon" className="w-5 h-5" />
                 </div>
 
                 <div className="addcomment rounded-md border-2 border-white absolute bottom-5 md:bottom-16 w-full h-10 flex flex-1 items-center justify-between px-4">
@@ -217,7 +221,7 @@ function BookView() {
                     className="bg-transparent pb-2 pt-2 w-full focus:outline-none"
                   />
                   <button className="w-7 h-7">
-                    <img src={icon} alt="send msg icon" />
+                    <img src={sendIcon} alt="send msg icon" />
                   </button>
                 </div>
               </div>
@@ -225,7 +229,7 @@ function BookView() {
           )}
 
           {activeTab === "similar" && (
-            <div className="grid grid-cols-3 w-full gap-2 h-8/9 border-white overflow-y-auto">
+            <div className="grid grid-cols-3 w-full gap-2 h-8/9 border-white overflow-y-auto mt-15">
               <BookCard />
               <BookCard />
               <BookCard />

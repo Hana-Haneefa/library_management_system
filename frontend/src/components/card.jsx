@@ -44,7 +44,7 @@ function BookCard({
       />
 
       {/* text div */}
-      <div className="absolute bottom-0 left-0 w-full bg-white/70 rounded-t-2xl translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 transition-all duration-500 p-2 flex flex-col items-center justify-between gap-1">
+      <div className="absolute bottom-0 left-0 w-full bg-white/90 rounded-t-2xl translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 transition-all duration-500 p-2 flex flex-col items-center justify-between gap-1">
         <h3 className="text-lg font-bold">The Great Gatsby</h3>
         <p className="text-sm text-gray-600">by F. Scott Fitzgerald</p>
         <button className="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300">
