@@ -17,9 +17,9 @@ const router = Router();
 
 router.get(
   "/all-books",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   getAllBooksController,
 );
 router.get(

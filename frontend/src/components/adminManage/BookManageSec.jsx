@@ -1,3 +1,5 @@
+import QRcode from "qrcode";
+import { useEffect, useState, useRef } from "react";
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
 import editIcon from "../../images/icons/edit.png";
@@ -5,8 +7,38 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
-import { useEffect, useState } from "react";
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
+
+function QRCell({ value }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (canvasRef.current && value) {
+      QRcode.toCanvas(canvasRef.current, value, {
+        width: 20,
+        margin: 1,
+        color: {
+          dark: "#ffffff", //QR dots white
+          light: "#0000000", //background transparent
+        },
+      });
+    }
+  }, [value]);
+
+  if (!value) return <span className="text-white/30 text-xs">No QR</span>;
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        width: "60px",
+        height: "60px",
+        justifySelf: "center",
+        cursor: "pointer",
+      }}
+    />
+  );
+}
 
 function BookManageSec() {
   const [showForm, setShowForm] = useState(false);
@@ -117,7 +149,7 @@ function BookManageSec() {
 
   return (
     <div className="booksMng" ref={bookmng}>
-      {/* options */}
+      x{/* options */}
       <div className="options flex gap-2 justify-end">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <img src={exportIcon} alt="" className="w-5 h-5" />
@@ -131,7 +163,6 @@ function BookManageSec() {
           <p>Add Book</p>
         </button>
       </div>
-
       {/* stat cards */}
       <div className="cards w-full h-60 grid grid-cols-4 gap-4 mt-2">
         {[
@@ -165,7 +196,6 @@ function BookManageSec() {
           </div>
         ))}
       </div>
-
       {/* search */}
       <div className="searchSec flex flex-col mt-4 mb-4">
         <input
@@ -247,7 +277,6 @@ function BookManageSec() {
           </select>
         </div>
       </div>
-
       {/* filter / sort */}
       <div className="filterSec flex gap-2 justify-start">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
@@ -259,7 +288,6 @@ function BookManageSec() {
           <img src={sortIcon} alt="sort icon" className="w-5 h-5" />
         </button>
       </div>
-
       {/* book table */}
       <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
         <table className="w-full text-white text-center table-fixed">
@@ -292,7 +320,7 @@ function BookManageSec() {
               books.map((book) => (
                 <tr key={book.bId} className="border-t-2 border-white/50">
                   <td className="bg-blue-400"></td>
-                  <td>{book.bIsbn}</td>
+                  <td>{book.bISBN}</td>
                   <td className="py-2 h-20">
                     {book.coverImage ? (
                       <img
@@ -314,7 +342,9 @@ function BookManageSec() {
                       {book.bStatus ?? "Available"}
                     </p>
                   </td>
-                  <td></td>
+                  <td className="py-2">
+                    <QRCell value={book.bQR} />
+                  </td>
                   <td>
                     <img
                       src={editIcon}
@@ -335,7 +365,6 @@ function BookManageSec() {
           </tbody>
         </table>
       </div>
-
       {/* add book modal */}
       {showForm && (
         <>
