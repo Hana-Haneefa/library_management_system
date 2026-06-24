@@ -52,7 +52,7 @@ function Avatar({ name, size = "lg" }) {
   const sz = size === "lg" ? "w-24 h-24 text-4xl" : "w-10 h-10 text-lg";
   return (
     <div
-      className={`${sz} rounded-full bg-gradient-to-br from-blue-400 to-blue-700 flex items-center justify-center text-white font-bold shadow-lg select-none`}
+      className={`${sz} rounded-full bg-linear-to-br from-blue-400 to-blue-700 flex items-center justify-center text-white font-bold shadow-lg select-none`}
     >
       {letter}
     </div>
@@ -153,14 +153,14 @@ export function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex flex-col">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 flex flex-col">
       <Navigation />
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8">
         {/* ── profile card ── */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-6">
           {/* banner */}
-          <div className="h-28 sm:h-36 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 relative">
+          <div className="h-28 sm:h-36 bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 relative">
             <div
               className="absolute inset-0 opacity-20"
               style={{
@@ -277,7 +277,7 @@ export function Profile() {
                     className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 rounded-2xl border border-blue-100 hover:border-blue-300 hover:bg-blue-50/40 transition-all"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-12 rounded-lg bg-gradient-to-b from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0">
+                      <div className="w-10 h-12 rounded-lg bg-linear-to-b from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0">
                         📖
                       </div>
                       <div>
