@@ -23,18 +23,21 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import BookView from "./components/BookView.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 
+import Profile from "./components/Profile.jsx";
+
 function App() {
   return (
     <Routes>
-     
       <Route path="/" element={<HomePage />} />
       <Route path="/detail" element={<BookView />} />
       <Route path="/category" element={<CategoryPage />} />
 
+      <Route path="/profile" element={<Profile />} />
+
       {/* student management */}
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/add-student" element={<AddStudentForm />} />
-      <Route path="/student-login" element={<StudentLogin/>}/>
+      <Route path="/student-login" element={<StudentLogin />} />
 
       {/* librarian management */}
       <Route path="/add-librarian" element={<AddLibrarianForm />} />
