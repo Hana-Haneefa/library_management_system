@@ -11,11 +11,18 @@ import arrowRight from "../images/icons/arrowRight.png";
 // component for home page
 import BookCard from "../components/Card.jsx";
 import HeroSec from "../components/HeroSection.jsx";
+import Navigation from "../components/Navbar.jsx";
+import { Footer } from "../components/Footer.jsx";
 
 function HomePage() {
   return (
-    <div className="mt-10">
-      <HeroSec />
+    <div>
+      <div>
+        <Navigation />
+      </div>
+      <div>
+        <HeroSec />
+      </div>
       <div className="container w-full h-50 grid grid-cols-4 gap-2 px-4 ">
         <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
           <div className="img relative h-48 overflow-hidden rounded-xl">
@@ -185,7 +192,7 @@ function HomePage() {
       </div>
       {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
 
-      <h1 class="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
+      <h1 className="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
         Trending Books
       </h1>
       <div className="trendings grid grid-cols-6 gap-4 ">
@@ -400,6 +407,7 @@ function HomePage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

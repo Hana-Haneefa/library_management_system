@@ -1,4 +1,4 @@
-import QRcode from "qrcode";
+// import QRcode from "qrcode";
 import { useEffect, useState, useRef } from "react";
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";

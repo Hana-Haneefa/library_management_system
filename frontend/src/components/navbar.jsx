@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext.jsx";
 import logo from "../images/testimg.jpg";
 import DarkMode from "./darkmode.jsx";
 
@@ -23,6 +25,8 @@ import DarkMode from "./darkmode.jsx";
 
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); //get user from the context
 
   return (
     <div>
@@ -43,28 +47,55 @@ export function Navigation() {
             </ul>
           </div>
 
-          <div className="flex items-center gap-1 text-gray-300 text-md">
-            <input
-              type="search"
-              placeholder="   Search here"
-              className="py-1 rounded bg-gray-200 text-black hidden sm:block"
-            />
-            <input
-              type="button"
-              value="Login"
-              name="login"
-              className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
-            />
-            <DarkMode />
-            <button
-              className="md:hidden text-gray-300 focus:outline-none ml-2"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-              <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-              <span className="block w-6 h-0.5 bg-gray-300"></span>
-            </button>
-          </div>
+          {user ? (
+            <div className="flex items-center gap-1 text-gray-300 text-md">
+              <input
+                type="search"
+                placeholder="   Search here"
+                className="py-1 rounded bg-gray-200 text-black hidden sm:block"
+              />
+              <input
+                type="button"
+                value="Profile"
+                name="login"
+                onClick={() => navigate("/student-login")}
+                className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
+              />
+              <DarkMode />
+              <button
+                className="md:hidden text-gray-300 focus:outline-none ml-2"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-300"></span>
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-gray-300 text-md">
+              <input
+                type="search"
+                placeholder="   Search here"
+                className="py-1 rounded bg-gray-200 text-black hidden sm:block"
+              />
+              <input
+                type="button"
+                value="Login/SignUp"
+                name="login"
+                onClick={() => navigate("/student-login")}
+                className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
+              />
+              <DarkMode />
+              <button
+                className="md:hidden text-gray-300 focus:outline-none ml-2"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-300"></span>
+              </button>
+            </div>
+          )}
         </div>
 
         {menuOpen && (
@@ -77,8 +108,9 @@ export function Navigation() {
               />
               <input
                 type="button"
-                value="Login"
+                value="Login/SignUp"
                 name="login"
+                onClick={() => navigate("/student-login")}
                 className="px-3 rounded bg-purple-800 text-white hover:bg-purple-900 transition-colors duration-300 cursor-pointer"
               />
             </div>

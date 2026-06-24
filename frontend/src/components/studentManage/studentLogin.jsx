@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
 import axios from "axios";
 import bgimg from "../../images/formBg.jpg";
 import stimg from "../../images/stform.jpg";
@@ -7,6 +9,8 @@ function StudentLogin() {
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -80,6 +84,9 @@ function StudentLogin() {
 
     try {
       const res = await axios.post("/api/users/student-login", formData); //send form data to backend
+
+      login(res.data.token, res.data.user); //save token and user together
+      navigate("/"); //redirected to home page
 
       setSuccess("Login successful!"); //show success message
 

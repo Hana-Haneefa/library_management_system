@@ -182,7 +182,12 @@ export async function studentLoginController(req, res) {
     const { uPassword, ...studentWithoutPassword } = loginStudent; // Exclude password from response
     res.status(200).json({
       success: true,
-      data: studentWithoutPassword,
+      token, //token send with the successful login data
+      user: {
+        name: studentWithoutPassword.uName,
+        email: studentWithoutPassword.uEmail,
+        role: studentWithoutPassword.role,
+      },
     });
   } catch (error) {
     console.error("Error logging in student:", error);

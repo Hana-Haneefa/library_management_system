@@ -26,6 +26,7 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 function App() {
   return (
     <Routes>
+     
       <Route path="/" element={<HomePage />} />
       <Route path="/detail" element={<BookView />} />
       <Route path="/category" element={<CategoryPage />} />
@@ -33,6 +34,7 @@ function App() {
       {/* student management */}
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/add-student" element={<AddStudentForm />} />
+      <Route path="/student-login" element={<StudentLogin/>}/>
 
       {/* librarian management */}
       <Route path="/add-librarian" element={<AddLibrarianForm />} />
