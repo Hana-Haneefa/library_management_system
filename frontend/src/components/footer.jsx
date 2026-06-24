@@ -80,7 +80,7 @@ export function Footer() {
             </li>
           </ul>
         </div>
-        <div className="bg-purple-800 text-center py-4 w-full col-span-full">
+        <div className="bg-purple-800 text-center text-white py-4 w-full col-span-full">
           <p className="text-sm">© 2026 BOOKIE. All rights reserved.</p>
         </div>
       </div>

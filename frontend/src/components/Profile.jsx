@@ -3,8 +3,9 @@ import { useAuth } from "../context/authContext";
 import Navigation from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-// ── dummy data (replace with real API calls) ──────────────────────────────────
+// dummy data (replace with real API calls)
 const DUMMY_BORROWED = [
   {
     id: 1,
@@ -31,7 +32,7 @@ const DUMMY_BORROWED = [
 
 const DUMMY_FINES = [{ id: 1, book: "Clean Code", days: 4, amount: 200 }];
 
-// ── small helpers ─────────────────────────────────────────────────────────────
+// small helpers
 function Badge({ status }) {
   const map = {
     active: "bg-blue-100 text-blue-700",
@@ -59,7 +60,7 @@ function Avatar({ name, size = "lg" }) {
   );
 }
 
-// ── edit modal ────────────────────────────────────────────────────────────────
+// edit modal
 function EditModal({ user, onClose, onSave }) {
   const [form, setForm] = useState({
     name: user?.name ?? "",
@@ -125,9 +126,10 @@ function EditModal({ user, onClose, onSave }) {
   );
 }
 
-// ____ main component __________________________________
+//  main component
 export function Profile() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("borrowed");
   const [showEdit, setShowEdit] = useState(false);
   const [profileData, setProfileData] = useState(user);
@@ -152,6 +154,10 @@ export function Profile() {
     { id: "history", label: "History", count: null },
   ];
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-100 flex flex-col">
       <Navigation />
@@ -173,27 +179,27 @@ export function Profile() {
 
           {/* info row */}
           <div className="px-4 sm:px-8 pb-6">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-12 sm:-mt-14">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-12 sm:-mt-14 z-20 relative">
               {/* avatar + name */}
               <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3">
                 <div className="ring-4 ring-white rounded-full shadow-lg">
                   <Avatar name={profileData?.name} size="lg" />
                 </div>
-                <div className="text-center sm:text-left pb-1">
-                  <h1 className="text-2xl font-bold text-blue-900">
+                <div className="text-center sm:text-left pb-1 flex flex-col gap-2">
+                  <span className="inline-block w-16 mt-1 text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full pb-1">
+                    {profileData?.role ?? "Student"}
+                  </span>
+                  <h1 className="text-2xl font-bold text-white px-4 rounded-lg bg-linear-to-b from-white/20 to-black/20 pb-1">
                     {profileData?.name ?? "Student"}
                   </h1>
                   <p className="text-sm text-blue-500 font-medium">
                     {profileData?.email}
                   </p>
-                  <span className="inline-block mt-1 text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full">
-                    {profileData?.role ?? "Student"}
-                  </span>
                 </div>
               </div>
 
               {/* action buttons */}
-              <div className="flex gap-2 justify-center sm:justify-end pb-1">
+              <div className="flex gap-2 justify-center lg:items-center pb-6 sm:justify-end ">
                 <button
                   onClick={() => setShowEdit(true)}
                   className="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md"
@@ -201,8 +207,8 @@ export function Profile() {
                   Edit Profile
                 </button>
                 <button
-                  onClick={logout}
-                  className="px-4 py-2 rounded-xl border-2 border-red-400 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors"
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-xl border-2 border-red-400 backdrop-blur-md text-red-500 text-sm font-semibold hover:bg-red-500 hover:text-white transition-colors duration-300"
                 >
                   Logout
                 </button>
