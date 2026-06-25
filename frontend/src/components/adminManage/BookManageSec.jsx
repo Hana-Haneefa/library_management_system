@@ -1,4 +1,4 @@
-// import QRcode from "qrcode";
+import QRcode from "qrcode";
 import { useEffect, useState, useRef } from "react";
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
@@ -15,7 +15,7 @@ function QRCell({ value }) {
   useEffect(() => {
     if (canvasRef.current && value) {
       QRcode.toCanvas(canvasRef.current, value, {
-        width: 20,
+        width: 60,
         margin: 1,
         color: {
           dark: "#ffffff", //QR dots white
@@ -31,8 +31,8 @@ function QRCell({ value }) {
     <canvas
       ref={canvasRef}
       style={{
-        width: "60px",
-        height: "60px",
+        width: "50px",
+        height: "50px",
         justifySelf: "center",
         cursor: "pointer",
       }}
@@ -58,7 +58,7 @@ function BookManageSec() {
 
   const bookmng = Animation(500);
 
-  // ── fetch all books ──────────────────────────────────────────────────────
+  //  fetch all books from the db
   const fetchBooks = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/books/all-books", {
@@ -77,7 +77,7 @@ function BookManageSec() {
     fetchBooks();
   }, []);
 
-  // ── form open / close ────────────────────────────────────────────────────
+  //  form open and close
   const openForm = () => {
     setShowForm(true);
     setTimeout(() => setAnimate(true), 10);
@@ -100,12 +100,12 @@ function BookManageSec() {
     }, 300);
   };
 
-  // ── input change ─────────────────────────────────────────────────────────
+  // input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ── submit ───────────────────────────────────────────────────────────────
+  // submit
   const handleSubmit = async () => {
     const data = new FormData();
     data.append("title", formData.title);
@@ -140,7 +140,7 @@ function BookManageSec() {
     }
   };
 
-  // ── status badge color ───────────────────────────────────────────────────
+  // status batch color
   const statusStyle = (status) => {
     if (status === "borrowed") return "border-orange-600 text-orange-500";
     if (status === "lost") return "border-red-600 text-red-500";
@@ -149,7 +149,7 @@ function BookManageSec() {
 
   return (
     <div className="booksMng" ref={bookmng}>
-      x{/* options */}
+      {/* options */}
       <div className="options flex gap-2 justify-end">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <img src={exportIcon} alt="" className="w-5 h-5" />

@@ -189,7 +189,7 @@ export function Profile() {
                   <span className="inline-block w-16 mt-1 text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-0.5 rounded-full pb-1">
                     {profileData?.role ?? "Student"}
                   </span>
-                  <h1 className="text-2xl font-bold text-white px-4 rounded-lg bg-linear-to-b from-white/20 to-black/20 pb-1">
+                  <h1 className="text-2xl font-bold text-white px-4 rounded-lg shadow-md pb-1 backdrop-blur-md">
                     {profileData?.name ?? "Student"}
                   </h1>
                   <p className="text-sm text-blue-500 font-medium">

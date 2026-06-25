@@ -138,7 +138,7 @@ function StudentLogin() {
         {/* right side */}
         <div
           ref={rightRef}
-          className="right flex flex-col w-1/2 h-full items-center justify-center px-5 text-white/80"
+          className="right flex flex-col w-1/2 h-full items-center justify-center px-5 text-white/80 relative "
         >
           <h2 className="col-span-2 w-full font-bold text-blue-500 text-center font-sans text-2xl">
             Login
@@ -184,6 +184,24 @@ function StudentLogin() {
               {loading ? "Loading..." : "Login"}
             </button>
           </form>
+          <div className="otherLogins absolute bottom-4 right-6">
+            <p>
+              Not a student? Login as{" "}
+              <span
+                className="underline text-indigo-400"
+                onClick={() => navigate("/librarian-login")}
+              >
+                Libraian
+              </span>{" "}
+              or{" "}
+              <span
+                className="underline text-indigo-400"
+                onClick={() => navigate("/admin-login")}
+              >
+                Admin
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
