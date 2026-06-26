@@ -188,14 +188,14 @@ function StudentLogin() {
             <p>
               Not a student? Login as{" "}
               <span
-                className="underline text-indigo-400"
+                className="underline text-indigo-400 cursor-pointer"
                 onClick={() => navigate("/librarian-login")}
               >
                 Libraian
               </span>{" "}
               or{" "}
               <span
-                className="underline text-indigo-400"
+                className="underline text-indigo-400 cursor-pointer"
                 onClick={() => navigate("/admin-login")}
               >
                 Admin

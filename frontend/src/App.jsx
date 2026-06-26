@@ -45,6 +45,9 @@ function App() {
       <Route path="/student-login" element={<StudentLogin />} />
       <Route path="/librarian-login" element={<LibrarianLogin />} />
       <Route path="/admin-login" element={<AdminLogin />} />
+
+      {/* register routes */}
+      <Route path="/admin-register" element={<AddAdminForm />} />
     </Routes>
   );
 }

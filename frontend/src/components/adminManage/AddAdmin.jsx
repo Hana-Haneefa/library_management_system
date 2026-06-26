@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import bgimg from "../../images/adminBg.jpg";
 import stimg from "../../images/adminFormLeft.png";
@@ -8,6 +9,7 @@ function AddAdminForm() {
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -63,8 +65,7 @@ function AddAdminForm() {
 
     try {
       const res = await axios.post("/api/head-users/register", formData); //send form data to backend
-      setSuccess("Admin added successfully!"); //show success message
-
+      setSuccess("Admin added successfully! Redirecting to login..."); //show success message
       //to clear the form after successful submission
       setFormData({
         name: "",
@@ -73,6 +74,10 @@ function AddAdminForm() {
         confirmPassword: "",
         role: "admin",
       });
+
+      setTimeout(() => {
+        navigate("/admin-login");
+      }, 2000);
     } catch (err) {
       setError(
         err.response?.data?.error ||

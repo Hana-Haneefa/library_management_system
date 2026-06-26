@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import bgimg from "../../images/adminBg.jpg";
 import stimg from "../../images/adminFormLeft.png";
@@ -7,6 +8,7 @@ function AdminLogin() {
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -89,6 +91,10 @@ function AdminLogin() {
         email: "",
         password: "",
       });
+
+      setTimeout(() => {
+        navigate("/admin-dashboard");
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.error || "Login failed, please try again.");
     } finally {
@@ -178,6 +184,15 @@ function AdminLogin() {
               {loading ? "Loading..." : "Login"}
             </button>
           </form>
+          <p className="mt-2">
+            Don't have an account?{" "}
+            <span
+              className="underline text-purple-400 cursor-pointer"
+              onClick={() => navigate("/admin-register")}
+            >
+              Register
+            </span>
+          </p>
         </div>
       </div>
     </div>

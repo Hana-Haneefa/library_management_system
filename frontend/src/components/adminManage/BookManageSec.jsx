@@ -15,11 +15,11 @@ function QRCell({ value }) {
   useEffect(() => {
     if (canvasRef.current && value) {
       QRcode.toCanvas(canvasRef.current, value, {
-        width: 60,
+        width: 50,
         margin: 1,
         color: {
           dark: "#ffffff", //QR dots white
-          light: "#0000000", //background transparent
+          light: "#00000000", //background transparent
         },
       });
     }
@@ -31,8 +31,8 @@ function QRCell({ value }) {
     <canvas
       ref={canvasRef}
       style={{
-        width: "50px",
-        height: "50px",
+        width: "40px",
+        height: "40px",
         justifySelf: "center",
         cursor: "pointer",
       }}

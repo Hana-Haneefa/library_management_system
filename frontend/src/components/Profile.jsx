@@ -163,7 +163,7 @@ export function Profile() {
       <Navigation />
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8">
-        {/* ── profile card ── */}
+        {/* profile card */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-6">
           {/* banner */}
           <div className="h-28 sm:h-36 bg-linear-to-r from-blue-600 via-blue-500 to-blue-400 relative">

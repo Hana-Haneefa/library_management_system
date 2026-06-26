@@ -5,7 +5,7 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 export function Footer() {
   return (
     <div className="footer w-full mt-10 text-white flex flex-col">
-      <div className="up grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 bg-white/20 rounded-2xl shadow-lg m-4 backdrop-blur-2xl pt-4 overflow-hidden text-center md:text-left text-black">
+      <div className="up grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 bg-white/20 rounded-2xl shadow-lg shadow-gray-500 m-4 backdrop-blur-2xl pt-4 overflow-hidden text-center md:text-left text-black ">
         <div className="sec1 flex items-center gap-2 flex-col">
           <img src={logo} alt="logo" className="w-40 h-auto" />
           <h1 className="text-4xl font-serif mb-3">BOOKIE</h1>
