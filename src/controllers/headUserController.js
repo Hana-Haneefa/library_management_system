@@ -25,6 +25,7 @@ export async function addHeadUserController(req, res) {
     }
     const { hPassword, ...safeHeadUser } = newUser;
     res.status(201).json({
+      success: true,
       message: "Head user added successfully",
       data: safeHeadUser,
     });
@@ -182,14 +183,12 @@ export async function loginAuthController(req, res) {
       { expiresIn: "1d" },
     );
     const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Login successful",
-        token,
-        data: userWithoutPassword,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      data: userWithoutPassword,
+    });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", msg: err.message });
   }

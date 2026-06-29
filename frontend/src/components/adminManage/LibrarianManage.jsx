@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import api from "../../services/api.js";
+
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
 import editIcon from "../../images/icons/edit.png";
@@ -11,6 +14,75 @@ import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
 function LibrarianManage() {
   const librarianTab = Animation(500);
+  const [librarians, setLibrarians] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedLibrarian, setSelectedLibrarian] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetchLibrarians();
+  }, []);
+
+  const fetchLibrarians = async () => {
+    try {
+      setLoading(true);
+
+      //route : /api/headusers/all-headusers
+      const res = await api.get("/api/head-users/all-headusers");
+      if (res.data.success) {
+        setLibrarians(res.data.users);
+      }
+    } catch (err) {
+      console.error("Error fetching headusers: ", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //delete operation
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this headuser?")) {
+      try {
+        //route : /api/headusers/all-headusers
+        const res = await api.delete(`/api/head-users/delete-headuser/${id}`);
+        if (res.data.success) {
+          alert("Headuser deleted successfully!");
+          fetchLibrarians();
+        }
+      } catch (err) {
+        console.error("Error deleting headuser: ", err);
+        alert("Failed to delete headuser");
+      }
+    }
+  };
+
+  //edit operation
+  const handleEditClick = (headuser) => {
+    setSelectedLibrarian(headuser);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.put(
+        `/api/head-users/edit-headuser/${selectedLibrarian.hId}`,
+        {
+          name: selectedLibrarian.hName,
+          email: selectedLibrarian.hEmail,
+          password: selectedLibrarian.hPassword,
+          role: selectedLibrarian.hRole,
+        },
+      );
+      if (res.data.success) {
+        alert("Headuser updated successfully!");
+        setIsModalOpen(false);
+        fetchLibrarians();
+      }
+    } catch (err) {
+      console.error("Error updating headuser: ", err);
+    }
+  };
 
   return (
     <div className="librarianTab" ref={librarianTab}>
@@ -123,78 +195,46 @@ function LibrarianManage() {
           </thead>
 
           <tbody>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-blue-400"></td>
-              <td>0012</td>
+            {librarians.map((librarian) => (
+              <tr key={librarian.hId} className="border-t-2 border-white/50">
+                <td className="bg-blue-400"></td>
+                <td>{librarian.hId}</td>
 
-              <td>Yuji</td>
-              <td>yuji@gmail.com</td>
-              <td>
-                <p className="font-semibold text-green-600 text-sm">Paid</p>
-              </td>
-              <td className="py-2 flex items-center justify-center">
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500 w-2/3">
-                  Active
-                </p>
-              </td>
-              <td>
-                <img
-                  src={editIcon}
-                  alt="edit icon"
-                  className="w-5 mx-auto cursor-pointer"
-                />
-              </td>
-              <td>
-                <img
-                  src={eyeIcon}
-                  alt="view"
-                  className="w-5 h-auto mx-auto cursor-pointer"
-                />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete icon"
-                  className="w-5 mx-auto cursor-pointer"
-                />
-              </td>
-            </tr>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-green-400 rounded-bl-2xl"></td>
-              <td>0012</td>
-
-              <td>Megumi</td>
-              <td>megu@gmail.com</td>
-              <td>
-                <p className="font-semibold text-green-600 text-sm">Paid</p>
-              </td>
-              <td className="py-2 flex items-center justify-center">
-                <p className="border py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500 w-2/3">
-                  Borrowed
-                </p>
-              </td>
-              <td>
-                <img
-                  src={editIcon}
-                  alt="edit icon"
-                  className="w-5 h-auto mx-auto cursor-pointer"
-                />
-              </td>
-              <td>
-                <img
-                  src={eyeIcon}
-                  alt="view"
-                  className="w-5 h-auto mx-auto cursor-pointer"
-                />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete"
-                  className="w-5 h-auto mx-auto cursor-pointer"
-                />
-              </td>
-            </tr>
+                <td>{librarian.hName}</td>
+                <td>{librarian.hEmail}</td>
+                <td>
+                  <p className="font-semibold text-green-600 text-sm">Paid</p>
+                </td>
+                <td className="py-2 flex items-center justify-center">
+                  <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500 w-2/3">
+                    Active
+                  </p>
+                </td>
+                <td>
+                  <img
+                    src={editIcon}
+                    alt="edit icon"
+                    className="w-5 mx-auto cursor-pointer"
+                    onClick={() => handleEditClick(librarian)}
+                  />
+                </td>
+                <td>
+                  <img
+                    src={eyeIcon}
+                    alt="view"
+                    className="w-5 h-auto mx-auto cursor-pointer"
+                  />
+                </td>
+                <td>
+                  <img
+                    src={deleteIcon}
+                    alt="delete icon"
+                    className="w-5 mx-auto cursor-pointer"
+                    onClick={() => handleDelete(librarian.hId)}
+                  />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

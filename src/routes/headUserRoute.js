@@ -23,8 +23,8 @@ router.post("/register", addHeadUserController);
 //view all head users
 router.get(
   "/all-headusers",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   allHeadUsersController,
 );
 
@@ -39,16 +39,16 @@ router.get(
 //edit head users
 router.put(
   "/edit-headuser/:id",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   editHeadUserController,
 );
 
 //delete head users
 router.delete(
   "/delete-headuser/:id",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   deleteHeadUserController,
 );
 
