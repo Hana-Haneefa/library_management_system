@@ -16,8 +16,8 @@ function BookManageSec() {
   const [animate, setAnimate] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [selectedBook, setSelectedBook] = useState(null);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -30,26 +30,7 @@ function BookManageSec() {
 
   const bookmng = Animation(500);
 
-  // fetch all books from the db
-  // const fetchBooks = async () => {
-  //   try {
-  //     const res = await fetch("http://localhost:5000/api/books/all-books", {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-  //     const result = await res.json();
-  //     if (res.ok) setBooks(result.data);
-  //   } catch (err) {
-  //     console.error("Failed to fetch books:", err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchBooks();
-  // }, []);
-
-  //use axios
+  // fetch all books
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -57,16 +38,13 @@ function BookManageSec() {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-
-      //route: /api/books/all-books
       const res = await api.get("/api/books/all-books", {
         headers: {
           "Cache-Control": "no-cache",
           Pragma: "no-cache",
         },
       });
-
-      if (res.data.success) {
+      if (res.data.data) {
         setBooks(res.data.data);
       }
     } catch (err) {
@@ -76,7 +54,54 @@ function BookManageSec() {
     }
   };
 
-  // form open and close
+  // delete operation
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this Book?")) {
+      try {
+        const res = await api.delete(`/api/books/delete-book/${id}`);
+        if (res.data.success) {
+          alert("Book deleted successfully!");
+          fetchBooks();
+        }
+      } catch (err) {
+        console.error("Error deleting the book: ", err);
+        alert("Failed to delete the Book!");
+      }
+    }
+  };
+
+  // edit operation — BUG FIX: selectedBook(book) → setSelectedBook(book)
+  const handleEditClick = (book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.put(`/api/books/update-book/${selectedBook.bId}`, {
+        title: selectedBook.bTitle,
+        author: selectedBook.bAuthor,
+        isbn: selectedBook.bIsbn,
+        genre: selectedBook.bGenre,
+        publisher: selectedBook.bPublisher,
+        year: selectedBook.bYear,
+        quantity: selectedBook.bQuantity,
+        status: selectedBook.bStatus,
+      });
+      if (res.data.success) {
+        alert("Book updated successfully!");
+        setIsModalOpen(false);
+        setSelectedBook(null);
+        fetchBooks();
+      }
+    } catch (err) {
+      console.error("Error updating the book: ", err);
+      alert("Failed to update the book!");
+    }
+  };
+
+  // add form open/close
   const openForm = () => {
     setShowForm(true);
     setTimeout(() => setAnimate(true), 10);
@@ -99,12 +124,11 @@ function BookManageSec() {
     }, 300);
   };
 
-  // input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // submit
+  // submit — BUG FIX: removed leftover fetch() code after Axios conversion
   const handleSubmit = async () => {
     const data = new FormData();
     data.append("title", formData.title);
@@ -118,29 +142,13 @@ function BookManageSec() {
 
     try {
       setLoading(true);
-      // const res = await fetch("http://localhost:5000/api/books/create-book", {
-      //   method: "POST",
-      //   headers: {
-      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-      //   },
-      //   body: data,
-      // });
-
-      //using axios library _ route: /api/books/create-book
+      // Axios only — paran fetch() code ekata
       const res = await api.post("/api/books/create-book", data);
-
-      if (res.data.success) {
+      if (res.data.success || res.data.data) {
         alert("Book added successfully!");
         fetchBooks();
         closeForm();
       }
-
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.error);
-
-      alert("Book added successfully!");
-      fetchBooks();
-      closeForm();
     } catch (err) {
       alert("Error: " + err.message);
     } finally {
@@ -148,12 +156,46 @@ function BookManageSec() {
     }
   };
 
-  // status badge color
   const statusStyle = (status) => {
     if (status === "borrowed") return "border-orange-600 text-orange-500";
     if (status === "lost") return "border-red-600 text-red-500";
     return "border-green-600 text-green-500";
   };
+
+  const genreOptions = [
+    "Computer Science",
+    "IT",
+    "History",
+    "Mathematics",
+    "Machine Learning",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Engineering",
+    "Geography",
+    "Philosophy",
+    "Psychology",
+    "Sociology",
+    "Political Science",
+    "Economics",
+    "Sinhala Literature",
+    "English Literature",
+    "Tamil Literature",
+    "Poetry",
+    "Drama",
+    "Buddhism",
+    "Hinduism",
+    "Islam",
+    "Christianity",
+    "Art & Design",
+    "Music",
+    "Film & Media",
+    "Encyclopedia & Reference",
+    "Dictionary & Language",
+    "Magazines & Journals",
+    "Biography & Autobiography",
+    "Children's Books",
+  ];
 
   return (
     <div className="booksMng" ref={bookmng}>
@@ -172,7 +214,7 @@ function BookManageSec() {
         </button>
       </div>
 
-      {/* stat cards — 5 cards: 2 cols on mobile, 3 on sm, 5 on lg */}
+      {/* stat cards */}
       <div className="cards w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-2">
         {[
           "Total Titles",
@@ -271,7 +313,6 @@ function BookManageSec() {
               <option value="childrens">Children's Books</option>
             </optgroup>
           </select>
-
           <select
             name="status"
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
@@ -304,7 +345,7 @@ function BookManageSec() {
         </button>
       </div>
 
-      {/* book table — horizontally scrollable on mobile */}
+      {/* book table */}
       <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-hidden">
         <table className="w-full text-white text-center table-fixed">
           <thead>
@@ -337,9 +378,9 @@ function BookManageSec() {
                   <td className="bg-blue-400 w-1.5"></td>
                   <td
                     className="text-xs py-3 px-2 truncate max-w-0"
-                    title={book.bIsbn}
+                    title={book.bISBN}
                   >
-                    {book.bIsbn}
+                    {book.bISBN}
                   </td>
                   <td className="py-2">
                     {book.coverImage ? (
@@ -389,6 +430,7 @@ function BookManageSec() {
                       src={editIcon}
                       alt="edit"
                       className="w-5 mx-auto cursor-pointer"
+                      onClick={() => handleEditClick(book)}
                     />
                   </td>
                   <td className="w-14">
@@ -396,6 +438,7 @@ function BookManageSec() {
                       src={deleteIcon}
                       alt="delete"
                       className="w-5 mx-auto cursor-pointer"
+                      onClick={() => handleDelete(book.bId)}
                     />
                   </td>
                 </tr>
@@ -405,7 +448,173 @@ function BookManageSec() {
         </table>
       </div>
 
-      {/* add book modal — full width on mobile, fixed width on desktop */}
+      {/* ───── EDIT BOOK MODAL ───── */}
+      {isModalOpen && selectedBook && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-purple-950/90 border border-white/20 rounded-2xl p-6 w-[calc(100%-2rem)] sm:w-125 max-h-[90vh] overflow-y-auto text-white shadow-2xl">
+            <h2 className="text-2xl font-bold mb-6 font-serif">Edit Book</h2>
+
+            <form onSubmit={handleUpdate} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Title</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bTitle || ""}
+                  onChange={(e) =>
+                    setSelectedBook({ ...selectedBook, bTitle: e.target.value })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Author</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bAuthor || ""}
+                  onChange={(e) =>
+                    setSelectedBook({
+                      ...selectedBook,
+                      bAuthor: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">ISBN</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bIsbn || ""}
+                  onChange={(e) =>
+                    setSelectedBook({ ...selectedBook, bIsbn: e.target.value })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Genre</label>
+                <select
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bGenre || ""}
+                  onChange={(e) =>
+                    setSelectedBook({ ...selectedBook, bGenre: e.target.value })
+                  }
+                >
+                  <option value="" className="bg-purple-950">
+                    Select Genre
+                  </option>
+                  {genreOptions.map((g) => (
+                    <option key={g} value={g} className="bg-purple-950">
+                      {g}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">
+                  Publisher
+                </label>
+                <input
+                  type="text"
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bPublisher || ""}
+                  onChange={(e) =>
+                    setSelectedBook({
+                      ...selectedBook,
+                      bPublisher: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">
+                  Published Year
+                </label>
+                <input
+                  type="text"
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bYear || ""}
+                  onChange={(e) =>
+                    setSelectedBook({ ...selectedBook, bYear: e.target.value })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">
+                  Quantity
+                </label>
+                <input
+                  type="number"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bQuantity || ""}
+                  onChange={(e) =>
+                    setSelectedBook({
+                      ...selectedBook,
+                      bQuantity: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Status</label>
+                <select
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBook.bStatus || "available"}
+                  onChange={(e) =>
+                    setSelectedBook({
+                      ...selectedBook,
+                      bStatus: e.target.value,
+                    })
+                  }
+                >
+                  <option value="available" className="bg-purple-950">
+                    Available
+                  </option>
+                  <option value="borrowed" className="bg-purple-950">
+                    Borrowed
+                  </option>
+                  <option value="lost" className="bg-purple-950">
+                    Lost
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 mt-2 justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setSelectedBook(null);
+                  }}
+                  className="px-4 py-2 rounded-lg border border-white/40 hover:bg-white/10 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold cursor-pointer transition-colors duration-300"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ───── ADD BOOK MODAL ───── */}
       {showForm && (
         <>
           <div
@@ -457,21 +666,11 @@ function BookManageSec() {
                 <option value="" className="bg-purple-950">
                   Select Category
                 </option>
-                <option value="Computer Science" className="bg-purple-950">
-                  Computer Science
-                </option>
-                <option value="IT" className="bg-purple-950">
-                  IT
-                </option>
-                <option value="History" className="bg-purple-950">
-                  History
-                </option>
-                <option value="Mathematics" className="bg-purple-950">
-                  Mathematics
-                </option>
-                <option value="Machine Learning" className="bg-purple-950">
-                  Machine Learning
-                </option>
+                {genreOptions.map((g) => (
+                  <option key={g} value={g} className="bg-purple-950">
+                    {g}
+                  </option>
+                ))}
               </select>
               <input
                 type="text"
@@ -528,7 +727,6 @@ function BookManageSec() {
               )}
             </div>
 
-            {/* buttons */}
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 onClick={closeForm}

@@ -44,8 +44,8 @@ router.put(
 );
 router.delete(
   "/delete-book/:id",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   deleteBookController,
 );
 

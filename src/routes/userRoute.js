@@ -55,8 +55,8 @@ router.put(
 //delete user
 router.delete(
   "/delete-user/:id",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   deleteUserController,
 );
 

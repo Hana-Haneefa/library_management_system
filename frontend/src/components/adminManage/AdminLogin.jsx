@@ -84,6 +84,9 @@ function AdminLogin() {
     try {
       const res = await axios.post("/api/head-users/login", formData); //send form data to backend
 
+      //save the token
+      localStorage.setItem("token", res.data.token);
+
       setSuccess("Login successful!"); //show success message
 
       //clear form data

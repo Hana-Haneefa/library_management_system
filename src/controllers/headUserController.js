@@ -184,7 +184,12 @@ export async function loginAuthController(req, res) {
     const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
     return res
       .status(200)
-      .json({ message: "Login successful", token, data: userWithoutPassword });
+      .json({
+        success: true,
+        message: "Login successful",
+        token,
+        data: userWithoutPassword,
+      });
   } catch (err) {
     res.status(500).json({ error: "Internal server error", msg: err.message });
   }
