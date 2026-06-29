@@ -91,9 +91,8 @@ export async function updateUserController(req, res) {
     });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  password = hashedPassword;
   try {
-    const updatedUser = await updateUser(id, name, email, password);
+    const updatedUser = await updateUser(id, name, email, hashedPassword);
     if (!updatedUser) {
       return res.status(404).json({
         success: false,

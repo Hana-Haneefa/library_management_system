@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseurl: import.meta.env.VITE_API_URL, //my backend url
+  baseURL: import.meta.env.VITE_API_URL, //my backend url
 });
 
 //automatically attack token to every request

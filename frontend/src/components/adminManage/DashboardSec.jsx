@@ -20,55 +20,58 @@ function DashboardSec() {
       }, 1500);
     });
   }, []);
+
   return (
     <div ref={contentRef}>
       {/* filters */}
-      <div className="settings w-full h-auto flex px-4 py-2 text-white/70 justify-between mb-2">
-        <div className="setLeft flex gap-2 border-b border-white/30 mb-6">
+      <div className="settings w-full h-auto flex flex-col sm:flex-row px-4 py-2 text-white/70 justify-between mb-2 gap-3 sm:gap-0">
+        {/* Tab Buttons */}
+        <div className="setLeft flex gap-2 border-b border-white/30 mb-0 sm:mb-6">
           <button
             onClick={() => setActiveTab("charts")}
-            className={`px-6 py-2 font-semibold transition-all duration-300
-        ${
-          activeTab === "charts"
-            ? "border-b-2 border-purple-400 text-purple-400" // active style
-            : "text-white/50 hover:text-white" // inactive style
-        }`}
+            className={`px-4 sm:px-6 py-2 font-semibold transition-all duration-300
+              ${
+                activeTab === "charts"
+                  ? "border-b-2 border-purple-400 text-purple-400"
+                  : "text-white/50 hover:text-white"
+              }`}
           >
             Charts
           </button>
           <button
             onClick={() => setActiveTab("tables")}
-            className={`px-6 py-2 font-semibold transition-all duration-300
-        ${
-          activeTab === "tables"
-            ? "border-b-2 border-purple-400 text-purple-400"
-            : "text-white/50 hover:text-white"
-        }`}
+            className={`px-4 sm:px-6 py-2 font-semibold transition-all duration-300
+              ${
+                activeTab === "tables"
+                  ? "border-b-2 border-purple-400 text-purple-400"
+                  : "text-white/50 hover:text-white"
+              }`}
           >
             Tables
           </button>
           <button
             onClick={() => setActiveTab("graphs")}
-            className={`px-6 py-2 font-semibold transition-all duration-300
-        ${
-          activeTab === "graphs"
-            ? "border-b-2 border-purple-400 text-purple-400"
-            : "text-white/50 hover:text-white"
-        }`}
+            className={`px-4 sm:px-6 py-2 font-semibold transition-all duration-300
+              ${
+                activeTab === "graphs"
+                  ? "border-b-2 border-purple-400 text-purple-400"
+                  : "text-white/50 hover:text-white"
+              }`}
           >
             Graphs
           </button>
         </div>
 
-        <div className="setRight flex h-10 gap-8">
+        {/* Filter and Search Buttons */}
+        <div className="setRight flex h-10 gap-3 sm:gap-8">
           <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
             Filter
           </button>
-          <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
+          <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer flex-1 sm:flex-none">
             <input
               type="search"
               placeholder="Search..."
-              className="bg-transparent focus:outline-none pb-1 pl-2"
+              className="bg-transparent focus:outline-none pb-1 pl-2 w-full sm:w-auto"
             />
             Search
           </button>
@@ -76,7 +79,7 @@ function DashboardSec() {
       </div>
 
       {/* cards */}
-      <div className="cards w-full h-40 grid grid-cols-4 gap-4">
+      <div className="cards w-full h-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           "Total Books",
           "Total Members",
@@ -85,7 +88,7 @@ function DashboardSec() {
         ].map((title, i) => (
           <div
             key={i}
-            className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
+            className="h-40 w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
               <img
@@ -109,9 +112,9 @@ function DashboardSec() {
       </div>
 
       {/* graphs */}
-      <div className="graphs flex h-auto gap-4 mt-2">
-        <div className="w-2/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
-        <div className="w-1/3 h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
+      <div className="graphs flex flex-col lg:flex-row h-auto gap-4 mt-4 min-h-64">
+        <div className="w-full lg:w-2/3 h-64 lg:h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
+        <div className="w-full lg:w-1/3 h-64 lg:h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
       </div>
     </div>
   );

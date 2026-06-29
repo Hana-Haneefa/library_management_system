@@ -22,9 +22,9 @@ router.post("/student-login", studentLoginController);
 //view all users
 router.get(
   "/all-users",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   getAllUsersController,
 );
 
@@ -47,8 +47,8 @@ router.post(
 //edit user
 router.put(
   "/edit-user/:id",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   updateUserController,
 );
 

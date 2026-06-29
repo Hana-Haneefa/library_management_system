@@ -1,5 +1,4 @@
-import QRcode from "qrcode";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
 import editIcon from "../../images/icons/edit.png";
@@ -8,37 +7,6 @@ import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
-
-function QRCell({ value }) {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (canvasRef.current && value) {
-      QRcode.toCanvas(canvasRef.current, value, {
-        width: 50,
-        margin: 1,
-        color: {
-          dark: "#ffffff", //QR dots white
-          light: "#00000000", //background transparent
-        },
-      });
-    }
-  }, [value]);
-
-  if (!value) return <span className="text-white/30 text-xs">No QR</span>;
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        width: "40px",
-        height: "40px",
-        justifySelf: "center",
-        cursor: "pointer",
-      }}
-    />
-  );
-}
 
 function BookManageSec() {
   const [showForm, setShowForm] = useState(false);
@@ -58,7 +26,7 @@ function BookManageSec() {
 
   const bookmng = Animation(500);
 
-  //  fetch all books from the db
+  // fetch all books from the db
   const fetchBooks = async () => {
     try {
       const res = await fetch("http://localhost:5000/api/books/all-books", {
@@ -77,7 +45,7 @@ function BookManageSec() {
     fetchBooks();
   }, []);
 
-  //  form open and close
+  // form open and close
   const openForm = () => {
     setShowForm(true);
     setTimeout(() => setAnimate(true), 10);
@@ -131,7 +99,7 @@ function BookManageSec() {
       if (!res.ok) throw new Error(result.error);
 
       alert("Book added successfully!");
-      fetchBooks(); // refresh table
+      fetchBooks();
       closeForm();
     } catch (err) {
       alert("Error: " + err.message);
@@ -140,7 +108,7 @@ function BookManageSec() {
     }
   };
 
-  // status batch color
+  // status badge color
   const statusStyle = (status) => {
     if (status === "borrowed") return "border-orange-600 text-orange-500";
     if (status === "lost") return "border-red-600 text-red-500";
@@ -150,7 +118,7 @@ function BookManageSec() {
   return (
     <div className="booksMng" ref={bookmng}>
       {/* options */}
-      <div className="options flex gap-2 justify-end">
+      <div className="options flex gap-2 justify-end flex-wrap">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <img src={exportIcon} alt="" className="w-5 h-5" />
           <p>Import</p>
@@ -163,39 +131,45 @@ function BookManageSec() {
           <p>Add Book</p>
         </button>
       </div>
-      {/* stat cards */}
-      <div className="cards w-full h-60 grid grid-cols-4 gap-4 mt-2">
+
+      {/* stat cards — 5 cards: 2 cols on mobile, 3 on sm, 5 on lg */}
+      <div className="cards w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-2">
         {[
           "Total Titles",
           "Available",
           "Borrowed",
           "Overdue",
-          "QR generated",
+          "QR Generated",
         ].map((title, i) => (
           <div
             key={i}
-            className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
+            className="h-36 sm:h-40 w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
-            <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
+            <div className="icon w-8 h-8 sm:w-10 sm:h-10 rounded-full absolute top-3 right-3">
               <img
                 src={icon}
                 alt={title}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="content p-4">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="text-3xl font-bold text-white">1,234</p>
+            <div className="content p-3 sm:p-4">
+              <h2 className="text-sm sm:text-base lg:text-xl font-semibold text-white leading-tight">
+                {title}
+              </h2>
+              <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                1,234
+              </p>
             </div>
-            <span className="absolute bottom-2 right-4 text-xs text-white/70">
+            <span className="absolute bottom-2 right-3 text-xs text-white/70 hidden sm:block">
               +5% from last month
             </span>
-            <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="absolute bottom-2 left-3 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Read more
             </span>
           </div>
         ))}
       </div>
+
       {/* search */}
       <div className="searchSec flex flex-col mt-4 mb-4">
         <input
@@ -203,7 +177,7 @@ function BookManageSec() {
           placeholder="Search books by Title, Author, Genre..."
           className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2 focus:outline-none"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             name="category"
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
@@ -277,8 +251,9 @@ function BookManageSec() {
           </select>
         </div>
       </div>
+
       {/* filter / sort */}
-      <div className="filterSec flex gap-2 justify-start">
+      <div className="filterSec flex gap-2 justify-start flex-wrap">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <p>Filter</p>
           <img src={filterIcon} alt="filter icon" className="w-5 h-5" />
@@ -288,22 +263,22 @@ function BookManageSec() {
           <img src={sortIcon} alt="sort icon" className="w-5 h-5" />
         </button>
       </div>
-      {/* book table */}
-      <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
-        <table className="w-full text-white text-center table-fixed">
+
+      {/* book table — horizontally scrollable on mobile */}
+      <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-x-auto">
+        <table className="min-w-175 w-full text-white text-center table-fixed">
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4">ISBN</th>
-              <th>Cover</th>
+              <th className="py-4 w-28">ISBN</th>
+              <th className="w-16">Cover</th>
               <th className="w-36">Title</th>
               <th className="w-32">Author</th>
-              <th>Copies</th>
-              <th>Status</th>
-              <th>QR</th>
-              <th className="w-32" colSpan={2}>
-                Operations
-              </th>
+              <th className="w-16">Copies</th>
+              <th className="w-28">Status</th>
+              <th className="w-20">QR</th>
+              <th className="w-12">Edit</th>
+              <th className="w-12">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -320,30 +295,40 @@ function BookManageSec() {
               books.map((book) => (
                 <tr key={book.bId} className="border-t-2 border-white/50">
                   <td className="bg-blue-400"></td>
-                  <td>{book.bISBN}</td>
+                  <td className="text-sm">{book.bIsbn}</td>
                   <td className="py-2 h-20">
                     {book.coverImage ? (
                       <img
-                        src={`http://localhost:5000/uploads/covers/${book.coverImage}`}
+                        src={`http://localhost:5000/uploads/${book.coverImage}`}
                         alt="cover"
-                        className="rounded-md h-full object-contain mx-auto hover:scale-200 transform-all duration-500 cursor-pointer"
+                        className="rounded-md h-full object-contain mx-auto hover:scale-150 transition-transform duration-500 cursor-pointer"
                       />
                     ) : (
                       <span className="text-white/30 text-xs">No cover</span>
                     )}
                   </td>
-                  <td>{book.bTitle}</td>
-                  <td>{book.bAuthor}</td>
+                  <td className="text-sm">{book.bTitle}</td>
+                  <td className="text-sm">{book.bAuthor}</td>
                   <td>{book.bQuantity}</td>
                   <td>
                     <p
-                      className={`border py-1 pb-1.5 text-sm rounded-2xl ${statusStyle(book.bStatus)}`}
+                      className={`border py-1 pb-1.5 text-xs rounded-2xl mx-2 ${statusStyle(book.bStatus)}`}
                     >
                       {book.bStatus ?? "Available"}
                     </p>
                   </td>
                   <td className="py-2">
-                    <QRCell value={book.bQR} />
+                    {book.bQR ? (
+                      // bQR is already a base64 data URL stored in the database — display directly
+                      <img
+                        src={book.bQR}
+                        alt="QR Code"
+                        className="w-14 h-14 mx-auto cursor-pointer hover:scale-150 transition-transform duration-300"
+                        title="Book QR Code"
+                      />
+                    ) : (
+                      <span className="text-white/30 text-xs">No QR</span>
+                    )}
                   </td>
                   <td>
                     <img
@@ -365,7 +350,8 @@ function BookManageSec() {
           </tbody>
         </table>
       </div>
-      {/* add book modal */}
+
+      {/* add book modal — full width on mobile, fixed width on desktop */}
       {showForm && (
         <>
           <div
@@ -373,9 +359,11 @@ function BookManageSec() {
               ${animate ? "opacity-100" : "opacity-0"}`}
           />
           <div
-            className={`fixed top-1/3 left-1/2 -translate-x-1/2 z-50
+            className={`fixed top-1/2 left-1/2 -translate-x-1/2 z-50
               bg-white/10 backdrop-blur-md border border-white/30
-              rounded-2xl p-8 w-125 text-white shadow-2xl
+              rounded-2xl p-6 sm:p-8
+              w-[calc(100%-2rem)] sm:w-125 max-h-[90vh] overflow-y-auto
+              text-white shadow-2xl
               transition-all duration-300
               ${animate ? "-translate-y-1/2 opacity-100" : "translate-y-[-40%] opacity-0"}`}
           >
@@ -390,7 +378,6 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
-
               <input
                 type="text"
                 name="author"
@@ -399,7 +386,6 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
-
               <input
                 type="text"
                 name="isbn"
@@ -408,7 +394,6 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
-
               <select
                 name="genre"
                 value={formData.genre}
@@ -434,7 +419,6 @@ function BookManageSec() {
                   Machine Learning
                 </option>
               </select>
-
               <input
                 type="text"
                 name="publisher"
@@ -443,7 +427,6 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
-
               <input
                 type="text"
                 name="year"
@@ -452,7 +435,6 @@ function BookManageSec() {
                 onChange={handleChange}
                 className="bg-white/20 rounded-lg px-4 py-2 focus:outline-none border border-white/30"
               />
-
               <input
                 type="number"
                 name="quantity"
@@ -476,10 +458,10 @@ function BookManageSec() {
               />
               <label
                 htmlFor="coverImgInput"
-                className="flex items-center gap-3 bg-white/20 border border-white/30 rounded-lg px-4 py-2 cursor-pointer hover:bg-white/30 transition-all"
+                className="flex items-center gap-3 bg-white/20 border border-white/30 rounded-lg px-4 py-2 cursor-pointer hover:bg-white/30 transition-all w-full justify-center"
               >
                 <span>📁</span>
-                <span className="text-white/70 text-sm">
+                <span className="text-white/70 text-sm truncate max-w-50">
                   {coverImg ? coverImg.name : "Choose image from PC..."}
                 </span>
               </label>
@@ -496,14 +478,14 @@ function BookManageSec() {
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 onClick={closeForm}
-                className="px-4 py-2 rounded-lg border border-white/40 hover:bg-white/10"
+                className="px-4 py-2 rounded-lg border border-white/40 hover:bg-white/10 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold disabled:opacity-50"
+                className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 font-semibold disabled:opacity-50 cursor-pointer"
               >
                 {loading ? "Adding..." : "Add Book"}
               </button>
