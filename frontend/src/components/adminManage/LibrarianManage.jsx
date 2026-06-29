@@ -104,7 +104,6 @@ function LibrarianManage() {
           <p>Add Librarian</p>
         </button>
       </div>
-
       {/* 𝘤𝘢𝘳𝘥𝘴 */}
       <div className="cards w-full h-40 grid grid-cols-4 gap-4 mt-2">
         {[
@@ -238,6 +237,101 @@ function LibrarianManage() {
           </tbody>
         </table>
       </div>
+      {/*  EDIT STUDENT MODAL (Pop-up Form) */}
+      {isModalOpen && selectedLibrarian && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-purple-950/90 border border-white/20 p-6 rounded-2xl w-96 text-white shadow-2xl relative">
+            <h2 className="text-2xl font-bold mb-4 font-serif">
+              Edit Headuser
+            </h2>
+
+            <form onSubmit={handleUpdate} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Name</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedLibrarian.hName || ""}
+                  onChange={(e) =>
+                    setSelectedLibrarian({
+                      ...selectedLibrarian,
+                      hName: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Email</label>
+                <input
+                  type="email"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedLibrarian.hEmail || ""}
+                  onChange={(e) =>
+                    setSelectedLibrarian({
+                      ...selectedLibrarian,
+                      hEmail: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">
+                  New Password (Required)
+                </label>
+                <input
+                  type="password"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  placeholder="Enter new or current password"
+                  onChange={(e) =>
+                    setSelectedLibrarian({
+                      ...selectedLibrarian,
+                      hPassword: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Role</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedLibrarian.hRole || ""}
+                  onChange={(e) =>
+                    setSelectedLibrarian({
+                      ...selectedLibrarian,
+                      hRole: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="flex gap-2 justify-end mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 border-2 border-white/40 text-white font-semibold rounded-lg hover:bg-white/10 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg cursor-pointer transition-colors duration-300"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      ad
     </div>
   );
 }
