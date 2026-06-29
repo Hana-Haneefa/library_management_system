@@ -270,7 +270,7 @@ function BookManageSec() {
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4 px-2">ISBN</th>
+              <th className="py-4">ISBN</th>
               <th className="px-2">Cover</th>
               <th className="px-2">Title</th>
               <th className="px-2">Author</th>
@@ -295,13 +295,13 @@ function BookManageSec() {
               books.map((book) => (
                 <tr key={book.bId} className="border-t-2 border-white/50">
                   <td className="bg-blue-400 w-3"></td>
-                  <td className="text-sm px-2 py-3">{book.bIsbn}</td>
+                  <td className="text-sm py-3 border">{book.bIsbn}</td>
                   <td className="py-2 px-2">
                     {book.coverImage ? (
                       <img
-                        src={`http://localhost:5000/uploads/${book.coverImage}`}
+                        src={`http://localhost:5000/uploads/covers/${book.coverImage}`}
                         alt="cover"
-                        className="rounded-md h-full object-contain mx-auto hover:scale-150 transition-transform duration-500 cursor-pointer"
+                        className="rounded-md w-14 h-14 object-cover mx-auto hover:scale-150 transition-transform duration-500 cursor-pointer"
                       />
                     ) : (
                       <span className="text-white/30 text-xs">No cover</span>
