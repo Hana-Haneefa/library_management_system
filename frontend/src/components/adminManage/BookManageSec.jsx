@@ -265,20 +265,20 @@ function BookManageSec() {
       </div>
 
       {/* book table — horizontally scrollable on mobile */}
-      <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-x-auto">
-        <table className="min-w-212.5 w-full text-white text-center table-fixed">
+      <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-hidden">
+        <table className="w-full text-white text-center table-fixed">
           <thead>
             <tr>
-              <th className="w-3 overflow-hidden"></th>
-              <th className="py-4">ISBN</th>
-              <th className="px-2">Cover</th>
-              <th className="px-2">Title</th>
-              <th className="px-2">Author</th>
-              <th className="px-2">Copies</th>
-              <th className="px-2">Status</th>
-              <th className="px-2 w-20">QR</th>
-              <th className="px-2 w-12">Edit</th>
-              <th className="px-2 w-12">Delete</th>
+              <th className="w-1.5"></th>
+              <th className="py-3 w-16 text-xs">ISBN</th>
+              <th className="w-14 text-xs">Cover</th>
+              <th className="w-24 text-xs">Title</th>
+              <th className="w-24 text-xs">Author</th>
+              <th className="w-8 text-xs">Copies</th>
+              <th className="w-20 text-xs">Status</th>
+              <th className="w-20 text-xs">QR</th>
+              <th className="w-14 text-xs">Edit</th>
+              <th className="w-14 text-xs">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -293,52 +293,65 @@ function BookManageSec() {
               </tr>
             ) : (
               books.map((book) => (
-                <tr key={book.bId} className="border-t-2 border-white/50">
-                  <td className="bg-blue-400 w-3"></td>
-                  <td className="text-sm py-3 border">{book.bIsbn}</td>
-                  <td className="py-2 px-2">
+                <tr key={book.bId} className="border-t-2 border-white/50 h-16">
+                  <td className="bg-blue-400 w-1.5"></td>
+                  <td
+                    className="text-xs py-3 px-2 truncate max-w-0"
+                    title={book.bIsbn}
+                  >
+                    {book.bIsbn}
+                  </td>
+                  <td className="py-2">
                     {book.coverImage ? (
                       <img
                         src={`http://localhost:5000/uploads/covers/${book.coverImage}`}
                         alt="cover"
-                        className="rounded-md w-14 h-14 object-cover mx-auto hover:scale-150 transition-transform duration-500 cursor-pointer"
+                        className="rounded-md w-10 h-12 object-cover mx-auto hover:scale-150 transition-transform duration-500 cursor-pointer"
                       />
                     ) : (
-                      <span className="text-white/30 text-xs">No cover</span>
+                      <span className="text-white/30 text-xs">No Cover</span>
                     )}
                   </td>
-                  <td className="text-sm px-2">{book.bTitle}</td>
-                  <td className="text-sm px-2">{book.bAuthor}</td>
-                  <td className="px-2">{book.bQuantity}</td>
-                  <td className="px-2">
+                  <td
+                    className="text-xs px-1 truncate max-w-0"
+                    title={book.bTitle}
+                  >
+                    {book.bTitle}
+                  </td>
+                  <td
+                    className="text-xs px-1 truncate max-w-0"
+                    title={book.bAuthor}
+                  >
+                    {book.bAuthor}
+                  </td>
+                  <td className="text-xs px-1">{book.bQuantity}</td>
+                  <td className="px-1">
                     <p
-                      className={`border py-1 pb-1.5 text-xs rounded-2xl mx-2 ${statusStyle(book.bStatus)}`}
+                      className={`border py-0.5 text-xs rounded-2xl ${statusStyle(book.bStatus)}`}
                     >
                       {book.bStatus ?? "Available"}
                     </p>
                   </td>
-                  {/* qr row */}
-                  <td className="py-3 px-2 overflow-visible relative">
+                  <td className="py-2">
                     {book.bQR ? (
-                      // bQR is already a base64 data URL stored in the database — display directly
                       <img
                         src={book.bQR}
                         alt="QR Code"
-                        className="w-14 h-14 mx-auto cursor-pointer hover:scale-150 transition-transform duration-300"
+                        className="w-12 h-12 mx-auto cursor-pointer hover:scale-150 transition-transform duration-300"
                         title="Book QR Code"
                       />
                     ) : (
                       <span className="text-white/30 text-xs">No QR</span>
                     )}
                   </td>
-                  <td>
+                  <td className="w-14">
                     <img
                       src={editIcon}
                       alt="edit"
                       className="w-5 mx-auto cursor-pointer"
                     />
                   </td>
-                  <td>
+                  <td className="w-14">
                     <img
                       src={deleteIcon}
                       alt="delete"
