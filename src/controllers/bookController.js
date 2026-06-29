@@ -12,7 +12,11 @@ export async function getAllBooksController(req, res) {
     const books = await getAllBooks();
     res
       .status(200)
-      .json({ message: "Books fetched successfully", data: books });
+      .json({
+        success: true,
+        message: "Books fetched successfully",
+        data: books,
+      });
   } catch (error) {
     res
       .status(500)

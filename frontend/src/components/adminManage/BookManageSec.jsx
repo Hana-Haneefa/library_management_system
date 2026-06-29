@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import api from "../../services/api.js";
+
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
 import editIcon from "../../images/icons/edit.png";
@@ -14,6 +16,8 @@ function BookManageSec() {
   const [animate, setAnimate] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const [selectedBook, setSelectedBook] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -27,23 +31,50 @@ function BookManageSec() {
   const bookmng = Animation(500);
 
   // fetch all books from the db
-  const fetchBooks = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/books/all-books", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const result = await res.json();
-      if (res.ok) setBooks(result.data);
-    } catch (err) {
-      console.error("Failed to fetch books:", err);
-    }
-  };
+  // const fetchBooks = async () => {
+  //   try {
+  //     const res = await fetch("http://localhost:5000/api/books/all-books", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     const result = await res.json();
+  //     if (res.ok) setBooks(result.data);
+  //   } catch (err) {
+  //     console.error("Failed to fetch books:", err);
+  //   }
+  // };
 
+  // useEffect(() => {
+  //   fetchBooks();
+  // }, []);
+
+  //use axios
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  const fetchBooks = async () => {
+    try {
+      setLoading(true);
+
+      //route: /api/books/all-books
+      const res = await api.get("/api/books/all-books", {
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+
+      if (res.data.success) {
+        setBooks(res.data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching books: ", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // form open and close
   const openForm = () => {
@@ -87,13 +118,22 @@ function BookManageSec() {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/books/create-book", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: data,
-      });
+      // const res = await fetch("http://localhost:5000/api/books/create-book", {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   },
+      //   body: data,
+      // });
+
+      //using axios library _ route: /api/books/create-book
+      const res = await api.post("/api/books/create-book", data);
+
+      if (res.data.success) {
+        alert("Book added successfully!");
+        fetchBooks();
+        closeForm();
+      }
 
       const result = await res.json();
       if (!res.ok) throw new Error(result.error);
