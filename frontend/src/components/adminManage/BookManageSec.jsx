@@ -266,19 +266,19 @@ function BookManageSec() {
 
       {/* book table — horizontally scrollable on mobile */}
       <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-x-auto">
-        <table className="min-w-175 w-full text-white text-center table-fixed">
+        <table className="min-w-212.5 w-full text-white text-center table-fixed">
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4 w-28">ISBN</th>
-              <th className="w-16">Cover</th>
-              <th className="w-36">Title</th>
-              <th className="w-32">Author</th>
-              <th className="w-16">Copies</th>
-              <th className="w-28">Status</th>
-              <th className="w-20">QR</th>
-              <th className="w-12">Edit</th>
-              <th className="w-12">Delete</th>
+              <th className="py-4 px-2">ISBN</th>
+              <th className="px-2">Cover</th>
+              <th className="px-2">Title</th>
+              <th className="px-2">Author</th>
+              <th className="px-2">Copies</th>
+              <th className="px-2">Status</th>
+              <th className="px-2 w-20">QR</th>
+              <th className="px-2 w-12">Edit</th>
+              <th className="px-2 w-12">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -294,9 +294,9 @@ function BookManageSec() {
             ) : (
               books.map((book) => (
                 <tr key={book.bId} className="border-t-2 border-white/50">
-                  <td className="bg-blue-400"></td>
-                  <td className="text-sm">{book.bIsbn}</td>
-                  <td className="py-2 h-20">
+                  <td className="bg-blue-400 w-3"></td>
+                  <td className="text-sm px-2 py-3">{book.bIsbn}</td>
+                  <td className="py-2 px-2">
                     {book.coverImage ? (
                       <img
                         src={`http://localhost:5000/uploads/${book.coverImage}`}
@@ -307,17 +307,18 @@ function BookManageSec() {
                       <span className="text-white/30 text-xs">No cover</span>
                     )}
                   </td>
-                  <td className="text-sm">{book.bTitle}</td>
-                  <td className="text-sm">{book.bAuthor}</td>
-                  <td>{book.bQuantity}</td>
-                  <td>
+                  <td className="text-sm px-2">{book.bTitle}</td>
+                  <td className="text-sm px-2">{book.bAuthor}</td>
+                  <td className="px-2">{book.bQuantity}</td>
+                  <td className="px-2">
                     <p
                       className={`border py-1 pb-1.5 text-xs rounded-2xl mx-2 ${statusStyle(book.bStatus)}`}
                     >
                       {book.bStatus ?? "Available"}
                     </p>
                   </td>
-                  <td className="py-2">
+                  {/* qr row */}
+                  <td className="py-3 px-2 overflow-visible relative">
                     {book.bQR ? (
                       // bQR is already a base64 data URL stored in the database — display directly
                       <img

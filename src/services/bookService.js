@@ -35,7 +35,14 @@ export async function createBook(book) {
 
     //generate QR using book details
     const qrContent = `ID:${bookId}|Title:${title}|Author:${author}|ISBN:${isbn}`;
-    const qrBase64 = await qrcode.toDataURL(qrContent);
+    const qrBase64 = await qrcode.toDataURL(qrContent, {
+      width: 300,
+      margin: 2,
+      color: {
+        dark: "#000000",
+        light: "#ffffff",
+      },
+    });
 
     //save QR back to the same row
     await pool.query(`UPDATE books SET bQR =? WHERE bId = ?`, [
