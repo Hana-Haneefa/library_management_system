@@ -22,9 +22,9 @@ router.post(
 );
 router.get(
   "/all-borrows",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   getAllBorrowDataController,
 );
 router.get(
@@ -36,15 +36,15 @@ router.get(
 );
 router.put(
   "/update-borrow/:borrowId",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   updateBorrowDataController,
 );
 router.delete(
   "/delete-borrow/:borrowId",
-  authenticateToken,
-  authorizeAdmin,
+  // authenticateToken,
+  // authorizeAdmin,
   deleteBorrowDataController,
 );
 export default router;

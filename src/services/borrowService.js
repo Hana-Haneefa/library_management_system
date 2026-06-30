@@ -54,6 +54,34 @@ export async function getBorrowDataById(borrowId) {
   }
 }
 
+// export async function updateBorrowData(borrowId, updatedData) {
+//   try {
+//     const [existingBorrow] = await pool.query(
+//       "SELECT * FROM borrows WHERE brId = ?",
+//       [borrowId],
+//     );
+//     if (existingBorrow.length === 0) {
+//       throw new Error("Borrow data not found with the given ID");
+//     }
+//     const { status } = updatedData;
+//     const [result] = await pool.query(
+//       "UPDATE borrows SET brStatus = ? WHERE brId = ?",
+//       [status, borrowId],
+//     );
+//     if (result.affectedRows === 0) {
+//       throw new Error("Failed to update borrow data");
+//     }
+
+//     const [updatedBorrow] = await pool.query(
+//       `SELECT * FROM borrows WHERE brId =?`,
+//       [borrowId],
+//     );
+//     return updatedBorrow[0];
+//   } catch (err) {
+//     throw new Error(`Error updating borrow data: ${err.message}`);
+//   }
+// }
+
 export async function updateBorrowData(borrowId, updatedData) {
   try {
     const [existingBorrow] = await pool.query(
@@ -63,7 +91,13 @@ export async function updateBorrowData(borrowId, updatedData) {
     if (existingBorrow.length === 0) {
       throw new Error("Borrow data not found with the given ID");
     }
+
     const { status } = updatedData;
+    const allowedStatuses = ["borrowed", "returned"];
+    if (!status || !allowedStatuses.includes(status)) {
+      throw new Error(`Invalid or missing status value: ${status}`);
+    }
+
     const [result] = await pool.query(
       "UPDATE borrows SET brStatus = ? WHERE brId = ?",
       [status, borrowId],
@@ -73,7 +107,7 @@ export async function updateBorrowData(borrowId, updatedData) {
     }
 
     const [updatedBorrow] = await pool.query(
-      `SELECT * FROM borrows WHERE brId =?`,
+      "SELECT * FROM borrows WHERE brId = ?",
       [borrowId],
     );
     return updatedBorrow[0];

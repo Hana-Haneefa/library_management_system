@@ -9,7 +9,9 @@ import {
 export async function addBorrowDataController(req, res) {
   const { studentId, MonitorId, returnDate, status } = req.body;
   if (!studentId || !MonitorId || !returnDate || !status) {
-    return res.status(400).json({ error: "Missing required fields" });
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
   }
   try {
     const borrowData = await addBorrowData({
@@ -21,24 +23,36 @@ export async function addBorrowDataController(req, res) {
 
     res
       .status(201)
-      .json({ msg: "Borrow data added successfully", info: borrowData });
+      .json({
+        success: true,
+        msg: "Borrow data added successfully",
+        data: borrowData,
+      });
   } catch (err) {
     res
       .status(500)
-      .json({ msg: "Error adding borrow data", error: err.message });
+      .json({
+        success: false,
+        msg: "Error adding borrow data",
+        error: err.message,
+      });
   }
 }
 
 export async function getAllBorrowDataController(req, res) {
   try {
     const allBorrowData = await getAllBorrowData();
-    res
-      .status(200)
-      .json({ msg: "Borrow data retrieved successfully", info: allBorrowData });
+    res.status(200).json({
+      success: true,
+      msg: "Borrow data retrieved successfully",
+      data: allBorrowData,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({ msg: "Error fetching borrow data", error: err.message });
+    res.status(500).json({
+      success: false,
+      msg: "Error fetching borrow data",
+      error: err.message,
+    });
   }
 }
 
@@ -51,11 +65,19 @@ export async function getBorrowDataByIdController(req, res) {
     }
     res
       .status(200)
-      .json({ msg: "Borrow data retrieved successfully", info: borrowData });
+      .json({
+        success: true,
+        msg: "Borrow data retrieved successfully",
+        data: borrowData,
+      });
   } catch (err) {
     res
       .status(500)
-      .json({ msg: "Error fetching borrow data", error: err.message });
+      .json({
+        success: false,
+        msg: "Error fetching borrow data",
+        error: err.message,
+      });
   }
 }
 
@@ -72,18 +94,27 @@ export async function updateBorrowDataController(req, res) {
   try {
     const updatedBorrowData = await updateBorrowData(borrowId, { status });
     res.status(200).json({
+      success: true,
       msg: "Borrow data updated successfully",
-      info: updatedBorrowData,
+      data: updatedBorrowData,
     });
   } catch (err) {
     if (err.message.includes("Borrow data not found with the given ID")) {
       return res
         .status(404)
-        .json({ msg: "Borrow data not found", error: err.message });
+        .json({
+          success: false,
+          msg: "Borrow data not found",
+          error: err.message,
+        });
     }
     res
       .status(500)
-      .json({ msg: "Error updating borrow data", error: err.message });
+      .json({
+        success: false,
+        msg: "Error updating borrow data",
+        error: err.message,
+      });
   }
 }
 
@@ -95,6 +126,7 @@ export async function deleteBorrowDataController(req, res) {
   try {
     const deletedBorrowData = await deleteBorrowData(borrowId);
     res.status(200).json({
+      success: true,
       msg: "Borrow data deleted successfully",
       info: deletedBorrowData,
     });
@@ -102,10 +134,18 @@ export async function deleteBorrowDataController(req, res) {
     if (err.message.includes("Borrow data not found with the given ID")) {
       return res
         .status(404)
-        .json({ msg: "Borrow data not found", error: err.message });
+        .json({
+          success: false,
+          msg: "Borrow data not found",
+          error: err.message,
+        });
     }
     res
       .status(500)
-      .json({ msg: "Error deleting borrow data", error: err.message });
+      .json({
+        success: false,
+        msg: "Error deleting borrow data",
+        error: err.message,
+      });
   }
 }

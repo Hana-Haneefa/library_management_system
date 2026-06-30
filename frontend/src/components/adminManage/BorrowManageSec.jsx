@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import api from "../../services/api.js";
+
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
 import editIcon from "../../images/icons/edit.png";
@@ -11,6 +14,76 @@ import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
 function BorrowManageSec() {
   const borrowMng = Animation(500);
+  const [borrows, setBorrows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedBorrow, setSelectedBorrow] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetchBorrows();
+  }, []);
+
+  const fetchBorrows = async () => {
+    try {
+      setLoading(true);
+
+      //route: /api/borrows/all-borrows
+      const res = await api.get("/api/borrows/all-borrows");
+      if (res.data.success) {
+        setBorrows(res.data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching borrows: ", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //delete operation
+  const handleDelete = async (id) => {
+    if (
+      window.confirm("Are you sure you want to delete this borrow details?")
+    ) {
+      try {
+        //route: /api/borrows/delete-borrow
+        const res = await api.delete(`/api/borrows/delete-borrow/${id}`);
+        if (res.data.success) {
+          alert("Borrow detail deleted successfully!");
+          fetchBorrows();
+        }
+      } catch (err) {
+        console.error("Error deleting borrow detail");
+        alert("Failed to delete borrow detail");
+      }
+    }
+  };
+
+  //edit operation
+  const handleEditClick = (borrow) => {
+    setSelectedBorrow(borrow);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      //route: /api/borrows/update-borrow/:id
+      const res = await api.put(
+        `/api/borrows/update-borrow/${selectedBorrow.brId}`,
+        {
+          status: selectedBorrow.brStatus,
+        },
+      );
+      if (res.data.success) {
+        alert("Borrow status updated successfully!");
+        setIsModalOpen(false);
+        fetchBorrows();
+      }
+    } catch (err) {
+      console.error("Error updating borrow status: ", err);
+      alert("Failed to update borrow status");
+    }
+  };
 
   return (
     <div className="borrowMng" ref={borrowMng}>
@@ -184,66 +257,127 @@ function BorrowManageSec() {
           </thead>
 
           <tbody>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-blue-400"></td>
-              <td>0012</td>
-              <td>St003</td>
-              <td>TITLE</td>
+            {loading ? (
+              <tr>
+                <td colSpan={9} className="py-6 text-white/70">
+                  Loading borrows...
+                </td>
+              </tr>
+            ) : borrows.length === 0 ? (
+              <tr>
+                <td colSpan={9} className="py-6 text-white/70">
+                  No borrow records found
+                </td>
+              </tr>
+            ) : (
+              borrows.map((borrow) => (
+                <tr key={borrow.brId} className="border-t-2 border-white/50">
+                  <td
+                    className={
+                      borrow.brStatus === "returned"
+                        ? "bg-green-400 rounded-bl-xl"
+                        : "bg-orange-400 rounded-bl-xl"
+                    }
+                  ></td>
+                  <td>{borrow.brId}</td>
+                  <td>{borrow.brStudentId}</td>
+                  <td>{borrow.brBookId}</td>
 
-              <td>3</td>
-              <td className="py-2 flex items-center justify-center">
-                <p className="border w-full py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500">
-                  Available
-                </p>
-              </td>
-              <td></td>
-              <td>
-                <img src={editIcon} alt="edit icon" className="w-5 mx-auto" />
-              </td>
-              <td>
-                <img src={eyeIcon} alt="view icon" className="w-5 h-5" />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete icon"
-                  className="w-5 mx-auto"
-                />
-              </td>
-            </tr>
-            <tr className="border-t-2 border-white/50">
-              <td className="bg-green-400 rounded-bl-2xl"></td>
-              <td>0012</td>
-              <td>St552</td>
-              <td>TITLE</td>
-              <td>3</td>
-              <td className="py-2 flex items-center justify-center">
-                <p className="border w-full py-1 pb-1.5 text-sm rounded-2xl border-orange-600 text-orange-500">
-                  Borrowed
-                </p>
-              </td>
-              <td></td>
-              <td>
-                <img
-                  src={editIcon}
-                  alt="edit icon"
-                  className="w-5 h-auto mx-auto"
-                />
-              </td>
-              <td>
-                <img src={eyeIcon} alt="view icon" className="w-5 h-5" />
-              </td>
-              <td>
-                <img
-                  src={deleteIcon}
-                  alt="delete"
-                  className="w-5 h-auto mx-auto"
-                />
-              </td>
-            </tr>
+                  <td>3</td>
+                  <td className="py-2 flex items-center justify-center">
+                    <p
+                      className={`border w-full py-1 pb-1.5 text-sm rounded-2xl capitalize ${
+                        borrow.brStatus === "returned"
+                          ? "border-green-500 text-green-400"
+                          : "border-orange-600 text-orange-500"
+                      }`}
+                    >
+                      {borrow.brStatus}
+                    </p>
+                  </td>
+                  <td></td>
+                  <td>
+                    <img
+                      src={editIcon}
+                      alt="edit icon"
+                      className="w-5 mx-auto cursor-pointer"
+                      onClick={() => handleEditClick(borrow)}
+                    />
+                  </td>
+                  <td>
+                    <img
+                      src={eyeIcon}
+                      alt="view icon"
+                      className="w-5 h-5 cursor-pointer"
+                    />
+                  </td>
+                  <td>
+                    <img
+                      src={deleteIcon}
+                      alt="delete icon"
+                      className="w-5 mx-auto cursor-pointer"
+                      onClick={() => handleDelete(borrow.brId)}
+                    />
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* EDIT BORROW MODAL (Pop-up Form) */}
+      {isModalOpen && selectedBorrow && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-purple-950/90 border border-white/20 p-6 rounded-2xl w-96 text-white shadow-2xl relative">
+            <h2 className="text-2xl font-bold mb-1 font-serif">Edit Borrow</h2>
+            <p className="text-sm opacity-70 mb-4">
+              Borrow #{selectedBorrow.brId} &middot; Student{" "}
+              {selectedBorrow.brStudentId}
+            </p>
+
+            <form onSubmit={handleUpdate} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm opacity-80 mb-1">Status</label>
+                <select
+                  required
+                  className="w-full h-10 bg-white/10 rounded-md px-3 text-white border border-white/20 focus:outline-none focus:border-purple-400"
+                  value={selectedBorrow.brStatus || "borrowed"}
+                  onChange={(e) =>
+                    setSelectedBorrow({
+                      ...selectedBorrow,
+                      brStatus: e.target.value,
+                    })
+                  }
+                >
+                  <option value="borrowed" className="bg-purple-950">
+                    Borrowed
+                  </option>
+                  <option value="returned" className="bg-purple-950">
+                    Returned
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex gap-2 justify-end mt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 border-2 border-white/40 text-white font-semibold rounded-lg hover:bg-white/10 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-lg cursor-pointer transition-colors duration-300"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
