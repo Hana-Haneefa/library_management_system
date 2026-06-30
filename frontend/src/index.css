@@ -7,3 +7,18 @@
     opacity: 1;
   }
 }
+
+:root {
+  --animate-slide-down: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}

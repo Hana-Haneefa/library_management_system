@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api.js";
+import { useNavigate } from "react-router-dom";
 
 import exportIcon from "../../images/icons/export.png";
 import plusIcon from "../../images/icons/plus.png";
@@ -19,6 +20,14 @@ function BorrowManageSec() {
   const [selectedBorrow, setSelectedBorrow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
+  //handle add borrow click
+  const handleAddBorrowClick = () => {
+    navigate("/");
+  };
+
+  //use to fetch data
   useEffect(() => {
     fetchBorrows();
   }, []);
@@ -87,24 +96,26 @@ function BorrowManageSec() {
 
   return (
     <div className="borrowMng" ref={borrowMng}>
-      {/* ⁡⁣⁣⁢𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤⁡ */}
-      <div className="options flex gap-2 justify-end">
+      {/* 𝘰𝘱𝘵𝘪𝘰𝘯𝘴 𝘴𝘦𝘤 */}
+      <div className="options flex gap-2 justify-end flex-wrap">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <span>
             <img src={exportIcon} alt="" className="w-5 h-5" />
           </span>
-          <p>Export</p>
+          <p>Import</p>
         </button>
-        <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
+        <button
+          className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer"
+          onClick={() => handleAddBorrowClick()}
+        >
           <span>
             <img src={plusIcon} alt="" className="w-5 h-5" />
           </span>
-          <p>View All Borrows</p>
+          <p>Add New Borrow</p>
         </button>
       </div>
-
-      {/* 𝘤𝘢𝘳𝘥𝘴 */}
-      <div className="cards w-full grid grid-cols-4 gap-4 mt-2">
+      {/* 𝘤𝘢𝘳𝘥𝘴 — 1 col on mobile, 2 on sm, 4 on lg */}
+      <div className="cards w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
         {[
           "Total Borrows",
           "Borrow Analysis",
@@ -113,20 +124,24 @@ function BorrowManageSec() {
         ].map((title, i) => (
           <div
             key={i}
-            className="h-full w-full bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
+            className="h-36 sm:h-40 w-full bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
-            <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
+            <div className="icon w-8 h-8 sm:w-10 sm:h-10 rounded-full absolute top-3 right-3 sm:top-4 sm:right-4">
               <img
                 src={icon}
                 alt={title}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="content p-4">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="text-3xl font-bold text-white">1,234</p>
+            <div className="content p-3 sm:p-4">
+              <h2 className="text-base sm:text-xl font-semibold text-white leading-tight">
+                {title}
+              </h2>
+              <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                1,234
+              </p>
             </div>
-            <span className="absolute bottom-2 right-4 text-xs text-white/70">
+            <span className="absolute bottom-2 right-4 text-xs text-white/70 hidden sm:block">
               +5% from last month
             </span>
             <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -135,13 +150,14 @@ function BorrowManageSec() {
           </div>
         ))}
       </div>
-      <div className="searchSec flex flex-col mt-4 mb-4">
+      {/* search section */}
+      <div className="searchSec flex flex-col mt-4 mb-4 gap-2">
         <input
           type="search"
           placeholder="Search books by Title, Author, Genre..."
-          className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2 focus:outline-none"
+          className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
         />
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             name="category"
             id="category"
@@ -217,13 +233,13 @@ function BorrowManageSec() {
             <option value="borrowed" className="bg-purple-950 ">
               New Borrows
             </option>
-
             <option value="overdue" className="bg-purple-950 ">
               Overdue
             </option>
           </select>
         </div>
       </div>
+      {/* filters */}
       <div className="filterSec flex gap-2 justify-start">
         <button className="px-4 py-2 border-2 border-white/60 text-white font-semibold rounded-lg flex gap-2 items-center justify-center cursor-pointer">
           <p>Filter</p>
@@ -238,33 +254,40 @@ function BorrowManageSec() {
           </span>
         </button>
       </div>
-      <div className="table w-full mt-5 border-2 border-white/40 rounded-2xl">
-        <table className="w-full text-white text-center table-fixed">
+      {/* table wrapper for horizontal scroll */}
+      <div className="w-full mt-5 border-2 border-white/40 rounded-2xl overflow-x-auto">
+        <table className="min-w-212.5 w-full text-white text-center table-auto">
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4 w-28">ISBN</th>
-              <th className="w-28">StId</th>
-              <th className="w-44">Title</th>
-
+              <th className="py-4 w-24">ISBN</th>
+              <th className="w-24">StId</th>
+              <th className="w-40">Borrowed BookId</th>
+              <th className="w-32">Monitor Id</th>
               <th className="w-20">Copies</th>
-              <th>Status</th>
-              <th className="w-50" colSpan={3}>
-                Operations
-              </th>
+              <th className="w-36">Status</th>
+              <th className="w-12">Edit</th>
+              <th className="w-12">View</th>
+              <th className="w-12">Delete</th>
             </tr>
           </thead>
 
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={7} className="py-6 text-white/70">
+                <td
+                  colSpan={10}
+                  className="py-6 text-white/70 italic text-center"
+                >
                   Loading borrows...
                 </td>
               </tr>
             ) : borrows.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-6 text-white/70">
+                <td
+                  colSpan={10}
+                  className="py-6 text-white/70 italic text-center"
+                >
                   No borrow records found
                 </td>
               </tr>
@@ -274,25 +297,27 @@ function BorrowManageSec() {
                   <td
                     className={
                       borrow.brStatus === "returned"
-                        ? "bg-green-400 rounded-bl-xl"
-                        : "bg-orange-400 rounded-bl-xl"
+                        ? "bg-green-400"
+                        : "bg-orange-400"
                     }
                   ></td>
-                  <td>{borrow.brId}</td>
-                  <td>{borrow.brStudentId}</td>
-                  <td>{borrow.brBookId}</td>
-
+                  <td className="py-3 text-sm">{borrow.brId}</td>
+                  <td className="text-sm">{borrow.brStudentId}</td>
+                  <td className="text-sm">{borrow.brBookId}</td>
+                  <td className="text-sm">{borrow.brMonitorId}</td>
                   <td>3</td>
-                  <td className="py-2 px-4 flex items-center justify-center">
-                    <p
-                      className={`border w-50 py-1 pb-1.5 text-sm rounded-2xl capitalize ${
-                        borrow.brStatus === "returned"
-                          ? "border-green-500 text-green-400"
-                          : "border-orange-600 text-orange-500"
-                      }`}
-                    >
-                      {borrow.brStatus}
-                    </p>
+                  <td className="py-2 px-2">
+                    <div className="flex items-center justify-center">
+                      <p
+                        className={`border w-full max-w-30 py-1 pb-1.5 text-xs rounded-2xl capitalize ${
+                          borrow.brStatus === "returned"
+                            ? "border-green-500 text-green-400"
+                            : "border-orange-600 text-orange-500"
+                        }`}
+                      >
+                        {borrow.brStatus}
+                      </p>
+                    </div>
                   </td>
                   <td>
                     <img
@@ -323,7 +348,6 @@ function BorrowManageSec() {
           </tbody>
         </table>
       </div>
-
       {/* EDIT BORROW MODAL (Pop-up Form) */}
       {isModalOpen && selectedBorrow && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">

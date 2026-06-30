@@ -13,8 +13,13 @@ import BookCard from "../components/Card.jsx";
 import HeroSec from "../components/HeroSection.jsx";
 import Navigation from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function HomePage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   return (
     <div>
       <div>
@@ -191,7 +196,6 @@ function HomePage() {
         </div>
       </div>
       {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
-
       <h1 className="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
         Trending Books
       </h1>
@@ -204,9 +208,7 @@ function HomePage() {
         <BookCard />
         <BookCard />
       </div>
-
       {/* ⁡⁣⁣⁢announcements and news section⁡ */}
-
       <div className="topic flex items-center justify-center mt-10 mb-5 px-4">
         <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
           Announcements & News
@@ -215,7 +217,6 @@ function HomePage() {
           2 new
         </span>
       </div>
-
       <div className="announcements bg-purple-800 text-white rounded-lg p-4 mx-4">
         <div className="container w-full h-96  flex items-start justify-center gap-4 px-4">
           {/* ⁡⁣⁣⁢𝘯𝘦𝘸𝘴 𝘭𝘦𝘧𝘵 𝘥𝘪𝘷⁡ */}
