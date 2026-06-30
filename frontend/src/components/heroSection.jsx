@@ -40,7 +40,7 @@ function HeroSec() {
           src={hero}
           alt="hero-background-image"
           className="w-full h-full overflow-hidden object-cover relative"
-        />
+         />
         <div className="left w-full mx-2 h-140 absolute bottom-5 left-0 bg-linear-to-r from-black/80 to-black/0 p-4">
           <div className="book w-2/3 h-full flex gap-10 ">
             <div className="img w-1/2 h-full overflow-hidden shadow-md rounded-bl-4xl rounded-tr-4xl bg-white/10">
