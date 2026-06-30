@@ -202,7 +202,15 @@ function LibrarianManage() {
                 <td>{librarian.hName}</td>
                 <td>{librarian.hEmail}</td>
                 <td>
-                  <p className="font-semibold">{librarian.hRole}</p>
+                  <p
+                    className={`font-semibold border text-sm rounded-2xl py-1 pb-1.5 capitalize ${
+                      librarian.hRole === "admin"
+                        ? "border-purple-800 text-purple-400"
+                        : "border-green-700 text-green-500"
+                    }`}
+                  >
+                    {librarian.hRole}
+                  </p>
                 </td>
                 <td className="py-2 flex items-center justify-center">
                   <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500 w-2/3">
