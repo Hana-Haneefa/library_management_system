@@ -185,7 +185,7 @@ function LibrarianManage() {
               <th className="py-4 w-20">LibrarianId</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Payment Statement</th>
+              <th>Role</th>
               <th>Status</th>
               <th className="w-40" colSpan={3}>
                 Operations
@@ -202,7 +202,7 @@ function LibrarianManage() {
                 <td>{librarian.hName}</td>
                 <td>{librarian.hEmail}</td>
                 <td>
-                  <p className="font-semibold text-green-600 text-sm">Paid</p>
+                  <p className="font-semibold">{librarian.hRole}</p>
                 </td>
                 <td className="py-2 flex items-center justify-center">
                   <p className="border py-1 pb-1.5 text-sm rounded-2xl border-green-600 text-green-500 w-2/3">
