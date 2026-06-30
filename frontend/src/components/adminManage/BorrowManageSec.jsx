@@ -247,10 +247,9 @@ function BorrowManageSec() {
               <th className="w-28">StId</th>
               <th className="w-44">Title</th>
 
-              <th>Copies</th>
+              <th className="w-20">Copies</th>
               <th>Status</th>
-              <th>QR</th>
-              <th className="w-32" colSpan={3}>
+              <th className="w-50" colSpan={3}>
                 Operations
               </th>
             </tr>
@@ -259,13 +258,13 @@ function BorrowManageSec() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={9} className="py-6 text-white/70">
+                <td colSpan={7} className="py-6 text-white/70">
                   Loading borrows...
                 </td>
               </tr>
             ) : borrows.length === 0 ? (
               <tr>
-                <td colSpan={9} className="py-6 text-white/70">
+                <td colSpan={7} className="py-6 text-white/70">
                   No borrow records found
                 </td>
               </tr>
@@ -284,9 +283,9 @@ function BorrowManageSec() {
                   <td>{borrow.brBookId}</td>
 
                   <td>3</td>
-                  <td className="py-2 flex items-center justify-center">
+                  <td className="py-2 px-4 flex items-center justify-center">
                     <p
-                      className={`border w-full py-1 pb-1.5 text-sm rounded-2xl capitalize ${
+                      className={`border w-50 py-1 pb-1.5 text-sm rounded-2xl capitalize ${
                         borrow.brStatus === "returned"
                           ? "border-green-500 text-green-400"
                           : "border-orange-600 text-orange-500"
@@ -295,7 +294,6 @@ function BorrowManageSec() {
                       {borrow.brStatus}
                     </p>
                   </td>
-                  <td></td>
                   <td>
                     <img
                       src={editIcon}
@@ -308,7 +306,7 @@ function BorrowManageSec() {
                     <img
                       src={eyeIcon}
                       alt="view icon"
-                      className="w-5 h-5 cursor-pointer"
+                      className="w-5 mx-auto cursor-pointer"
                     />
                   </td>
                   <td>
