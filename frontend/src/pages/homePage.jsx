@@ -16,398 +16,451 @@ import { Footer } from "../components/Footer.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+/* ─── Quick Action Card data ─── */
+const quickActions = [
+  {
+    label: "Search Catalogue",
+    badge: "10+ Veries",
+    badgeColor: "bg-violet-600",
+    textColor: "text-violet-300",
+    borderColor: "border-violet-500/40",
+    desc: "Find books, journals, and digital resources in one place.",
+    icon: "🔍",
+  },
+  {
+    label: "Book Collection",
+    badge: "2500+ Books",
+    badgeColor: "bg-blue-600",
+    textColor: "text-blue-300",
+    borderColor: "border-blue-500/40",
+    desc: "Explore our physical and digital library collections.",
+    icon: "📚",
+  },
+  {
+    label: "Study Room",
+    badge: "22 Available",
+    badgeColor: "bg-emerald-600",
+    textColor: "text-emerald-300",
+    borderColor: "border-emerald-500/40",
+    desc: "Reserve a quiet space for focused study or group work.",
+    icon: "🏛️",
+  },
+  {
+    label: "Fine Details",
+    badge: "0 Dues",
+    badgeColor: "bg-rose-600",
+    textColor: "text-rose-300",
+    borderColor: "border-rose-500/40",
+    desc: "Check and pay your outstanding library fines.",
+    icon: "📋",
+  },
+];
+
+/* ─── Steps data ─── */
+const steps = [
+  {
+    num: "01",
+    icon: step1,
+    title: "Register",
+    desc: "Create your library account. Admin involvement required for registration.",
+    color: "from-violet-500 to-purple-600",
+    shadow: "shadow-violet-500/30",
+    badge: "Step 1",
+    badgeColor: "bg-violet-100 text-violet-700",
+  },
+  {
+    num: "02",
+    icon: step2,
+    title: "Browse the Catalog",
+    desc: "Search for books, journals, and digital resources in our catalog.",
+    color: "from-blue-500 to-cyan-500",
+    shadow: "shadow-blue-500/30",
+    badge: "Step 2",
+    badgeColor: "bg-blue-100 text-blue-700",
+  },
+  {
+    num: "03",
+    icon: step3,
+    title: "Scan and Borrow",
+    desc: "Use our easy scanning system to borrow books and other resources.",
+    color: "from-emerald-500 to-teal-500",
+    shadow: "shadow-emerald-500/30",
+    badge: "Step 3",
+    badgeColor: "bg-emerald-100 text-emerald-700",
+  },
+  {
+    num: "04",
+    icon: step4,
+    title: "Return & Repeat",
+    desc: "Return items on time and continue exploring our growing collection.",
+    color: "from-rose-500 to-pink-500",
+    shadow: "shadow-rose-500/30",
+    badge: "Step 4",
+    badgeColor: "bg-rose-100 text-rose-700",
+  },
+];
+
+function SectionHeading({ eyebrow, title, subtitle }) {
+  return (
+    <div className="text-center mb-12">
+      {eyebrow && (
+        <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-violet-500 bg-violet-50 border border-violet-200 rounded-full px-4 py-1 mb-3">
+          {eyebrow}
+        </span>
+      )}
+      <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 leading-tight">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="text-gray-500 text-base max-w-xl mx-auto">{subtitle}</p>
+      )}
+    </div>
+  );
+}
+
 function HomePage() {
   const location = useLocation();
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div>
-        <Navigation />
-      </div>
-      <div>
-        <HeroSec />
-      </div>
-      <div className="container w-full h-50 grid grid-cols-4 gap-2 px-4 ">
-        <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
-          <div className="img relative h-48 overflow-hidden rounded-xl">
-            <img
-              src={image}
-              alt=""
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-40"
-            />
-            <p className="absolute top-3 right-3 bg-purple-700 text-white py-1 px-3 rounded-full">
-              10+ Veries
-            </p>
-            <span className="absolute bottom-3 left-3 z-10 font-medium text-lg text-purple-700  group-hover:text-purple-100 group-hover:bottom-20 transform-all duration-300 ">
-              Search Catalogue
-            </span>
-            <p className="absolute bottom-4 left-3 opacity-0 group-hover:opacity-100 transform-opacity duration-300 bg-white/80 ">
-              Find books, journals, and digital resources in one place
-            </p>
-            <div className="overlay w-full h-full bg-black object-cover absolute opacity-0 top-0 left-0 group-hover:opacity-50 transition-opacity duration-500 ease-in-out"></div>
-          </div>
-        </div>
-        <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
-          <div className="img relative h-48 overflow-hidden rounded-xl">
-            <img
-              src={image}
-              alt=""
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-40"
-            />
-            <p className="absolute top-3 right-3 bg-blue-700 text-white py-1 px-3 rounded-full">
-              2500+ Books
-            </p>
-            <span className="absolute bottom-3 left-3 z-10 font-medium text-lg text-blue-700  group-hover:text-purple-100 group-hover:bottom-20 transform-all duration-300 ">
-              Book Collection
-            </span>
-            <p className="absolute bottom-4 left-3 opacity-0 group-hover:opacity-100 transform-opacity duration-300 bg-white/80 ">
-              Explore our physical and digital library <br /> collections
-            </p>
-            <div className="overlay w-full h-full bg-black object-cover absolute opacity-0 top-0 left-0 group-hover:opacity-50 transition-opacity duration-500 ease-in-out"></div>
-          </div>
-        </div>
-        <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
-          <div className="img relative h-48 overflow-hidden rounded-xl">
-            <img
-              src={image}
-              alt=""
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-40"
-            />
-            <p className="absolute top-3 right-3 bg-green-700 text-white py-1 px-3 rounded-full">
-              22 available
-            </p>
-            <span className="absolute bottom-3 left-3 z-10 font-medium text-lg text-green-700  group-hover:text-green-100 group-hover:bottom-20 transform-all duration-300 ">
-              Study Room
-            </span>
-            <p className="absolute bottom-4 left-3 opacity-0 group-hover:opacity-100 transform-opacity duration-300 bg-white/80 ">
-              Reserve a quiet space for focused study or group work
-            </p>
-            <div className="overlay w-full h-full bg-black object-cover absolute opacity-0 top-0 left-0 group-hover:opacity-50 transition-opacity duration-500 ease-in-out"></div>
-          </div>
-        </div>
-        <div className="  rounded-xl hover:scale-105 transition-transform duration-300 ease-in-out group overflow-hidden">
-          <div className="img relative h-48 overflow-hidden rounded-xl">
-            <img
-              src={image}
-              alt=""
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-40"
-            />
-            <p className="absolute top-3 right-3 bg-purple-700 text-white py-1 px-3 rounded-full">
-              0 dues
-            </p>
-            <span className="absolute bottom-3 left-3 z-10 font-medium text-lg text-purple-700  group-hover:text-purple-100 group-hover:bottom-20 transform-all duration-300 ">
-              Fine Details
-            </span>
-            <p className="absolute bottom-4 left-3 opacity-0 group-hover:opacity-100 transform-opacity duration-300 bg-white/80 ">
-              Check and pay your outstanding <br />
-              library fines
-            </p>
-            <div className="overlay w-full h-full bg-black object-cover absolute opacity-0 top-0 left-0 group-hover:opacity-50 transition-opacity duration-500 ease-in-out"></div>
-          </div>
-        </div>
-      </div>
-      {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯 ⁡⁡*/}
-      <div className="cards">
-        <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
-          How to use the library?
-        </h1>
-        <p className="text-center text-gray-600 text-sm font-semibold">
-          No paperwork, no manual entry, just scan and go.
-        </p>
-        {/* 𝘤𝘢𝘳𝘥 𝘴𝘦𝘵 */}
-        <div className="cardSet w-full h-60 grid grid-cols-4 gap-4 px-4 mt-5">
-          {/* ⁡⁣⁣⁢first card⁡ */}
-          <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
-            <div className="img w-10 h-10 rounded-lg">
-              <img
-                src={step1}
-                alt="Register Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <p className="w-full text-center text-purple-600 font-semibold">
-              Step 1
-            </p>
-            <h3 className="text-center text-lg font-bold">Register</h3>
-            <p className="text-center text-sm text-gray-600">
-              Create your library account in minutes. Admin involvement required
-              for Registration.
-            </p>
-          </div>
+    <div className="bg-gray-50 overflow-x-hidden">
+      {/* ── Navigation ── */}
+      <Navigation />
 
-          {/* ⁡⁣⁣⁡⁣⁣⁢𝘴𝘦𝘤𝘰𝘯𝘥 𝘤𝘢𝘳𝘥⁡⁡ */}
-          <div className="rounded-2xl flex flex-col items-center justify-center bg-blue-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-blue-300">
-            <div className="img w-10 h-10 rounded-lg">
-              <img
-                src={step2}
-                alt="Browse Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <p className="w-full text-center text-blue-600 font-semibold">
-              Step 2
-            </p>
-            <h3 className="text-center text-lg font-bold">
-              Browse the Catalog
-            </h3>
-            <p className="text-center text-sm text-gray-600">
-              Search for books, journals, and digital resources in our catalog.
-            </p>
-          </div>
+      {/* ── Hero ── */}
+      <HeroSec />
 
-          {/* ⁡⁣⁣⁢𝘵𝘩𝘪𝘳𝘥 𝘤𝘢𝘳𝘥⁡ */}
-          <div className="rounded-2xl flex flex-col items-center justify-center bg-green-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-green-300">
-            <div className="img w-10 h-10 rounded-lg">
-              <img
-                src={step3}
-                alt="Scan Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <p className="w-full text-center text-green-600 font-semibold">
-              Step 3
-            </p>
-            <h3 className="text-center text-lg font-bold">Scan and Borrow</h3>
-            <p className="text-center text-sm text-gray-600">
-              Use our easy-to-use scanning system to borrow books and other
-              resources.
-            </p>
-          </div>
+      {/* ══════════════════════════════════════
+          QUICK ACTION CARDS
+      ══════════════════════════════════════ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <SectionHeading
+          eyebrow="Explore"
+          title="What would you like to do?"
+          subtitle="Everything you need to make the most of your library experience."
+        />
 
-          {/* ⁡⁣⁣⁢𝘧𝘰𝘶𝘳𝘵𝘩 𝘤𝘢𝘳𝘥⁡ */}
-          <div className="rounded-2xl flex flex-col items-center justify-center bg-purple-200 p-4 shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out border-b-2 border-l-4 border-purple-300">
-            <div className="img w-10 h-10 rounded-lg">
-              <img
-                src={step4}
-                alt="Return Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <p className="w-full text-center text-purple-600 font-semibold">
-              Step 4
-            </p>
-            <h3 className="text-center text-lg font-bold">Return & Repeat</h3>
-            <p className="text-center text-sm text-gray-600">
-              Return borrowed items on time and continue exploring our
-              collection.
-            </p>
-          </div>
-        </div>
-      </div>
-      {/* ⁡⁣⁣⁢𝘤𝘢𝘳𝘥 𝘴𝘦𝘤𝘵𝘪𝘰𝘯⁡ ⁡⁡*/}
-      <h1 className="text-purple-800 text-xl font-bold text-center mt-10 mb-5">
-        Trending Books
-      </h1>
-      <div className="trendings grid grid-cols-6 gap-4 ">
-        <BookCard />
-        <BookCard />
-        <BookCard />
-
-        <BookCard />
-        <BookCard />
-        <BookCard />
-      </div>
-      {/* ⁡⁣⁣⁢announcements and news section⁡ */}
-      <div className="topic flex items-center justify-center mt-10 mb-5 px-4">
-        <h1 className="text-purple-800 text-xl font-bold text-center mt-5">
-          Announcements & News
-        </h1>
-        <span className="bg-purple-700 text-white rounded-full text-xs font-medium py-1 px-3 italic">
-          2 new
-        </span>
-      </div>
-      <div className="announcements bg-purple-800 text-white rounded-lg p-4 mx-4">
-        <div className="container w-full h-96  flex items-start justify-center gap-4 px-4">
-          {/* ⁡⁣⁣⁢𝘯𝘦𝘸𝘴 𝘭𝘦𝘧𝘵 𝘥𝘪𝘷⁡ */}
-          <div
-            className="left w-1/2 h-full rounded-lg bg-white/20 border-l-4 border-b-2 border-white flex flex-col gap-4 hover:scale-110 transition-transform duration-300 z-10"
-            style={{
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              borderColor: "rgba(167, 139, 250, 0.4)",
-              borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-              borderRight: "1px solid rgba(255, 255, 255, 0.1)",
-              boxShadow:
-                "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
-            }}
-          >
-            <div className="img w-full h-1/2 rounded-t-lg overflow-hidden relative">
-              <img
-                src={newsLeft}
-                alt="newly arrived images news"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute top-2 left-2 bg-purple-700 text-white rounded-full text-xs font-medium py-1 px-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickActions.map((item, i) => (
+            <div
+              key={i}
+              className={`group relative rounded-2xl overflow-hidden border ${item.borderColor} bg-white shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer`}
+            >
+              {/* Background image with overlay */}
+              <div className="relative h-44 overflow-hidden">
                 <img
-                  src={pinned}
-                  alt="Pinned Icon"
-                  className="w-4 h-4 inline-block mr-1"
+                  src={image}
+                  alt={item.label}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                Pinned
-              </span>
-            </div>
-            <div className="text flex flex-col p-2">
-              <span className=" bg-purple-200 text-purple-800 rounded-full text-xs w-36 font-medium py-1 px-3">
-                <img
-                  src={bell}
-                  alt="Pinned Icon"
-                  className="w-4 h-4 inline-block mr-1 my-0.5"
-                />
-                Announcement
-              </span>
-              <h3 className="text-lg font-bold mt-2">
-                45 new books added across 6 genres this week
-              </h3>
-              <p className="text-sm text-gray-200 mt-1 mb-2.5">
-                Our library has expanded its collection with 45 new books across
-                6 genres, including fiction, non-fiction, science, history, and
-                more. Explore the latest additions and discover your next great
-                read!
-              </p>
-              <hr></hr>
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
 
-              <div className="flex justify-between px-2 items-center">
-                <span className="p-4 text-xs text-gray-300">
-                  <img
-                    src={calendar}
-                    alt="calendar Icon"
-                    className="w-4 h-4 inline-block mr-1 mb-1"
-                  />
-                  3rd June 2026
+                {/* Badge */}
+                <span
+                  className={`absolute top-3 right-3 ${item.badgeColor} text-white text-xs font-semibold py-1 px-3 rounded-full shadow`}
+                >
+                  {item.badge}
                 </span>
-                <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
-                  <img
-                    src={arrowRight}
-                    alt="calendar Icon"
-                    className="w-4 h-4 inline-block mr-1 mb-1"
-                  />
-                  Read More
-                </span>
+
+                {/* Icon */}
+                <div className="absolute bottom-3 left-3 text-3xl">
+                  {item.icon}
+                </div>
+              </div>
+
+              {/* Text content */}
+              <div className="p-4">
+                <h3
+                  className={`font-bold text-lg mb-1 ${item.textColor.replace("text-", "text-").replace("300", "700")}`}
+                >
+                  {item.label}
+                </h3>
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  {item.desc}
+                </p>
+                <div
+                  className={`mt-3 flex items-center gap-1 text-xs font-semibold ${item.textColor.replace("300", "600")}`}
+                >
+                  Explore
+                  <img src={arrowRight} alt="" className="w-3 h-3" />
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          STATS STRIP
+      ══════════════════════════════════════ */}
+      <div className="bg-linear-to-r from-violet-700 via-purple-700 to-indigo-700 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+            {[
+              { num: "2,500+", label: "Books Available" },
+              { num: "1,200+", label: "Active Members" },
+              { num: "98%", label: "Satisfaction Rate" },
+              { num: "45+", label: "New This Week" },
+            ].map((stat, i) => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <span className="text-3xl md:text-4xl font-black tracking-tight">
+                  {stat.num}
+                </span>
+                <span className="text-violet-200 text-sm font-medium uppercase tracking-widest">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="right w-1/2 h-full rounded-lg flex flex-col gap-2">
-            {/* ⁡⁣⁣⁢news right top div⁡ */}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════
+          HOW TO USE
+      ══════════════════════════════════════ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <SectionHeading
+          eyebrow="Getting Started"
+          title="How to use the library?"
+          subtitle="No paperwork, no manual entry — just scan and go in four simple steps."
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {/* Connecting dashed line (desktop only) */}
+          <div className="hidden lg:block absolute top-14 left-[12.5%] right-[12.5%] h-px border-t-2 border-dashed border-violet-200 z-0" />
+
+          {steps.map((step, i) => (
             <div
-              className="rtop w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white flex hover:scale-110 transition-transform duration-300 hover:z-20"
-              style={{
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-                borderColor: "rgba(167, 139, 250, 0.4)",
-                borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-                borderRight: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow:
-                  "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
-              }}
+              key={i}
+              className="relative z-10 bg-white rounded-3xl p-6 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-gray-100 flex flex-col items-center text-center"
             >
-              <div className="img w-1/4  rounded-l-lg h-full relative overflow-hidden">
+              {/* Numbered circle */}
+              <div
+                className={`w-14 h-14 rounded-2xl bg-linear-to-br ${step.color} shadow-lg ${step.shadow} flex items-center justify-center mb-4`}
+              >
+                <img
+                  src={step.icon}
+                  alt={step.title}
+                  className="w-8 h-8 object-contain brightness-0 invert"
+                />
+              </div>
+
+              <span
+                className={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 ${step.badgeColor}`}
+              >
+                {step.badge}
+              </span>
+              <h3 className="text-lg font-extrabold text-gray-800 mb-2">
+                {step.title}
+              </h3>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                {step.desc}
+              </p>
+
+              {/* Step number watermark */}
+              <span className="absolute top-4 right-5 text-5xl font-black text-gray-100 select-none">
+                {step.num}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          TRENDING BOOKS
+      ══════════════════════════════════════ */}
+      <section className="bg-linear-to-b from-white to-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+            <div>
+              <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-violet-500 bg-violet-50 border border-violet-200 rounded-full px-4 py-1 mb-2">
+                Popular
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+                Trending Books
+              </h2>
+            </div>
+            <button className="flex items-center gap-2 text-violet-600 font-semibold text-sm hover:gap-3 transition-all duration-200 group">
+              View all books
+              <img
+                src={arrowRight}
+                alt=""
+                className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200"
+              />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+            <BookCard />
+            <BookCard />
+            <BookCard />
+            <BookCard />
+            <BookCard />
+            <BookCard />
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          ANNOUNCEMENTS & NEWS
+      ══════════════════════════════════════ */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
+            <div>
+              <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-violet-500 bg-violet-50 border border-violet-200 rounded-full px-4 py-1 mb-2">
+                Stay Updated
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+                Announcements & News
+              </h2>
+            </div>
+            <span className="animate-pulse bg-violet-600 text-white text-xs font-bold py-1.5 px-4 rounded-full shadow-md shadow-violet-300">
+              🔔 2 New
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            {/* ── Featured / Pinned Article ── */}
+            <div className="group rounded-3xl overflow-hidden bg-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 flex flex-col">
+              <div className="relative h-56 overflow-hidden">
                 <img
                   src={newsLeft}
-                  alt="newly arrived images news"
-                  className="w-full h-full object-cover"
+                  alt="New book arrivals"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <span className="absolute top-2 left-2 bg-red-700 text-red-300 rounded-full text-xs font-medium py-1 px-3">
-                  <img
-                    src={pinned}
-                    alt="Pinned Icon"
-                    className="w-4 h-4 inline-block mr-1"
-                  />
-                  Alert
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+                <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-violet-700 rounded-full text-xs font-bold py-1.5 px-3 flex items-center gap-1.5 shadow">
+                  <img src={pinned} alt="" className="w-3.5 h-3.5" />
+                  Pinned
                 </span>
               </div>
-              <div className="text w-3/4 h-full p-2">
-                <h3 className="text-lg font-bold mt-2">
-                  System maintanance - June 5, 2.00pm-8.00pm
+
+              <div className="p-6 flex flex-col flex-1">
+                <span className="inline-flex items-center gap-1.5 bg-violet-100 text-violet-700 rounded-full text-xs font-bold py-1 px-3 w-fit mb-4">
+                  <img src={bell} alt="" className="w-3.5 h-3.5" />
+                  Announcement
+                </span>
+                <h3 className="text-xl font-extrabold text-gray-900 mb-2 leading-snug">
+                  45 new books added across 6 genres this week
                 </h3>
-                <p className="text-sm text-gray-200 mt-1 mb-2.5">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Itaque, at. repudiandae! nostrum, tenetur fugiat accusantium?
+                <p className="text-gray-500 text-sm leading-relaxed flex-1">
+                  Our library has expanded its collection with 45 new books
+                  across 6 genres, including fiction, non-fiction, science,
+                  history, and more. Explore the latest additions and discover
+                  your next great read!
                 </p>
-
-                <hr />
-
-                <div className="flex justify-between px-2 items-center">
-                  <span className="p-4 text-xs text-gray-300">
-                    <img
-                      src={calendar}
-                      alt="calendar Icon"
-                      className="w-4 h-4 inline-block mr-1 mb-1"
-                    />
+                <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <img src={calendar} alt="" className="w-3.5 h-3.5" />
                     3rd June 2026
                   </span>
-                  <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
+                  <button className="flex items-center gap-1.5 text-violet-600 text-sm font-bold hover:gap-2.5 transition-all duration-200 group/btn">
+                    Read More
                     <img
                       src={arrowRight}
-                      alt="calendar Icon"
-                      className="w-4 h-4 inline-block mr-1 mb-1"
+                      alt=""
+                      className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200"
                     />
-                    Details
-                  </span>
+                  </button>
                 </div>
               </div>
             </div>
-            <div
-              className="rbottom w-full h-1/2 rounded-lg border-2 bg-white/20 border-l-4 border-b-2 border-white flex hover:scale-110 transition-transform duration-300 hover:z-20"
-              style={{
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-                borderColor: "rgba(167, 139, 250, 0.4)",
-                borderTop: "1px solid rgba(255, 255, 255, 0.3)",
-                borderRight: "1px solid rgba(255, 255, 255, 0.1)",
-                boxShadow:
-                  "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
-              }}
-            >
-              <div className="img w-1/4 rounded-l-lg h-full relative overflow-hidden">
-                <img
-                  src={newsLeft}
-                  alt="newly arrived images news"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-2 left-2 bg-green-700 text-green-300 rounded-full text-xs font-medium py-1 px-3">
+
+            {/* ── Side Articles ── */}
+            <div className="flex flex-col gap-5">
+              {/* Alert card */}
+              <div className="group flex rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 border border-gray-100 flex-1">
+                <div className="relative w-32 sm:w-40 shrink-0 overflow-hidden">
                   <img
-                    src={pinned}
-                    alt="Pinned Icon"
-                    className="w-4 h-4 inline-block mr-1"
+                    src={newsLeft}
+                    alt="maintenance"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  Update
-                </span>
-              </div>
-              <div className="text w-3/4 h-full p-2">
-                <h3 className="text-lg font-bold mt-2">
-                  QR scan for quick return process
-                </h3>
-                <p className="text-sm text-gray-200 mt-1 mb-2.5">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Itaque, at. repudiandae! nostrum, tenetur fugiat accusantium?
-                </p>
-
-                <hr />
-
-                <div className="flex justify-between px-2 items-center">
-                  <span className="p-4 text-xs text-gray-300">
-                    <img
-                      src={calendar}
-                      alt="calendar Icon"
-                      className="w-4 h-4 inline-block mr-1 mb-1"
-                    />
-                    4rd June 2026
-                  </span>
-                  <span className="p-4 text-sm cursor-pointer text-white align-self-end hover:underline">
-                    <img
-                      src={arrowRight}
-                      alt="calendar Icon"
-                      className="w-4 h-4 inline-block mr-1 mb-1"
-                    />
-                    Details
+                  <div className="absolute inset-0 bg-black/20" />
+                  <span className="absolute top-2 left-2 bg-red-600 text-white rounded-full text-xs font-bold py-0.5 px-2 flex items-center gap-0.5 shadow">
+                    <img src={pinned} alt="" className="w-3 h-3" /> Alert
                   </span>
                 </div>
+                <div className="p-4 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="font-extrabold text-gray-900 text-base leading-snug mb-1">
+                      System Maintenance — June 5, 2:00 pm – 8:00 pm
+                    </h3>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
+                      The online catalog and booking features will be
+                      temporarily offline for planned system updates.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <img src={calendar} alt="" className="w-3 h-3" />
+                      3rd June 2026
+                    </span>
+                    <button className="flex items-center gap-1 text-red-500 text-xs font-bold hover:gap-2 transition-all duration-200">
+                      Details{" "}
+                      <img src={arrowRight} alt="" className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Update card */}
+              <div className="group flex rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 border border-gray-100 flex-1">
+                <div className="relative w-32 sm:w-40 shrink-0 overflow-hidden">
+                  <img
+                    src={newsLeft}
+                    alt="QR update"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/20" />
+                  <span className="absolute top-2 left-2 bg-emerald-600 text-white rounded-full text-xs font-bold py-0.5 px-2 flex items-center gap-0.5 shadow">
+                    <img src={pinned} alt="" className="w-3 h-3" /> Update
+                  </span>
+                </div>
+                <div className="p-4 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="font-extrabold text-gray-900 text-base leading-snug mb-1">
+                      QR Scan for Quick Book Return
+                    </h3>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">
+                      Returning books is now even faster. Simply scan the QR
+                      code tag at the counter and you're done.
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <span className="flex items-center gap-1 text-xs text-gray-400">
+                      <img src={calendar} alt="" className="w-3 h-3" />
+                      4th June 2026
+                    </span>
+                    <button className="flex items-center gap-1 text-emerald-600 text-xs font-bold hover:gap-2 transition-all duration-200">
+                      Details{" "}
+                      <img src={arrowRight} alt="" className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA mini banner */}
+              <div className="rounded-2xl bg-linear-to-r from-violet-600 to-indigo-600 p-5 flex items-center justify-between gap-4 shadow-lg shadow-violet-200">
+                <div>
+                  <p className="text-white font-extrabold text-base">
+                    Subscribe to Newsletter
+                  </p>
+                  <p className="text-violet-200 text-xs mt-0.5">
+                    Get updates about new books and events.
+                  </p>
+                </div>
+                <button className="shrink-0 bg-white text-violet-700 text-sm font-bold px-4 py-2 rounded-xl hover:bg-violet-50 transition-colors duration-200 shadow">
+                  Subscribe
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
       <Footer />
     </div>
   );
