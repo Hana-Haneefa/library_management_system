@@ -1,3 +1,5 @@
+import api from "../services/api.js";
+
 import image from "../images/books3.jpg";
 import step1 from "../images/icons/register.png";
 import step2 from "../images/icons/brows.png";
@@ -121,6 +123,33 @@ function SectionHeading({ eyebrow, title, subtitle }) {
 function HomePage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  //____________fetching book data_____________
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const fetchBooks = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/api/books/all-books", {
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
+      console.log("Fetched books:", res.data.data); // Log the fetched data
+      if (res.data.success) {
+        setBooks(res.data.data);
+      }
+    } catch (err) {
+      console.error("Error fetching books:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="bg-gray-50 overflow-x-hidden">
@@ -291,12 +320,22 @@ function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
-            <BookCard />
+            {loading ? (
+              <p>Loading books...</p>
+            ) : (
+              books.map((book) => (
+                <BookCard
+                  key={book.bId}
+                  book={book}
+                  imageSrc={`http://localhost:5000/uploads/covers/${book.coverImage}`}
+                  title={book.bTitle}
+                  author={book.bAuthor}
+                  availability={book.bStatus}
+                  genre={book.bGenre}
+                  className="hover:scale-105 transition-transform"
+                />
+              ))
+            )}
           </div>
         </div>
       </section>

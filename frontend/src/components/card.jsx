@@ -45,8 +45,8 @@ function BookCard({
 
       {/* text div */}
       <div className="absolute bottom-0 left-0 w-full bg-white/90 rounded-t-2xl translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 transition-all duration-500 p-2 flex flex-col items-center justify-between gap-1">
-        <h3 className="text-lg font-bold">The Great Gatsby</h3>
-        <p className="text-sm text-gray-600">by F. Scott Fitzgerald</p>
+        <h3 className="text-lg font-bold">{title}</h3>
+        <p className="text-sm text-gray-600">by {author}</p>
         <button className="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300">
           <span
             style={{
@@ -59,12 +59,14 @@ function BookCard({
             {label}
           </span>
         </button>
-        <span className="text-green-600 font-semibold text-xs">Available</span>
+        <span className="text-green-600 font-semibold text-xs">
+          {availability}
+        </span>
       </div>
 
       {/* genre badge */}
-      <div className="absolute top-2 left-2 pb-1 px-3 bg-purple-700 text-white rounded-full text-xs font-medium">
-        <p className="italic">Science</p>
+      <div className="absolute max-w-[70%] top-2 left-2 pb-1 px-3 bg-purple-700 text-white rounded-full text-xs font-medium">
+        <p className="italic truncate">{genre}</p>
       </div>
       <div className="quickAccess flex flex-col absolute top-2 right-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="qr w-7 h-7 hover:cursor-pointer rounded-lg flex items-center justify-center">
