@@ -10,9 +10,11 @@ import {
 export async function getAllBooksController(req, res) {
   try {
     const books = await getAllBooks();
-    res
-      .status(200)
-      .json({ message: "Books fetched successfully", data: books });
+    res.status(200).json({
+      success: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
   } catch (error) {
     res
       .status(500)
@@ -42,6 +44,7 @@ export async function getBookByIdController(req, res) {
 // controller for create book
 export async function createBookController(req, res) {
   const { title, author, isbn, genre, publisher, year, quantity } = req.body;
+  const coverImg = req.file ? req.file.filename : null;
   if (
     !title?.trim() ||
     !author?.trim() ||
@@ -62,7 +65,9 @@ export async function createBookController(req, res) {
       publisher,
       year,
       quantity,
+      coverImg,
     });
+
     res
       .status(201)
       .json({ message: "Book created successfully", data: newBook });
@@ -121,7 +126,11 @@ export async function updateBookController(req, res) {
     }
     res
       .status(200)
-      .json({ message: "Book updated successfully", data: updatedBook });
+      .json({
+        success: true,
+        message: "Book updated successfully",
+        data: updatedBook,
+      });
   } catch (error) {
     res
       .status(500)
@@ -137,7 +146,7 @@ export async function deleteBookController(req, res) {
   }
   try {
     const result = await deleteBook(id);
-    res.status(200).json({ message: result.message });
+    res.status(200).json({ success: true, message: result.message });
   } catch (error) {
     if (error.message === "Book not found") {
       return res.status(404).json({ error: "Book not found" });

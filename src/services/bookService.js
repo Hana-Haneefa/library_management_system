@@ -1,4 +1,5 @@
 import pool from "../../db/connection.js";
+import qrcode from "qrcode";
 
 export async function getAllBooks() {
   try {
@@ -22,14 +23,37 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   try {
-    const { title, author, isbn, genre, publisher, year, quantity } = book;
+    const { title, author, isbn, genre, publisher, year, quantity, coverImg } =
+      book;
+
     const [result] = await pool.query(
-      "INSERT INTO books (bTitle, bAuthor, bIsbn, bGenre, bPublisher, bYear, bQuantity) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [title, author, isbn, genre, publisher, year, quantity],
+      "INSERT INTO books (bTitle, bAuthor, bIsbn, bGenre, bPublisher, bYear, bQuantity, coverImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, author, isbn, genre, publisher, year, quantity, coverImg],
     );
-    const [newBook] = await pool.query("SELECT * FROM books WHERE bId = ?", [
-      result.insertId,
+
+    const bookId = result.insertId;
+
+    //generate QR using book details
+    const qrContent = `ID:${bookId}|Title:${title}|Author:${author}|ISBN:${isbn}`;
+    const qrBase64 = await qrcode.toDataURL(qrContent, {
+      width: 300,
+      margin: 2,
+      color: {
+        dark: "#000000",
+        light: "#ffffff",
+      },
+    });
+
+    //save QR back to the same row
+    await pool.query(`UPDATE books SET bQR =? WHERE bId = ?`, [
+      qrBase64,
+      bookId,
     ]);
+
+    const [newBook] = await pool.query("SELECT * FROM books WHERE bId = ?", [
+      bookId,
+    ]);
+
     return newBook[0];
   } catch (error) {
     console.error("Error creating book:", error);

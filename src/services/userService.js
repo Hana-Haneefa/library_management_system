@@ -43,3 +43,19 @@ export async function deleteUser(id) {
   }
   return null;
 }
+
+//student login
+export async function studentLogin(email) {
+  try {
+    const [rows] = await pool.query(`SELECT * FROM users WHERE uEmail = ?`, [
+      email,
+    ]);
+    if (rows.length === 0) {
+      //.length returns 1 if there is a user with the email, 0 if there is no user with the email
+      return null; // No user found with the provided email
+    }
+    return rows[0];
+  } catch (err) {
+    console.error("Error logging in student:", err);
+  }
+}

@@ -4,7 +4,10 @@ import {
   addUser,
   updateUser,
   deleteUser,
+  studentLogin,
 } from "../services/userService.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function getAllUsersController(req, res) {
   try {
@@ -47,23 +50,33 @@ export async function getUserByIdController(req, res) {
 
 export async function addUserController(req, res) {
   const { name, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   if (!name?.trim() || !email?.trim() || !password?.trim()) {
     return res.status(400).json({
       success: false,
-      message: "Missing required fields: name, email, password",
+      error: "Missing required fields: name, email, password",
     });
   }
   try {
-    const newUser = await addUser(name, email, password);
+    const newSafeUser = await addUser(name, email, hashedPassword);
+    if (!newSafeUser) {
+      return res.status(400).json({
+        success: false,
+        error: "Failed to add user",
+      });
+    }
+    const { uPassword, ...userWithoutPassword } = newSafeUser[0]; // Exclude password from response
     res.status(201).json({
       success: true,
-      data: newUser,
+      message: "User added successfully",
+      data: userWithoutPassword,
     });
   } catch (error) {
     console.error("Error adding user:", error);
     res.status(500).json({
       success: false,
-      message: "An error occurred while adding the user",
+      error: "An error occurred while adding the user",
     });
   }
 }
@@ -77,8 +90,9 @@ export async function updateUserController(req, res) {
       message: "Missing required fields: name, email, password",
     });
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
-    const updatedUser = await updateUser(id, name, email, password);
+    const updatedUser = await updateUser(id, name, email, hashedPassword);
     if (!updatedUser) {
       return res.status(404).json({
         success: false,
@@ -125,6 +139,60 @@ export async function deleteUserController(req, res) {
     res.status(500).json({
       success: false,
       message: "An error occurred while deleting the user",
+    });
+  }
+}
+
+//student login controller
+export async function studentLoginController(req, res) {
+  const { email, password } = req.body;
+
+  try {
+    if (!email.trim() || !password.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: email, password",
+      });
+    }
+    const loginStudent = await studentLogin(email);
+    if (!loginStudent) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+    const isMatch = await bcrypt.compare(password, loginStudent.uPassword);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Password",
+      });
+    }
+
+    //generate token for track user login
+    const token = jwt.sign(
+      { id: loginStudent.uId, role: loginStudent.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
+
+    const { uPassword, ...studentWithoutPassword } = loginStudent; // Exclude password from response
+    res.status(200).json({
+      success: true,
+      token, //token send with the successful login data
+      user: {
+        name: studentWithoutPassword.uName,
+        email: studentWithoutPassword.uEmail,
+        role: studentWithoutPassword.role,
+      },
+    });
+  } catch (error) {
+    console.error("Error logging in student:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while logging in the student",
     });
   }
 }
