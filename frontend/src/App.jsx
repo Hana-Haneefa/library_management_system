@@ -8,6 +8,8 @@ import HomePage from "./pages/HomePage.jsx";
 import BookCard from "./components/Card.jsx";
 //book management
 import AddBookForm from "./components/bookManage/AddBookForm.jsx";
+import QRScannerPage from "./pages/QRscannerPage.jsx";
+
 //student management
 import AddStudentForm from "./components/studentManage/addStudentForm.jsx";
 import StudentLogin from "./components/studentManage/StudentLogin.jsx";
@@ -29,14 +31,16 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      {/*  dynamic route for book details */}
+      {/*  dynamic route for book details : BOOK RELATED */}
       <Route path="/book/:bookId" element={<BookView />} />
+      <Route path="/verify-return/:bookId" element={<QRScannerPage />} />
+
       <Route path="/category" element={<CategoryPage />} />
       <Route path="/profile" element={<Profile />} />
-      {/* student management */}
+      {/* STUDENT management */}
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/add-student" element={<AddStudentForm />} />
-      {/* librarian management */}
+      {/* LIBRARIAN management */}
       <Route path="/add-librarian" element={<AddLibrarianForm />} />
       {/* login routes */}
       <Route path="/student-login" element={<StudentLogin />} />
