@@ -22,6 +22,7 @@ function BookView() {
   const [bookDetails, setBookDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [similarBooks, setSimilarBooks] = useState([]);
+  const [isBorrowed, setIsBorrowed] = useState(false);
 
   useEffect(() => {
     fetchBookDetails();
@@ -189,8 +190,18 @@ function BookView() {
                 <button className="w-full sm:w-auto bg-purple-700 text-white font-semibold px-6 py-2 rounded hover:bg-purple-900 transition-colors duration-300">
                   Read Online
                 </button>
-                <button className="w-full sm:w-auto bg-purple-700 text-white font-semibold px-6 py-2 rounded hover:bg-purple-900 transition-colors duration-300">
+                {/* <button className="w-full sm:w-auto bg-purple-700 text-white font-semibold px-6 py-2 rounded hover:bg-purple-900 transition-colors duration-300">
                   Borrow
+                </button> */}
+                <button
+                  onClick={() => setIsBorrowed(!isBorrowed)}
+                  className={`w-full sm:w-32 text-white font-semibold px-6 py-2 rounded transition-colors duration-300 ${
+                    isBorrowed
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-purple-700 hover:bg-purple-900"
+                  }`}
+                >
+                  {isBorrowed ? "Borrowed" : "Borrow"}
                 </button>
               </div>
 
