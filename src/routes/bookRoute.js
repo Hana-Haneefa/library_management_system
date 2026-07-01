@@ -24,9 +24,9 @@ router.get(
 );
 router.get(
   "/byId/:id",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   getBookByIdController,
 );
 router.post(

@@ -18,6 +18,8 @@ import { Footer } from "../components/Footer.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { COVER_BASE_URL } from "../context/authContext.jsx";
+
 /* ─── Quick Action Card data ─── */
 const quickActions = [
   {
@@ -327,7 +329,7 @@ function HomePage() {
                 <BookCard
                   key={book.bId}
                   book={book}
-                  imageSrc={`http://localhost:5000/uploads/covers/${book.coverImage}`}
+                  imageSrc={`${COVER_BASE_URL}/${book.coverImage}`}
                   title={book.bTitle}
                   author={book.bAuthor}
                   availability={book.bStatus}

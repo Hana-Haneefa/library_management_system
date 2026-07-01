@@ -29,23 +29,19 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/detail" element={<BookView />} />
+      {/*  dynamic route for book details */}
+      <Route path="/book/:bookId" element={<BookView />} />
       <Route path="/category" element={<CategoryPage />} />
-
       <Route path="/profile" element={<Profile />} />
-
       {/* student management */}
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/add-student" element={<AddStudentForm />} />
-
       {/* librarian management */}
       <Route path="/add-librarian" element={<AddLibrarianForm />} />
-
       {/* login routes */}
       <Route path="/student-login" element={<StudentLogin />} />
       <Route path="/librarian-login" element={<LibrarianLogin />} />
       <Route path="/admin-login" element={<AdminLogin />} />
-
       {/* register routes */}
       <Route path="/admin-register" element={<AddAdminForm />} />
     </Routes>

@@ -42,3 +42,6 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(authContext);
 }
+
+//base URL for Book covers
+export const COVER_BASE_URL = "http://localhost:5000/uploads/covers";
