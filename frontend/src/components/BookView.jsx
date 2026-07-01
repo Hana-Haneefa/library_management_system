@@ -197,7 +197,7 @@ function BookView() {
               <hr className="border-white/20" />
 
               {/* ── fixed: table wraps tbody, horizontally scrollable on small screens ── */}
-              <div className="mt-8 sm:mt-10 overflow-x-auto pb-4">
+              <div className="mt-4 sm:mt-4">
                 <table className="border-spacing-2 w-full min-w-120 text-sm sm:text-base">
                   <tbody>
                     <tr>
@@ -207,14 +207,22 @@ function BookView() {
                         Publisher
                       </td>
                       <td className="pb-3">{bookDetails.bPublisher}</td>
-                      <td rowSpan={3}>
-                        <div className="w-20 sm:w-32 h-auto">
-                          <img
-                            src={qr}
-                            alt="qr"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                      <td rowSpan={3} className="pl-6 sm:pl-10 pr-4 pb-3">
+                        {!bookDetails.bQR ? (
+                          <div className="w-20 sm:w-32 h-30 flex items-center justify-center bg-white/20 rounded-lg">
+                            <p className="text-white/70 text-xs sm:text-sm text-center">
+                              QR code not available
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="w-20 sm:w-32 h-auto">
+                            <img
+                              src={bookDetails.bQR}
+                              alt="qr"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
                       </td>
                     </tr>
                     <tr>
@@ -272,7 +280,7 @@ function BookView() {
                   </div>
                 ))}
 
-                <div className="addcomment rounded-md border-2 border-white absolute bottom-2 sm:bottom-5 w-full h-10 flex items-center justify-between px-3 sm:px-4">
+                <div className="addcomment rounded-md border-2 border-white absolute bottom-2 sm:bottom-30 w-full h-10 flex items-center justify-between px-3 sm:px-4">
                   <input
                     type="text"
                     placeholder="Add your opinion here"
