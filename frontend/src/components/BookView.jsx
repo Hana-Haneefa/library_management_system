@@ -194,15 +194,27 @@ function BookView() {
                   Borrow
                 </button> */}
                 <button
-                  onClick={() => setIsBorrowed(!isBorrowed)}
+                  onClick={() => setIsBorrowed(true)}
                   className={`w-full sm:w-32 text-white font-semibold px-6 py-2 rounded transition-colors duration-300 ${
                     isBorrowed
-                      ? "bg-green-600 hover:bg-green-700"
+                      ? "bg-orange-600 hover:bg-orange-700 cursor-not-allowed"
                       : "bg-purple-700 hover:bg-purple-900"
                   }`}
                 >
                   {isBorrowed ? "Borrowed" : "Borrow"}
                 </button>
+
+                {isBorrowed && (
+                  <button
+                    onClick={() => {
+                      alert("Scan QR code to return!"); // Replace with actual return verification logic
+                      setIsBorrowed(false); // Reset the borrowed state after verification
+                    }}
+                    className="w-full sm:w-auto bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition-colors duration-300"
+                  >
+                    Verify Return
+                  </button>
+                )}
               </div>
 
               <hr className="border-white/20" />
