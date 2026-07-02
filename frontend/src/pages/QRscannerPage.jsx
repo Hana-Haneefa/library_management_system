@@ -99,17 +99,31 @@ function QRscannerPage() {
   /* ── call return API ── */
   const handleReturn = async () => {
     try {
-      const res = await api.put(`/api/borrow/return/${bookId}`);
+      const activeRes = await api.get(`/api/borrow/active-by-book/${bookId}`);
+      if (!activeRes.data.success || !activeRes.data.data) {
+        setStatus("error");
+        setMessage("No active borrow record found for this book.");
+        return;
+      }
+
+      const borrowId = activeRes.data.data.brId; // your primary key field
+
+      const res = await api.put(`/api/borrow/return-book/${borrowId}`, {
+        status: "returned", // ← body එක add කරන්න, controller එකට මේක ඕන
+      });
+
       if (res.data.success) {
         setMessage("Book returned successfully!");
       } else {
         setStatus("error");
-        setMessage(res.data.message || "Failed to process return.");
+        setMessage(res.data.msg || "Failed to process return.");
       }
     } catch (err) {
       console.error("Return error:", err);
       setStatus("error");
-      setMessage("Server error while processing return.");
+      setMessage(
+        err.response?.data?.msg || "Server error while processing return.",
+      );
     }
   };
 

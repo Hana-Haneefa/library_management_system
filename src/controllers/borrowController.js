@@ -4,6 +4,7 @@ import {
   getBorrowDataById,
   updateBorrowData,
   deleteBorrowData,
+  getActiveBorrowByBookId,
 } from "../services/borrowService.js";
 
 export async function addBorrowDataController(req, res) {
@@ -21,21 +22,17 @@ export async function addBorrowDataController(req, res) {
       status,
     });
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        msg: "Borrow data added successfully",
-        data: borrowData,
-      });
+    res.status(201).json({
+      success: true,
+      msg: "Borrow data added successfully",
+      data: borrowData,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Error adding borrow data",
-        error: err.message,
-      });
+    res.status(500).json({
+      success: false,
+      msg: "Error adding borrow data",
+      error: err.message,
+    });
   }
 }
 
@@ -63,21 +60,17 @@ export async function getBorrowDataByIdController(req, res) {
     if (!borrowData || borrowData.brId !== parseInt(borrowId)) {
       return res.status(404).json({ msg: "Borrow data not found" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        msg: "Borrow data retrieved successfully",
-        data: borrowData,
-      });
+    res.status(200).json({
+      success: true,
+      msg: "Borrow data retrieved successfully",
+      data: borrowData,
+    });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        msg: "Error fetching borrow data",
-        error: err.message,
-      });
+    res.status(500).json({
+      success: false,
+      msg: "Error fetching borrow data",
+      error: err.message,
+    });
   }
 }
 
@@ -100,28 +93,26 @@ export async function updateBorrowDataController(req, res) {
     });
   } catch (err) {
     if (err.message.includes("Borrow data not found with the given ID")) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          msg: "Borrow data not found",
-          error: err.message,
-        });
-    }
-    res
-      .status(500)
-      .json({
+      return res.status(404).json({
         success: false,
-        msg: "Error updating borrow data",
+        msg: "Borrow data not found",
         error: err.message,
       });
+    }
+    res.status(500).json({
+      success: false,
+      msg: "Error updating borrow data",
+      error: err.message,
+    });
   }
 }
 
 export async function deleteBorrowDataController(req, res) {
   const { borrowId } = req.params;
   if (!borrowId) {
-    return res.status(400).json({ error: "Missing required fields" });
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
   }
   try {
     const deletedBorrowData = await deleteBorrowData(borrowId);
@@ -132,20 +123,75 @@ export async function deleteBorrowDataController(req, res) {
     });
   } catch (err) {
     if (err.message.includes("Borrow data not found with the given ID")) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          msg: "Borrow data not found",
-          error: err.message,
-        });
-    }
-    res
-      .status(500)
-      .json({
+      return res.status(404).json({
         success: false,
-        msg: "Error deleting borrow data",
+        msg: "Borrow data not found",
         error: err.message,
       });
+    }
+    res.status(500).json({
+      success: false,
+      msg: "Error deleting borrow data",
+      error: err.message,
+    });
+  }
+}
+
+export async function getActiveBorrowController(req, res) {
+  try {
+    const { bookId } = req.params;
+    const borrow = await getActiveBorrowByBookId(bookId);
+
+    if (!borrow) {
+      return res
+        .status(404)
+        .json({ success: false, msg: "No active borrow found for this book" });
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: "Active borrow data retrieved successfully",
+      data: borrow,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error fetching active borrow data",
+      error: err.message,
+    });
+  }
+}
+
+export async function returnBookController(req, res) {
+  const { borrowId } = req.params;
+
+  if (!borrowId) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Missing required fields" });
+  }
+
+  try {
+    const updatedBorrowData = await updateBorrowData(borrowId, {
+      status: "returned",
+    });
+    res.status(200).json({
+      success: true,
+      msg: "Book returned successfully",
+      data: updatedBorrowData,
+    });
+  } catch (err) {
+    if (err.message.includes("Borrow data not found with the given ID")) {
+      return res.status(404).json({
+        success: false,
+        msg: "Borrow data not found",
+        error: err.message,
+      });
+    }
+    res.status(500).json({
+      success: false,
+      msg: "Error returning book",
+      error: err.message,
+    });
   }
 }

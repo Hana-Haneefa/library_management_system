@@ -5,6 +5,8 @@ import {
   getBorrowDataByIdController,
   updateBorrowDataController,
   deleteBorrowDataController,
+  getActiveBorrowController,
+  returnBookController,
 } from "../controllers/borrowController.js";
 import {
   authenticateToken,
@@ -35,7 +37,7 @@ router.get(
   getBorrowDataByIdController,
 );
 router.put(
-  "/update-borrow/:borrowId",
+  "/update-borrow/:borrowId", //update to return change
   // authenticateToken,
   // authorizeAdmin,
   // authorizeLibrarian,
@@ -47,4 +49,8 @@ router.delete(
   // authorizeAdmin,
   deleteBorrowDataController,
 );
+
+router.get("/active-by-book/:bookId", getActiveBorrowController);
+router.put("/return-book/:borrowId", returnBookController);
+
 export default router;
