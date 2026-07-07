@@ -418,7 +418,7 @@ function BookManageSec() {
                       <img
                         src={book.bQR}
                         alt="QR Code"
-                        className="w-12 h-12 mx-auto cursor-pointer hover:scale-150 transition-transform duration-300"
+                        className="w-12 h-12 mx-auto cursor-pointer hover:scale-150 transition-transform duration-500"
                         title="Book QR Code"
                       />
                     ) : (

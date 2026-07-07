@@ -8,8 +8,9 @@ import {
 } from "../services/borrowService.js";
 
 export async function addBorrowDataController(req, res) {
-  const { studentId, MonitorId, returnDate, status } = req.body;
-  if (!studentId || !MonitorId || !returnDate || !status) {
+  const { studentId, monitorId, status, bookId } = req.body;
+  if (!studentId || !status) {
+    //make monitor Id optional for now, can be added later
     return res
       .status(400)
       .json({ success: false, error: "Missing required fields" });
@@ -17,9 +18,9 @@ export async function addBorrowDataController(req, res) {
   try {
     const borrowData = await addBorrowData({
       studentId,
-      MonitorId,
-      returnDate,
+      monitorId,
       status,
+      bookId,
     });
 
     res.status(201).json({

@@ -183,6 +183,7 @@ export async function studentLoginController(req, res) {
       success: true,
       token, //token send with the successful login data
       user: {
+        id: studentWithoutPassword.uId,
         name: studentWithoutPassword.uName,
         email: studentWithoutPassword.uEmail,
         role: studentWithoutPassword.role,

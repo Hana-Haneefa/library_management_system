@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext.jsx";
 import api from "../services/api.js";
 
 import readIcon from "../images/icons/book.png";
@@ -18,14 +19,19 @@ import BookCard from "../components/Card.jsx";
 import { COVER_BASE_URL } from "../context/authContext.jsx";
 
 function BookView() {
+  const { bookId } = useParams();
+  const { user } = useAuth(); // Access the authenticated user from context
+  const [borrowLoading, setBorrowLoading] = useState(false);
+  const [borrowMessage, setBorrowMessage] = useState("");
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("info");
-  const { bookId } = useParams();
   const [bookDetails, setBookDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [similarBooks, setSimilarBooks] = useState([]);
   const [isBorrowed, setIsBorrowed] = useState(false);
 
+  // fetch book details on component mount or when bookId changes
   useEffect(() => {
     fetchBookDetails();
   }, [bookId]);
@@ -44,6 +50,45 @@ function BookView() {
     }
   };
 
+  // handle borrow
+  const handleBorrow = async () => {
+    if (!user?.id) {
+      setBorrowMessage("You must be logged in to borrow a book.");
+      return;
+    }
+    setBorrowLoading(true);
+    setBorrowMessage("");
+
+    try {
+      //route : /api/borrows/new-borrow
+      const res = await api.post("/api/borrows/new-borrow", {
+        studentId: user.id,
+        bookId: bookDetails.bId,
+        status: "borrowed",
+      });
+
+      if (res.data.success) {
+        setBorrowMessage("Book borrowed successfully!");
+        setIsBorrowed(true);
+      } else {
+        setBorrowMessage(res.data.msg || "Failed to borrow book.");
+      }
+    } catch (err) {
+      console.error("Error borrowing book:", err);
+      setBorrowMessage(
+        err.response?.data?.error ||
+          "An error occurred while borrowing the book.",
+      );
+    } finally {
+      setBorrowLoading(false);
+    }
+  };
+
+  setTimeout(() => {
+    setBorrowMessage("");
+  }, 3000); // Clear the message after 3 seconds
+
+  // fetch similar books based on genre when bookDetails is available
   useEffect(() => {
     fetchSimilarBooks();
   }, [bookId]);
@@ -196,14 +241,19 @@ function BookView() {
                   Borrow
                 </button> */}
                 <button
-                  onClick={() => setIsBorrowed(true)}
+                  onClick={handleBorrow}
+                  disabled={isBorrowed || borrowLoading}
                   className={`w-full sm:w-32 text-white font-semibold px-6 py-2 rounded transition-colors duration-300 ${
                     isBorrowed
                       ? "bg-orange-600 hover:bg-orange-700 cursor-not-allowed"
                       : "bg-purple-700 hover:bg-purple-900"
                   }`}
                 >
-                  {isBorrowed ? "Borrowed" : "Borrow"}
+                  {borrowLoading
+                    ? "Borrowing..."
+                    : isBorrowed
+                      ? "Borrowed"
+                      : "Borrow"}
                 </button>
 
                 {isBorrowed && (
@@ -219,6 +269,14 @@ function BookView() {
                   </button>
                 )}
               </div>
+
+              {borrowMessage && (
+                <p
+                  className={`mt-2 text-sm text-center transition-transform duration-300 ease-in-out ${borrowMessage.includes("successfully") ? "text-green-500" : "text-red-500"}`}
+                >
+                  {borrowMessage}
+                </p>
+              )}
 
               <hr className="border-white/20" />
 

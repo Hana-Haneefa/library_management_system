@@ -18,8 +18,8 @@ const router = Router();
 router.post(
   "/new-borrow",
   authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   addBorrowDataController,
 );
 router.get(
