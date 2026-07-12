@@ -5,7 +5,7 @@ import {
   updateBook,
   deleteBook,
   searchBookData,
-  countBookData,
+  countBooksData,
   searchBookService,
   getDistinctGenres,
 } from "../services/bookService.js";
