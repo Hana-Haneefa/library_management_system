@@ -13,12 +13,42 @@ import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
+/* ── inline styles for the Return confirmation modal ── */
+const returnModalOverlay = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0,0,0,0.65)",
+  backdropFilter: "blur(6px)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 60,
+};
+const returnModalBox = {
+  background: "linear-gradient(135deg, #1e0a3c 0%, #2d1060 60%, #1a0a2e 100%)",
+  border: "1px solid rgba(167,139,250,0.35)",
+  borderRadius: "1.25rem",
+  padding: "2rem",
+  width: "min(96vw, 420px)",
+  color: "#fff",
+  boxShadow: "0 25px 60px rgba(80,30,160,0.5)",
+  position: "relative",
+  animation: "fadeSlideIn 0.22s ease",
+};
+
 function BorrowManageSec() {
   const borrowMng = Animation(500);
   const [borrows, setBorrows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedBorrow, setSelectedBorrow] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ── manual return state ──
+  const [returnTarget, setReturnTarget] = useState(null);   // borrow row to return
+  const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
+  const [returning, setReturning] = useState(false);
+  const [returnMsg, setReturnMsg] = useState("");            // success / error toast
+  const [returnMsgType, setReturnMsgType] = useState("success"); // "success" | "error"
 
   const navigate = useNavigate();
 
@@ -91,6 +121,44 @@ function BorrowManageSec() {
     } catch (err) {
       console.error("Error updating borrow status: ", err);
       alert("Failed to update borrow status");
+    }
+  };
+
+  // ── open manual return confirmation modal ──
+  const handleReturnClick = (borrow) => {
+    setReturnTarget(borrow);
+    setReturnMsg("");
+    setIsReturnModalOpen(true);
+  };
+
+  // ── confirm manual return ──
+  const confirmReturn = async () => {
+    if (!returnTarget) return;
+    setReturning(true);
+    setReturnMsg("");
+    try {
+      // Call return-book directly with the borrow's own brId — no QR needed
+      const res = await api.put(`/api/borrows/return-book/${returnTarget.brId}`);
+      if (res.data.success) {
+        setReturnMsgType("success");
+        setReturnMsg("✅ Book returned successfully!");
+        fetchBorrows(); // refresh table
+        setTimeout(() => {
+          setIsReturnModalOpen(false);
+          setReturnTarget(null);
+          setReturnMsg("");
+        }, 1500);
+      } else {
+        setReturnMsgType("error");
+        setReturnMsg(res.data.msg || "❌ Failed to process return.");
+      }
+    } catch (err) {
+      setReturnMsgType("error");
+      setReturnMsg(
+        err.response?.data?.msg || "❌ Server error while processing return."
+      );
+    } finally {
+      setReturning(false);
     }
   };
 
@@ -260,12 +328,13 @@ function BorrowManageSec() {
           <thead>
             <tr>
               <th className="w-3 overflow-hidden"></th>
-              <th className="py-4 w-24">ISBN</th>
-              <th className="w-24">StId</th>
-              <th className="w-40">Borrowed BookId</th>
-              <th className="w-32">Monitor Id</th>
+              <th className="py-4 w-24">Borrow ID</th>
+              <th className="w-24">Student ID</th>
+              <th className="w-40">Book ID</th>
+              <th className="w-32">Monitor ID</th>
               <th className="w-20">Copies</th>
               <th className="w-36">Status</th>
+              <th className="w-20">Return</th>
               <th className="w-12">Edit</th>
               <th className="w-12">View</th>
               <th className="w-12">Delete</th>
@@ -318,6 +387,19 @@ function BorrowManageSec() {
                         {borrow.brStatus}
                       </p>
                     </div>
+                  </td>
+                  <td className="py-2 px-2">
+                    {borrow.brStatus === "borrowed" ? (
+                      <button
+                        onClick={() => handleReturnClick(borrow)}
+                        title="Mark as returned (manual)"
+                        className="mx-auto flex items-center justify-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600/40 transition-colors duration-200 cursor-pointer"
+                      >
+                        ↩ Return
+                      </button>
+                    ) : (
+                      <span className="text-xs text-white/30">—</span>
+                    )}
                   </td>
                   <td>
                     <img
@@ -397,6 +479,143 @@ function BorrowManageSec() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MANUAL RETURN CONFIRMATION MODAL ── */}
+      {isReturnModalOpen && returnTarget && (
+        <div style={returnModalOverlay}>
+          {/* keyframe injection */}
+          <style>{`
+            @keyframes fadeSlideIn {
+              from { opacity: 0; transform: translateY(-18px) scale(0.97); }
+              to   { opacity: 1; transform: translateY(0)   scale(1);    }
+            }
+          `}</style>
+
+          <div style={returnModalBox}>
+            {/* header */}
+            <div style={{ marginBottom: "1.25rem" }}>
+              <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#c084fc", marginBottom: "0.35rem" }}>
+                Manual Book Return
+              </p>
+              <h2 style={{ fontSize: "1.35rem", fontWeight: 800, margin: 0 }}>
+                Confirm Return
+              </h2>
+              <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", marginTop: "0.25rem" }}>
+                No QR scan required — confirm the details below.
+              </p>
+            </div>
+
+            {/* borrow detail card */}
+            <div style={{
+              background: "rgba(255,255,255,0.07)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "0.85rem",
+              padding: "1rem 1.15rem",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "0.75rem 1rem",
+              marginBottom: "1.25rem",
+            }}>
+              {[
+                ["Borrow ID", `#${returnTarget.brId}`],
+                ["Student ID", returnTarget.brStudentId ?? "—"],
+                ["Book ID", returnTarget.brBookId ?? "—"],
+                ["Monitor ID", returnTarget.brMonitorId ?? "—"],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", marginBottom: "0.15rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</p>
+                  <p style={{ fontSize: "0.92rem", fontWeight: 600 }}>{value}</p>
+                </div>
+              ))}
+              <div style={{ gridColumn: "1 / -1" }}>
+                <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", marginBottom: "0.15rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>Current Status</p>
+                <span style={{
+                  display: "inline-block",
+                  padding: "0.2rem 0.7rem",
+                  borderRadius: "999px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  border: "1px solid rgba(251,146,60,0.5)",
+                  color: "#fb923c",
+                  background: "rgba(251,146,60,0.1)",
+                  textTransform: "capitalize",
+                }}>
+                  {returnTarget.brStatus}
+                </span>
+              </div>
+            </div>
+
+            {/* feedback message */}
+            {returnMsg && (
+              <div style={{
+                padding: "0.65rem 0.9rem",
+                borderRadius: "0.6rem",
+                marginBottom: "1rem",
+                fontSize: "0.82rem",
+                fontWeight: 600,
+                background: returnMsgType === "success" ? "rgba(52,211,153,0.12)" : "rgba(248,113,113,0.12)",
+                border: `1px solid ${returnMsgType === "success" ? "rgba(52,211,153,0.4)" : "rgba(248,113,113,0.4)"}`,
+                color: returnMsgType === "success" ? "#6ee7b7" : "#fca5a5",
+              }}>
+                {returnMsg}
+              </div>
+            )}
+
+            {/* action buttons */}
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
+              <button
+                disabled={returning}
+                onClick={() => { setIsReturnModalOpen(false); setReturnTarget(null); setReturnMsg(""); }}
+                style={{
+                  padding: "0.6rem 1.2rem",
+                  borderRadius: "0.65rem",
+                  border: "2px solid rgba(255,255,255,0.25)",
+                  background: "transparent",
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: returning ? "not-allowed" : "pointer",
+                  opacity: returning ? 0.5 : 1,
+                  transition: "background 0.2s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+              >
+                Cancel
+              </button>
+              <button
+                disabled={returning}
+                onClick={confirmReturn}
+                style={{
+                  padding: "0.6rem 1.4rem",
+                  borderRadius: "0.65rem",
+                  border: "none",
+                  background: returning ? "#4b5563" : "linear-gradient(135deg, #059669 0%, #10b981 100%)",
+                  color: "#fff",
+                  fontWeight: 700,
+                  cursor: returning ? "not-allowed" : "pointer",
+                  boxShadow: returning ? "none" : "0 4px 15px rgba(16,185,129,0.35)",
+                  transition: "all 0.2s",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                }}
+              >
+                {returning ? (
+                  <>
+                    <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+                    Processing…
+                  </>
+                ) : (
+                  <>↩ Confirm Return</>
+                )}
+              </button>
+            </div>
+
+            {/* spinner keyframe */}
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         </div>
       )}

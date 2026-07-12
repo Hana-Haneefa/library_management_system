@@ -108,7 +108,7 @@ function QRscannerPage() {
 
       const borrowId = activeRes.data.data.brId; // your primary key field
 
-      const res = await api.put(`/api/borrow/return-book/${borrowId}`, {
+      const res = await api.put(`/api/borrows/return-book/${borrowId}`, {
         status: "returned", // ← body එක add කරන්න, controller එකට මේක ඕන
       });
 
