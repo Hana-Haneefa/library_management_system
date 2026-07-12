@@ -42,9 +42,13 @@ export function Navigation() {
       <nav className="sticky top-0 bg-white/80 backdrop-blur-xl m-4 overflow-hidden shadow-md rounded-xl z-50 border border-white/60">
         <div className="nav max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="logo flex items-center h-10 gap-10">
-            <img src={logo} alt="myLogo" className="h-10 w-20 object-cover rounded" />
+            <img
+              src={logo}
+              alt="myLogo"
+              className="h-10 w-20 object-cover rounded"
+            />
             <ul className="nav-links hidden md:flex space-x-8 items-center text-white">
-              <li 
+              <li
                 onClick={() => navigate("/all-books")}
                 className="hover:text-purple-500 text-black font-semibold transition-colors duration-300 cursor-pointer"
               >
@@ -60,21 +64,6 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Desktop Search Bar (always visible when desktop, for both logged in and logged out) */}
-            <div className="hidden sm:block relative">
-              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-gray-400 text-sm">
-                🔍
-              </span>
-              <input
-                type="search"
-                placeholder="Search catalog..."
-                value={navSearch}
-                onChange={(e) => setNavSearch(e.target.value)}
-                onKeyDown={handleSearchKeyDown}
-                className="py-1.5 pl-8 pr-3 w-48 focus:w-64 rounded-lg bg-gray-100 text-black text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all duration-300 border border-transparent focus:border-transparent"
-              />
-            </div>
-
             {user ? (
               <div className="flex items-center gap-2 text-md">
                 <input
