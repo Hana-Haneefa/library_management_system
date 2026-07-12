@@ -25,18 +25,30 @@ import DarkMode from "./darkmode.jsx";
 
 export function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navSearch, setNavSearch] = useState("");
   const navigate = useNavigate();
   const { user, logout } = useAuth(); //get user from the context
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key === "Enter" && navSearch.trim()) {
+      navigate(`/all-books?query=${encodeURIComponent(navSearch.trim())}`);
+      setNavSearch("");
+      setMenuOpen(false);
+    }
+  };
 
   return (
     <div>
       <nav className="sticky top-0 bg-white/80 backdrop-blur-xl m-4 overflow-hidden shadow-md rounded-xl z-50 border border-white/60">
         <div className="nav max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="logo flex items-center h-10 gap-10">
-            <img src={logo} alt="myLogo" className="h-10 w-20 object-cover" />
+            <img src={logo} alt="myLogo" className="h-10 w-20 object-cover rounded" />
             <ul className="nav-links hidden md:flex space-x-8 items-center text-white">
-              <li className="hover:text-purple-500 text-black font-semibold transition-colors duration-300 cursor-pointer">
-                <a href="./modal.html">All books</a>
+              <li 
+                onClick={() => navigate("/all-books")}
+                className="hover:text-purple-500 text-black font-semibold transition-colors duration-300 cursor-pointer"
+              >
+                All books
               </li>
               <li className="hover:text-purple-500 text-black font-semibold transition-colors duration-300 cursor-pointer">
                 <a href="#">New Arrivals</a>
@@ -47,121 +59,123 @@ export function Navigation() {
             </ul>
           </div>
 
-          {user ? (
-            <div className="flex items-center gap-1 text-gray-300 text-md">
+          <div className="flex items-center gap-3">
+            {/* Desktop Search Bar (always visible when desktop, for both logged in and logged out) */}
+            <div className="hidden sm:block relative">
+              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-gray-400 text-sm">
+                🔍
+              </span>
               <input
                 type="search"
-                placeholder="   Search here"
-                className="py-1 rounded bg-gray-200 text-black hidden sm:block"
+                placeholder="Search catalog..."
+                value={navSearch}
+                onChange={(e) => setNavSearch(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                className="py-1.5 pl-8 pr-3 w-48 focus:w-64 rounded-lg bg-gray-100 text-black text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition-all duration-300 border border-transparent focus:border-transparent"
               />
-              <input
-                type="button"
-                value="Profile"
-                name="login"
-                onClick={() => navigate("/profile")}
-                className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
-              />
-              <DarkMode />
-              <button
-                className="md:hidden text-gray-600 focus:outline-none ml-2 p-1"
-                onClick={() => setMenuOpen(!menuOpen)}
-              >
-                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-600"></span>
-              </button>
             </div>
-          ) : (
-            <div className="flex items-center gap-1 text-gray-300 text-md">
-              <input
-                type="search"
-                placeholder="   Search here"
-                className="py-1 rounded bg-gray-200 text-black hidden sm:block"
-              />
-              <input
-                type="button"
-                value="Login/SignUp"
-                name="login"
-                onClick={() => navigate("/student-login")}
-                className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
-              />
-              <DarkMode />
-              <button
-                className="md:hidden text-gray-600 focus:outline-none ml-2 p-1"
-                onClick={() => setMenuOpen(!menuOpen)}
-              >
-                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-600"></span>
-              </button>
-            </div>
-          )}
-        </div>
 
-        {menuOpen && (
-          <div className="md:hidden bg-gray-200 px-4 py-4">
             {user ? (
-              <div className="flex items-center gap-1 text-gray-300 text-md">
-                <input
-                  type="search"
-                  placeholder="   Search here"
-                  className="py-1 rounded bg-gray-200 text-black hidden sm:block"
-                />
+              <div className="flex items-center gap-2 text-md">
                 <input
                   type="button"
                   value="Profile"
                   name="login"
                   onClick={() => navigate("/profile")}
-                  className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
+                  className="px-4 py-1.5 rounded-lg bg-purple-800 hover:bg-purple-900 text-white font-semibold transition-colors duration-300 hidden sm:block cursor-pointer text-sm"
                 />
                 <DarkMode />
                 <button
-                  className="md:hidden text-gray-300 focus:outline-none ml-2"
+                  className="md:hidden text-gray-600 focus:outline-none p-1"
                   onClick={() => setMenuOpen(!menuOpen)}
                 >
-                  <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                  <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                  <span className="block w-6 h-0.5 bg-gray-300"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600"></span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-1 text-gray-300 text-md">
-                <input
-                  type="search"
-                  placeholder="   Search here"
-                  className="py-1 rounded bg-gray-200 text-black hidden sm:block"
-                />
+              <div className="flex items-center gap-2 text-md">
                 <input
                   type="button"
                   value="Login/SignUp"
                   name="login"
                   onClick={() => navigate("/student-login")}
-                  className="px-3 py-1 rounded bg-purple-800 hover:bg-purple-900 transition-colors duration-300 hidden sm:block cursor-pointer"
+                  className="px-4 py-1.5 rounded-lg bg-purple-800 hover:bg-purple-900 text-white font-semibold transition-colors duration-300 hidden sm:block cursor-pointer text-sm"
                 />
                 <DarkMode />
                 <button
-                  className="md:hidden text-gray-300 focus:outline-none ml-2"
+                  className="md:hidden text-gray-600 focus:outline-none p-1"
                   onClick={() => setMenuOpen(!menuOpen)}
                 >
-                  <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                  <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                  <span className="block w-6 h-0.5 bg-gray-300"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                  <span className="block w-6 h-0.5 bg-gray-600"></span>
                 </button>
               </div>
             )}
-            <ul>
+          </div>
+        </div>
+
+        {menuOpen && (
+          <div className="md:hidden bg-gray-100 px-4 py-4 border-t border-gray-200">
+            {/* Mobile Search Bar */}
+            <div className="relative mb-3">
+              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-gray-400 text-sm">
+                🔍
+              </span>
+              <input
+                type="search"
+                placeholder="Search catalog..."
+                value={navSearch}
+                onChange={(e) => setNavSearch(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                className="w-full py-2 pl-8 pr-3 rounded-lg bg-white text-black text-sm focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all border border-gray-200"
+              />
+            </div>
+
+            <div className="flex items-center justify-between mb-4">
+              {user ? (
+                <input
+                  type="button"
+                  value="Profile"
+                  name="login"
+                  onClick={() => {
+                    navigate("/profile");
+                    setMenuOpen(false);
+                  }}
+                  className="px-4 py-2 rounded-lg bg-purple-800 hover:bg-purple-900 text-white font-semibold transition-colors duration-300 cursor-pointer text-sm"
+                />
+              ) : (
+                <input
+                  type="button"
+                  value="Login/SignUp"
+                  name="login"
+                  onClick={() => {
+                    navigate("/student-login");
+                    setMenuOpen(false);
+                  }}
+                  className="px-4 py-2 rounded-lg bg-purple-800 hover:bg-purple-900 text-white font-semibold transition-colors duration-300 cursor-pointer text-sm"
+                />
+              )}
+            </div>
+
+            <ul className="space-y-2">
               <li>
-                <a
-                  href="./modal.html"
-                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
+                <span
+                  onClick={() => {
+                    navigate("/all-books");
+                    setMenuOpen(false);
+                  }}
+                  className="block py-2 text-purple-600 hover:text-black font-semibold transition-colors duration-300 cursor-pointer"
                 >
                   All Books
-                </a>
+                </span>
               </li>
               <li>
                 <a
                   href="#"
-                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
+                  className="block py-2 text-purple-600 hover:text-black font-semibold transition-colors duration-300"
                 >
                   New Arrivals
                 </a>
@@ -169,7 +183,7 @@ export function Navigation() {
               <li>
                 <a
                   href="#"
-                  className="block py-2 text-purple-500 hover:text-black transition-colors duration-300"
+                  className="block py-2 text-purple-600 hover:text-black font-semibold transition-colors duration-300"
                 >
                   About
                 </a>
@@ -181,7 +195,11 @@ export function Navigation() {
         {user && (
           <div className="w-full bg-violet-50 border-t border-violet-100">
             <p className="font-semibold font-sans text-center text-violet-700 text-sm p-1 pb-1.5">
-              Welcome back, <span className="font-bold">{user.name ?? user.email ?? "Member"}</span>! 👋
+              Welcome back,{" "}
+              <span className="font-bold">
+                {user.name ?? user.email ?? "Member"}
+              </span>
+              ! 👋
             </p>
           </div>
         )}

@@ -26,6 +26,7 @@ import BookView from "./components/BookView.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
 
 import Profile from "./components/Profile.jsx";
+import AllBooksPage from "./pages/AllBooksPage.jsx";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       {/*  dynamic route for book details : BOOK RELATED */}
       <Route path="/book/:bookId" element={<BookView />} />
       <Route path="/verify-return/:bookId" element={<QRScannerPage />} />
+      <Route path="/all-books" element={<AllBooksPage />} />
 
       <Route path="/category" element={<CategoryPage />} />
       <Route path="/profile" element={<Profile />} />

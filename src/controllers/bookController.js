@@ -4,6 +4,10 @@ import {
   createBook,
   updateBook,
   deleteBook,
+  searchBookData,
+  countBookData,
+  searchBookService,
+  getDistinctGenres,
 } from "../services/bookService.js";
 
 // controller for get all books
@@ -167,6 +171,46 @@ export async function deleteBookController(req, res) {
       success: false,
       error: "Failed to delete book",
       details: error.message,
+    });
+  }
+}
+
+//search book controller
+export async function searchBookController(req, res) {
+  const { query, genre, author, page = 1, limit = 10 } = req.query;
+
+  try {
+    const result = await searchBookService({
+      query,
+      genre,
+      author,
+      page: Number(page),
+      limit: Number(limit),
+    });
+    res.status(200).json({
+      success: true,
+      msg: "Books retrieved successfully",
+      data: result.books,
+      pagination: result.pagination,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error searching books",
+      error: err.message,
+    });
+  }
+}
+
+export async function getGenresController(req, res) {
+  try {
+    const genres = await getDistinctGenres();
+    res.status(200).json({ success: true, data: genres });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error fetching genres",
+      error: err.message,
     });
   }
 }

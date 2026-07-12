@@ -15,7 +15,7 @@ import BookCard from "../components/Card.jsx";
 import HeroSec from "../components/HeroSection.jsx";
 import Navigation from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { COVER_BASE_URL } from "../context/authContext.jsx";
@@ -122,57 +122,83 @@ function SectionHeading({ eyebrow, title, subtitle }) {
   );
 }
 
+/* ─── Debounce hook (defined once, outside the component) ─── */
+function useDebounce(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+
 function HomePage() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("allGenres");
+  const [error, setError] = useState(null);
 
-  //____________fetching book data_____________
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || "",
+  );
+  const [selectedGenre, setSelectedGenre] = useState("allGenres");
+  const [availableGenres, setAvailableGenres] = useState([]);
+
+  const debouncedQuery = useDebounce(searchQuery);
+
+  //____________fetch genre list once (independent of search)_____________
   useEffect(() => {
-    fetchBooks();
+    const fetchGenres = async () => {
+      try {
+        const res = await api.get("/api/books/genres");
+        if (res.data.success) {
+          setAvailableGenres(res.data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching genres:", err);
+      }
+    };
+    fetchGenres();
   }, []);
 
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/api/books/all-books", {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-      if (res.data.success) {
-        setBooks(res.data.data);
+  //____________search books whenever query/genre changes_____________
+  useEffect(() => {
+    const searchBooks = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const params = { limit: 12 }; // trending section only needs a preview
+        if (debouncedQuery) params.query = debouncedQuery;
+        if (selectedGenre !== "allGenres") params.genre = selectedGenre;
+
+        const res = await api.get("/api/books/search", {
+          params,
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        });
+
+        if (res.data.success) {
+          setBooks(res.data.data);
+        } else {
+          setError(res.data.msg || "Failed to load books");
+        }
+      } catch (err) {
+        console.error("Error searching books:", err);
+        setError("Failed to load books");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error fetching books:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  const availableGenres = Array.from(new Set(books.map((b) => b.bGenre).filter(Boolean)));
-
-  const filteredBooks = books.filter((book) => {
-    const query = searchQuery.toLowerCase().trim();
-    const matchesSearch =
-      !query ||
-      (book.bTitle && book.bTitle.toLowerCase().includes(query)) ||
-      (book.bAuthor && book.bAuthor.toLowerCase().includes(query)) ||
-      (book.bGenre && book.bGenre.toLowerCase().includes(query));
-
-    const matchesGenre =
-      selectedGenre === "allGenres" ||
-      (book.bGenre &&
-        book.bGenre.toLowerCase().replace(/[^a-z0-9]/g, "") ===
-          selectedGenre.toLowerCase().replace(/[^a-z0-9]/g, ""));
-
-    return matchesSearch && matchesGenre;
-  });
-
+    searchBooks();
+  }, [debouncedQuery, selectedGenre]);
 
   return (
     <div className="bg-gray-50 overflow-x-hidden">
@@ -332,7 +358,10 @@ function HomePage() {
                 Trending Books
               </h2>
             </div>
-            <button className="flex items-center gap-2 text-violet-600 font-semibold text-sm hover:gap-3 transition-all duration-200 group">
+            <button
+              onClick={() => navigate(`/all-books`)}
+              className="flex items-center gap-2 text-violet-600 font-semibold text-sm hover:gap-3 transition-all duration-200 group"
+            >
               View all books
               <img
                 src={arrowRight}
@@ -375,10 +404,16 @@ function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
             {loading ? (
               <p>Loading books...</p>
-            ) : filteredBooks.length === 0 ? (
-              <p className="text-gray-500 col-span-full py-8 italic text-center">No books match your criteria</p>
+            ) : error ? (
+              <p className="text-red-500 col-span-full py-8 text-center">
+                {error}
+              </p>
+            ) : books.length === 0 ? (
+              <p className="text-gray-500 col-span-full py-8 italic text-center">
+                No books match your criteria
+              </p>
             ) : (
-              filteredBooks.map((book) => (
+              books.map((book) => (
                 <BookCard
                   key={book.bId}
                   book={book}

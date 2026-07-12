@@ -133,3 +133,84 @@ export async function deleteBook(id) {
     throw error;
   }
 }
+export async function searchBookData(filters, { offset, limit }) {
+  let sql = "SELECT * FROM books WHERE 1=1";
+  const params = [];
+
+  if (filters.query) {
+    sql += " AND (bTitle LIKE ? OR bAuthor LIKE ? OR bGenre LIKE ?)";
+    params.push(
+      `%${filters.query}%`,
+      `%${filters.query}%`,
+      `%${filters.query}%`,
+    );
+  }
+  if (filters.isbn) {
+    sql += " AND bISBN LIKE ?";
+    params.push(`%${filters.isbn}%`);
+  }
+  if (filters.genre) {
+    sql += " AND bGenre = ?"; // exact match, since genre comes from a dropdown
+    params.push(filters.genre);
+  }
+
+  sql += " ORDER BY bTitle LIMIT ? OFFSET ?";
+  params.push(limit, offset);
+
+  const [rows] = await pool.query(sql, params);
+  return rows;
+}
+
+export async function countBooksData(filters) {
+  let sql = "SELECT COUNT(*) AS total FROM books WHERE 1=1";
+  const params = [];
+
+  if (filters.query) {
+    sql += " AND (bTitle LIKE ? OR bAuthor LIKE ? OR bGenre LIKE ?)";
+    params.push(
+      `%${filters.query}%`,
+      `%${filters.query}%`,
+      `%${filters.query}%`,
+    );
+  }
+  if (filters.isbn) {
+    sql += " AND bISBN LIKE ?";
+    params.push(`%${filters.isbn}%`);
+  }
+  if (filters.genre) {
+    sql += " AND bGenre = ?";
+    params.push(filters.genre);
+  }
+
+  const [rows] = await pool.query(sql, params);
+  return rows[0].total;
+}
+
+export async function searchBookService({ query, genre, page, limit }) {
+  const filters = {};
+  if (query) filters.query = query;
+  if (genre) filters.genre = genre;
+
+  const offset = (page - 1) * limit;
+
+  const [books, total] = await Promise.all([
+    searchBookData(filters, { offset, limit }),
+    countBooksData(filters),
+  ]);
+
+  return {
+    books,
+    pagination: {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    },
+  };
+}
+
+export async function getDistinctGenres() {
+  const [rows] = await pool.query(
+    "SELECT DISTINCT bGenre FROM books WHERE bGenre IS NOT NULL ORDER BY bGenre",
+  );
+  return rows.map((r) => r.bGenre);
+}

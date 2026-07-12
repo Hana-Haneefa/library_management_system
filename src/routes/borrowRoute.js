@@ -7,6 +7,7 @@ import {
   deleteBorrowDataController,
   getActiveBorrowController,
   returnBookController,
+  searchBookController,
 } from "../controllers/borrowController.js";
 import {
   authenticateToken,

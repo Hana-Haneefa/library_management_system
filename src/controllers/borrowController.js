@@ -5,6 +5,9 @@ import {
   updateBorrowData,
   deleteBorrowData,
   getActiveBorrowByBookId,
+  searchBookData,
+  countBooksData,
+  searchBookService,
 } from "../services/borrowService.js";
 
 export async function addBorrowDataController(req, res) {

@@ -11,7 +11,10 @@ export async function addBorrowData(borrowData) {
       .replace("T", " ");
 
     // Check book quantity first
-    const [bookRows] = await pool.query("SELECT bQuantity FROM books WHERE bId = ?", [bookId]);
+    const [bookRows] = await pool.query(
+      "SELECT bQuantity FROM books WHERE bId = ?",
+      [bookId],
+    );
     if (bookRows.length === 0) {
       throw new Error("Book not found");
     }
@@ -20,7 +23,10 @@ export async function addBorrowData(borrowData) {
     }
 
     // Decrement the book quantity by 1
-    await pool.query("UPDATE books SET bQuantity = bQuantity - 1 WHERE bId = ?", [bookId]);
+    await pool.query(
+      "UPDATE books SET bQuantity = bQuantity - 1 WHERE bId = ?",
+      [bookId],
+    );
 
     const [result] = await pool.query(
       "INSERT INTO borrows (brStudentId, brMonitorId, brReturnDate, brStatus, brBookId) VALUES (?, ?, ?, ?, ?)",
@@ -40,13 +46,12 @@ export async function addBorrowData(borrowData) {
   }
 }
 
-
 export async function getAllBorrowData() {
   try {
     const [rows] = await pool.query(
       `SELECT b.*, bk.bTitle, bk.bAuthor, bk.bGenre, bk.bISBN 
        FROM borrows b 
-       LEFT JOIN books bk ON b.brBookId = bk.bId`
+       LEFT JOIN books bk ON b.brBookId = bk.bId`,
     );
     return rows;
   } catch (err) {
@@ -118,10 +123,16 @@ export async function updateBorrowData(borrowId, updatedData) {
     if (oldStatus !== status) {
       if (status === "returned") {
         // Increment book quantity
-        await pool.query("UPDATE books SET bQuantity = bQuantity + 1 WHERE bId = ?", [bookId]);
+        await pool.query(
+          "UPDATE books SET bQuantity = bQuantity + 1 WHERE bId = ?",
+          [bookId],
+        );
       } else if (status === "borrowed") {
         // Check book quantity first
-        const [bookRows] = await pool.query("SELECT bQuantity FROM books WHERE bId = ?", [bookId]);
+        const [bookRows] = await pool.query(
+          "SELECT bQuantity FROM books WHERE bId = ?",
+          [bookId],
+        );
         if (bookRows.length === 0) {
           throw new Error("Book not found");
         }
@@ -129,7 +140,10 @@ export async function updateBorrowData(borrowId, updatedData) {
           throw new Error("No copies available to borrow");
         }
         // Decrement book quantity
-        await pool.query("UPDATE books SET bQuantity = bQuantity - 1 WHERE bId = ?", [bookId]);
+        await pool.query(
+          "UPDATE books SET bQuantity = bQuantity - 1 WHERE bId = ?",
+          [bookId],
+        );
       }
     }
 
