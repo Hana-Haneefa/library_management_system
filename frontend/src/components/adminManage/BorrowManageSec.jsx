@@ -50,6 +50,41 @@ function BorrowManageSec() {
   const [returnMsg, setReturnMsg] = useState(""); // success / error toast
   const [returnMsgType, setReturnMsgType] = useState("success"); // "success" | "error"
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("allCategories");
+  const [selectedStatus, setSelectedStatus] = useState("allStatus");
+
+  const filteredBorrows = borrows.filter((borrow) => {
+    const query = searchQuery.toLowerCase().trim();
+    // Match search query against Title, Author, Genre, Student ID, Book ID, ISBN
+    const matchesSearch =
+      !query ||
+      (borrow.bTitle && borrow.bTitle.toLowerCase().includes(query)) ||
+      (borrow.bAuthor && borrow.bAuthor.toLowerCase().includes(query)) ||
+      (borrow.bISBN && borrow.bISBN.toLowerCase().includes(query)) ||
+      (borrow.bGenre && borrow.bGenre.toLowerCase().includes(query)) ||
+      (borrow.brStudentId && borrow.brStudentId.toString().includes(query)) ||
+      (borrow.brBookId && borrow.brBookId.toString().includes(query));
+
+    const matchesCategory =
+      selectedCategory === "allCategories" ||
+      (borrow.bGenre &&
+        borrow.bGenre.toLowerCase().replace(/[^a-z0-9]/g, "") ===
+          selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, ""));
+
+    const isOverdue =
+      borrow.brStatus === "borrowed" &&
+      new Date(borrow.brReturnDate) < new Date();
+
+    const matchesStatus =
+      selectedStatus === "allStatus" ||
+      (selectedStatus === "borrowed" && borrow.brStatus === "borrowed") ||
+      (selectedStatus === "overdue" && isOverdue) ||
+      (selectedStatus === "returned" && borrow.brStatus === "returned");
+
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
   const navigate = useNavigate();
 
   //handle add borrow click
@@ -224,13 +259,17 @@ function BorrowManageSec() {
       <div className="searchSec flex flex-col mt-4 mb-4 gap-2">
         <input
           type="search"
-          placeholder="Search books by Title, Author, Genre..."
+          placeholder="Search by Student ID, Book ID, Title, Author, Genre..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
         />
         <div className="flex flex-col sm:flex-row gap-2">
           <select
             name="category"
             id="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
           >
             <option
@@ -295,13 +334,18 @@ function BorrowManageSec() {
           <select
             name="status"
             id="status"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
           >
             <option value="allStatus" className="bg-purple-950 ">
               All Statuses
             </option>
             <option value="borrowed" className="bg-purple-950 ">
-              New Borrows
+              Borrowed
+            </option>
+            <option value="returned" className="bg-purple-950 ">
+              Returned
             </option>
             <option value="overdue" className="bg-purple-950 ">
               Overdue
@@ -353,7 +397,7 @@ function BorrowManageSec() {
                   Loading borrows...
                 </td>
               </tr>
-            ) : borrows.length === 0 ? (
+            ) : filteredBorrows.length === 0 ? (
               <tr>
                 <td
                   colSpan={10}
@@ -363,7 +407,7 @@ function BorrowManageSec() {
                 </td>
               </tr>
             ) : (
-              borrows.map((borrow) => (
+              filteredBorrows.map((borrow) => (
                 <tr key={borrow.brId} className="border-t-2 border-white/50">
                   <td
                     className={

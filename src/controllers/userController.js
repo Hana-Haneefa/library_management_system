@@ -174,7 +174,7 @@ export async function studentLoginController(req, res) {
       { id: loginStudent.uId, role: loginStudent.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "30d",
       },
     );
 

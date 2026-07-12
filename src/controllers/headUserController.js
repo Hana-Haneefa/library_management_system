@@ -180,7 +180,7 @@ export async function loginAuthController(req, res) {
     const token = jwt.sign(
       { id: userAuth.hId, role: userAuth.hRole },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" },
+      { expiresIn: "30d" },
     );
     const { hPassword, ...userWithoutPassword } = userAuth; // Exclude password from response
     return res.status(200).json({

@@ -28,6 +28,33 @@ function BookManageSec() {
     quantity: "",
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("allCategories");
+  const [selectedStatus, setSelectedStatus] = useState("allStatus");
+
+  const filteredBooks = books.filter((book) => {
+    const query = searchQuery.toLowerCase().trim();
+    const matchesSearch =
+      !query ||
+      (book.bTitle && book.bTitle.toLowerCase().includes(query)) ||
+      (book.bAuthor && book.bAuthor.toLowerCase().includes(query)) ||
+      (book.bISBN && book.bISBN.toLowerCase().includes(query)) ||
+      (book.bGenre && book.bGenre.toLowerCase().includes(query));
+
+    const matchesCategory =
+      selectedCategory === "allCategories" ||
+      (book.bGenre &&
+        book.bGenre.toLowerCase().replace(/[^a-z0-9]/g, "") ===
+          selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, ""));
+
+    const bookStatus = (book.bStatus || "available").toLowerCase();
+    const matchesStatus =
+      selectedStatus === "allStatus" ||
+      bookStatus === selectedStatus.toLowerCase();
+
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
   const bookmng = Animation(500);
 
   // fetch all books
@@ -257,11 +284,15 @@ function BookManageSec() {
         <input
           type="search"
           placeholder="Search books by Title, Author, Genre..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 mb-2 focus:outline-none"
         />
         <div className="flex flex-col sm:flex-row gap-2">
           <select
             name="category"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40 focus:outline-none"
           >
             <option value="allCategories" className="bg-black">
@@ -315,6 +346,8 @@ function BookManageSec() {
           </select>
           <select
             name="status"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
             className="w-full h-10 bg-white/20 rounded-md px-4 pb-1 text-white border-t-2 border-r-2 border-white/40"
           >
             <option value="allStatus" className="bg-purple-950">
@@ -363,7 +396,7 @@ function BookManageSec() {
             </tr>
           </thead>
           <tbody>
-            {books.length === 0 ? (
+            {filteredBooks.length === 0 ? (
               <tr>
                 <td
                   colSpan={10}
@@ -373,7 +406,7 @@ function BookManageSec() {
                 </td>
               </tr>
             ) : (
-              books.map((book) => (
+              filteredBooks.map((book) => (
                 <tr key={book.bId} className="border-t-2 border-white/50 h-16">
                   <td className="bg-blue-400 w-1.5"></td>
                   <td

@@ -255,19 +255,6 @@ function BookView() {
                       ? "Borrowed"
                       : "Borrow"}
                 </button>
-
-                {isBorrowed && (
-                  <button
-                    onClick={() => {
-                      alert("Scan QR code to return!"); // Replace with actual return verification logic
-                      setIsBorrowed(false); // Reset the borrowed state after verification
-                      navigate(`/verify-return/${bookId}`); // Navigate to the QR scanner page
-                    }}
-                    className="w-full sm:w-auto bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition-colors duration-300"
-                  >
-                    Verify Return
-                  </button>
-                )}
               </div>
 
               {borrowMessage && (

@@ -127,6 +127,8 @@ function HomePage() {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("allGenres");
 
   //____________fetching book data_____________
   useEffect(() => {
@@ -151,6 +153,26 @@ function HomePage() {
       setLoading(false);
     }
   };
+
+  const availableGenres = Array.from(new Set(books.map((b) => b.bGenre).filter(Boolean)));
+
+  const filteredBooks = books.filter((book) => {
+    const query = searchQuery.toLowerCase().trim();
+    const matchesSearch =
+      !query ||
+      (book.bTitle && book.bTitle.toLowerCase().includes(query)) ||
+      (book.bAuthor && book.bAuthor.toLowerCase().includes(query)) ||
+      (book.bGenre && book.bGenre.toLowerCase().includes(query));
+
+    const matchesGenre =
+      selectedGenre === "allGenres" ||
+      (book.bGenre &&
+        book.bGenre.toLowerCase().replace(/[^a-z0-9]/g, "") ===
+          selectedGenre.toLowerCase().replace(/[^a-z0-9]/g, ""));
+
+    return matchesSearch && matchesGenre;
+  });
+
 
   return (
     <div className="bg-gray-50 overflow-x-hidden">
@@ -301,7 +323,7 @@ function HomePage() {
       ══════════════════════════════════════ */}
       <section className="bg-linear-to-b from-white to-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
             <div>
               <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-violet-500 bg-violet-50 border border-violet-200 rounded-full px-4 py-1 mb-2">
                 Popular
@@ -320,11 +342,43 @@ function HomePage() {
             </button>
           </div>
 
+          {/* Search and Category Filter Bar */}
+          <div className="flex flex-col md:flex-row gap-4 mb-10 bg-white/40 backdrop-blur-md border border-gray-200/60 p-4 rounded-2xl shadow-sm">
+            <div className="flex-1 relative">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                🔍
+              </span>
+              <input
+                type="text"
+                placeholder="Search by Title, Author, Genre..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors text-sm text-gray-800"
+              />
+            </div>
+            <div className="w-full md:w-64">
+              <select
+                value={selectedGenre}
+                onChange={(e) => setSelectedGenre(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors text-sm text-gray-800"
+              >
+                <option value="allGenres">All Categories</option>
+                {availableGenres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
             {loading ? (
               <p>Loading books...</p>
+            ) : filteredBooks.length === 0 ? (
+              <p className="text-gray-500 col-span-full py-8 italic text-center">No books match your criteria</p>
             ) : (
-              books.map((book) => (
+              filteredBooks.map((book) => (
                 <BookCard
                   key={book.bId}
                   book={book}
