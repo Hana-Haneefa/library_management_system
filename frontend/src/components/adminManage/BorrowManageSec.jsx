@@ -44,10 +44,10 @@ function BorrowManageSec() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // ── manual return state ──
-  const [returnTarget, setReturnTarget] = useState(null);   // borrow row to return
+  const [returnTarget, setReturnTarget] = useState(null); // borrow row to return
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
   const [returning, setReturning] = useState(false);
-  const [returnMsg, setReturnMsg] = useState("");            // success / error toast
+  const [returnMsg, setReturnMsg] = useState(""); // success / error toast
   const [returnMsgType, setReturnMsgType] = useState("success"); // "success" | "error"
 
   const navigate = useNavigate();
@@ -138,10 +138,12 @@ function BorrowManageSec() {
     setReturnMsg("");
     try {
       // Call return-book directly with the borrow's own brId — no QR needed
-      const res = await api.put(`/api/borrows/return-book/${returnTarget.brId}`);
+      const res = await api.put(
+        `/api/borrows/return-book/${returnTarget.brId}`,
+      );
       if (res.data.success) {
         setReturnMsgType("success");
-        setReturnMsg("✅ Book returned successfully!");
+        setReturnMsg("Book returned successfully!");
         fetchBorrows(); // refresh table
         setTimeout(() => {
           setIsReturnModalOpen(false);
@@ -150,12 +152,12 @@ function BorrowManageSec() {
         }, 1500);
       } else {
         setReturnMsgType("error");
-        setReturnMsg(res.data.msg || "❌ Failed to process return.");
+        setReturnMsg(res.data.msg || "Failed to process return.");
       }
     } catch (err) {
       setReturnMsgType("error");
       setReturnMsg(
-        err.response?.data?.msg || "❌ Server error while processing return."
+        err.response?.data?.msg || "Server error while processing return.",
       );
     } finally {
       setReturning(false);
@@ -497,28 +499,45 @@ function BorrowManageSec() {
           <div style={returnModalBox}>
             {/* header */}
             <div style={{ marginBottom: "1.25rem" }}>
-              <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#c084fc", marginBottom: "0.35rem" }}>
+              <p
+                style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#c084fc",
+                  marginBottom: "0.35rem",
+                }}
+              >
                 Manual Book Return
               </p>
               <h2 style={{ fontSize: "1.35rem", fontWeight: 800, margin: 0 }}>
                 Confirm Return
               </h2>
-              <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", marginTop: "0.25rem" }}>
+              <p
+                style={{
+                  fontSize: "0.8rem",
+                  color: "rgba(255,255,255,0.55)",
+                  marginTop: "0.25rem",
+                }}
+              >
                 No QR scan required — confirm the details below.
               </p>
             </div>
 
             {/* borrow detail card */}
-            <div style={{
-              background: "rgba(255,255,255,0.07)",
-              border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "0.85rem",
-              padding: "1rem 1.15rem",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "0.75rem 1rem",
-              marginBottom: "1.25rem",
-            }}>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: "0.85rem",
+                padding: "1rem 1.15rem",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "0.75rem 1rem",
+                marginBottom: "1.25rem",
+              }}
+            >
               {[
                 ["Borrow ID", `#${returnTarget.brId}`],
                 ["Student ID", returnTarget.brStudentId ?? "—"],
@@ -526,23 +545,47 @@ function BorrowManageSec() {
                 ["Monitor ID", returnTarget.brMonitorId ?? "—"],
               ].map(([label, value]) => (
                 <div key={label}>
-                  <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", marginBottom: "0.15rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>{label}</p>
-                  <p style={{ fontSize: "0.92rem", fontWeight: 600 }}>{value}</p>
+                  <p
+                    style={{
+                      fontSize: "0.68rem",
+                      color: "rgba(255,255,255,0.45)",
+                      marginBottom: "0.15rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                    }}
+                  >
+                    {label}
+                  </p>
+                  <p style={{ fontSize: "0.92rem", fontWeight: 600 }}>
+                    {value}
+                  </p>
                 </div>
               ))}
               <div style={{ gridColumn: "1 / -1" }}>
-                <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)", marginBottom: "0.15rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>Current Status</p>
-                <span style={{
-                  display: "inline-block",
-                  padding: "0.2rem 0.7rem",
-                  borderRadius: "999px",
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  border: "1px solid rgba(251,146,60,0.5)",
-                  color: "#fb923c",
-                  background: "rgba(251,146,60,0.1)",
-                  textTransform: "capitalize",
-                }}>
+                <p
+                  style={{
+                    fontSize: "0.68rem",
+                    color: "rgba(255,255,255,0.45)",
+                    marginBottom: "0.15rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Current Status
+                </p>
+                <span
+                  style={{
+                    display: "inline-block",
+                    padding: "0.2rem 0.7rem",
+                    borderRadius: "999px",
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    border: "1px solid rgba(251,146,60,0.5)",
+                    color: "#fb923c",
+                    background: "rgba(251,146,60,0.1)",
+                    textTransform: "capitalize",
+                  }}
+                >
                   {returnTarget.brStatus}
                 </span>
               </div>
@@ -550,25 +593,40 @@ function BorrowManageSec() {
 
             {/* feedback message */}
             {returnMsg && (
-              <div style={{
-                padding: "0.65rem 0.9rem",
-                borderRadius: "0.6rem",
-                marginBottom: "1rem",
-                fontSize: "0.82rem",
-                fontWeight: 600,
-                background: returnMsgType === "success" ? "rgba(52,211,153,0.12)" : "rgba(248,113,113,0.12)",
-                border: `1px solid ${returnMsgType === "success" ? "rgba(52,211,153,0.4)" : "rgba(248,113,113,0.4)"}`,
-                color: returnMsgType === "success" ? "#6ee7b7" : "#fca5a5",
-              }}>
+              <div
+                style={{
+                  padding: "0.65rem 0.9rem",
+                  borderRadius: "0.6rem",
+                  marginBottom: "1rem",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  background:
+                    returnMsgType === "success"
+                      ? "rgba(52,211,153,0.12)"
+                      : "rgba(248,113,113,0.12)",
+                  border: `1px solid ${returnMsgType === "success" ? "rgba(52,211,153,0.4)" : "rgba(248,113,113,0.4)"}`,
+                  color: returnMsgType === "success" ? "#6ee7b7" : "#fca5a5",
+                }}
+              >
                 {returnMsg}
               </div>
             )}
 
             {/* action buttons */}
-            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                justifyContent: "flex-end",
+              }}
+            >
               <button
                 disabled={returning}
-                onClick={() => { setIsReturnModalOpen(false); setReturnTarget(null); setReturnMsg(""); }}
+                onClick={() => {
+                  setIsReturnModalOpen(false);
+                  setReturnTarget(null);
+                  setReturnMsg("");
+                }}
                 style={{
                   padding: "0.6rem 1.2rem",
                   borderRadius: "0.65rem",
@@ -580,8 +638,12 @@ function BorrowManageSec() {
                   opacity: returning ? 0.5 : 1,
                   transition: "background 0.2s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "rgba(255,255,255,0.08)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
               >
                 Cancel
               </button>
@@ -592,11 +654,15 @@ function BorrowManageSec() {
                   padding: "0.6rem 1.4rem",
                   borderRadius: "0.65rem",
                   border: "none",
-                  background: returning ? "#4b5563" : "linear-gradient(135deg, #059669 0%, #10b981 100%)",
+                  background: returning
+                    ? "#4b5563"
+                    : "linear-gradient(135deg, #059669 0%, #10b981 100%)",
                   color: "#fff",
                   fontWeight: 700,
                   cursor: returning ? "not-allowed" : "pointer",
-                  boxShadow: returning ? "none" : "0 4px 15px rgba(16,185,129,0.35)",
+                  boxShadow: returning
+                    ? "none"
+                    : "0 4px 15px rgba(16,185,129,0.35)",
                   transition: "all 0.2s",
                   display: "flex",
                   alignItems: "center",
@@ -605,7 +671,17 @@ function BorrowManageSec() {
               >
                 {returning ? (
                   <>
-                    <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid rgba(255,255,255,0.4)", borderTop: "2px solid #fff", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} />
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: 14,
+                        height: 14,
+                        border: "2px solid rgba(255,255,255,0.4)",
+                        borderTop: "2px solid #fff",
+                        borderRadius: "50%",
+                        animation: "spin 0.7s linear infinite",
+                      }}
+                    />
                     Processing…
                   </>
                 ) : (

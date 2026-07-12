@@ -135,16 +135,18 @@ function QRscannerPage() {
 
   if (loading) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-950 via-purple-950 to-black text-white">
-        Loading...
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #000 100%)", color: "#fff", fontSize: "1rem", fontWeight: 600, gap: "0.75rem" }}>
+        <span style={{ display: "inline-block", width: 20, height: 20, border: "3px solid rgba(255,255,255,0.3)", borderTop: "3px solid #fff", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        Loading book details…
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
 
   if (!bookDetails) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-950 via-purple-950 to-black text-white">
-        Book not found
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #000 100%)", color: "#fca5a5", fontSize: "1rem", fontWeight: 600 }}>
+        ❌ Book not found
       </div>
     );
   }

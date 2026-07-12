@@ -2,7 +2,7 @@ import icon from "../../images/icons/heart.png";
 import { useState, useRef, useEffect } from "react";
 
 function DashboardSec() {
-  const [activeTab, setActiveTab] = useState("Charts");
+  const [activeTab, setActiveTab] = useState("charts");
 
   const contentRef = useRef(null);
 

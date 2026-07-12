@@ -30,7 +30,7 @@ export function Navigation() {
 
   return (
     <div>
-      <nav className="sticky top-0 bg-white/20 backdrop:blur-2xl m-4 overflow-hidden shadow-md rounded-xl z-50">
+      <nav className="sticky top-0 bg-white/80 backdrop-blur-xl m-4 overflow-hidden shadow-md rounded-xl z-50 border border-white/60">
         <div className="nav max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="logo flex items-center h-10 gap-10">
             <img src={logo} alt="myLogo" className="h-10 w-20 object-cover" />
@@ -63,12 +63,12 @@ export function Navigation() {
               />
               <DarkMode />
               <button
-                className="md:hidden text-gray-300 focus:outline-none ml-2"
+                className="md:hidden text-gray-600 focus:outline-none ml-2 p-1"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
-                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-300"></span>
+                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-600"></span>
               </button>
             </div>
           ) : (
@@ -87,12 +87,12 @@ export function Navigation() {
               />
               <DarkMode />
               <button
-                className="md:hidden text-gray-300 focus:outline-none ml-2"
+                className="md:hidden text-gray-600 focus:outline-none ml-2 p-1"
                 onClick={() => setMenuOpen(!menuOpen)}
               >
-                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-300 mb-1"></span>
-                <span className="block w-6 h-0.5 bg-gray-300"></span>
+                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-600 mb-1"></span>
+                <span className="block w-6 h-0.5 bg-gray-600"></span>
               </button>
             </div>
           )}
@@ -178,11 +178,13 @@ export function Navigation() {
           </div>
         )}
 
-        <div className="w-full bg-purple-100">
-          <h2 className="font-bold font-sans text-center p-1 pb-2">
-            Welcome Guest!
-          </h2>
-        </div>
+        {user && (
+          <div className="w-full bg-violet-50 border-t border-violet-100">
+            <p className="font-semibold font-sans text-center text-violet-700 text-sm p-1 pb-1.5">
+              Welcome back, <span className="font-bold">{user.name ?? user.email ?? "Member"}</span>! 👋
+            </p>
+          </div>
+        )}
       </nav>
     </div>
   );

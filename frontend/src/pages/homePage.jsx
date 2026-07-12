@@ -142,7 +142,6 @@ function HomePage() {
           Pragma: "no-cache",
         },
       });
-      console.log("Fetched books:", res.data.data); // Log the fetched data
       if (res.data.success) {
         setBooks(res.data.data);
       }
