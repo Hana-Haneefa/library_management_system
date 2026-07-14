@@ -15,8 +15,10 @@ import BookCard from "../components/Card.jsx";
 import HeroSec from "../components/HeroSection.jsx";
 import Navigation from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import { COVER_BASE_URL } from "../context/authContext.jsx";
 
 /* ─── Quick Action Card data ─── */
 const quickActions = [
@@ -120,36 +122,83 @@ function SectionHeading({ eyebrow, title, subtitle }) {
   );
 }
 
+/* ─── Debounce hook (defined once, outside the component) ─── */
+function useDebounce(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+
 function HomePage() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  //____________fetching book data_____________
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || "",
+  );
+  const [selectedGenre, setSelectedGenre] = useState("allGenres");
+  const [availableGenres, setAvailableGenres] = useState([]);
+
+  const debouncedQuery = useDebounce(searchQuery);
+
+  //____________fetch genre list once (independent of search)_____________
   useEffect(() => {
-    fetchBooks();
+    const fetchGenres = async () => {
+      try {
+        const res = await api.get("/api/books/genres");
+        if (res.data.success) {
+          setAvailableGenres(res.data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching genres:", err);
+      }
+    };
+    fetchGenres();
   }, []);
 
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/api/books/all-books", {
-        headers: {
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-      console.log("Fetched books:", res.data.data); // Log the fetched data
-      if (res.data.success) {
-        setBooks(res.data.data);
+  //____________search books whenever query/genre changes_____________
+  useEffect(() => {
+    const searchBooks = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const params = { limit: 12 }; // trending section only needs a preview
+        if (debouncedQuery) params.query = debouncedQuery;
+        if (selectedGenre !== "allGenres") params.genre = selectedGenre;
+
+        const res = await api.get("/api/books/search", {
+          params,
+          headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
+        });
+
+        if (res.data.success) {
+          setBooks(res.data.data);
+        } else {
+          setError(res.data.msg || "Failed to load books");
+        }
+      } catch (err) {
+        console.error("Error searching books:", err);
+        setError("Failed to load books");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error fetching books:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    searchBooks();
+  }, [debouncedQuery, selectedGenre]);
 
   return (
     <div className="bg-gray-50 overflow-x-hidden">
@@ -300,7 +349,7 @@ function HomePage() {
       ══════════════════════════════════════ */}
       <section className="bg-linear-to-b from-white to-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
             <div>
               <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase text-violet-500 bg-violet-50 border border-violet-200 rounded-full px-4 py-1 mb-2">
                 Popular
@@ -309,7 +358,10 @@ function HomePage() {
                 Trending Books
               </h2>
             </div>
-            <button className="flex items-center gap-2 text-violet-600 font-semibold text-sm hover:gap-3 transition-all duration-200 group">
+            <button
+              onClick={() => navigate(`/all-books`)}
+              className="flex items-center gap-2 text-violet-600 font-semibold text-sm hover:gap-3 transition-all duration-200 group"
+            >
               View all books
               <img
                 src={arrowRight}
@@ -319,15 +371,53 @@ function HomePage() {
             </button>
           </div>
 
+          {/* Search and Category Filter Bar */}
+          <div className="flex flex-col md:flex-row gap-4 mb-10 bg-white/40 backdrop-blur-md border border-gray-200/60 p-4 rounded-2xl shadow-sm">
+            <div className="flex-1 relative">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                🔍
+              </span>
+              <input
+                type="text"
+                placeholder="Search by Title, Author, Genre..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors text-sm text-gray-800"
+              />
+            </div>
+            <div className="w-full md:w-64">
+              <select
+                value={selectedGenre}
+                onChange={(e) => setSelectedGenre(e.target.value)}
+                className="w-full px-4 py-2.5 bg-white/80 border border-gray-200 rounded-xl focus:outline-none focus:border-violet-500 transition-colors text-sm text-gray-800"
+              >
+                <option value="allGenres">All Categories</option>
+                {availableGenres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
             {loading ? (
               <p>Loading books...</p>
+            ) : error ? (
+              <p className="text-red-500 col-span-full py-8 text-center">
+                {error}
+              </p>
+            ) : books.length === 0 ? (
+              <p className="text-gray-500 col-span-full py-8 italic text-center">
+                No books match your criteria
+              </p>
             ) : (
               books.map((book) => (
                 <BookCard
                   key={book.bId}
                   book={book}
-                  imageSrc={`http://localhost:5000/uploads/covers/${book.coverImage}`}
+                  imageSrc={`${COVER_BASE_URL}/${book.coverImage}`}
                   title={book.bTitle}
                   author={book.bAuthor}
                   availability={book.bStatus}

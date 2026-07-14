@@ -5,6 +5,8 @@ import {
   createBookController,
   updateBookController,
   deleteBookController,
+  searchBookController,
+  getGenresController,
 } from "../controllers/bookController.js";
 import {
   authenticateToken,
@@ -14,7 +16,8 @@ import {
 import upload from "../middleware/uploadMiddleware.js";
 
 const router = Router();
-
+router.get("/search", searchBookController);
+router.get("/genres", getGenresController);
 router.get(
   "/all-books",
   // authenticateToken,
@@ -24,9 +27,9 @@ router.get(
 );
 router.get(
   "/byId/:id",
-  authenticateToken,
-  authorizeAdmin,
-  authorizeLibrarian,
+  // authenticateToken,
+  // authorizeAdmin,
+  // authorizeLibrarian,
   getBookByIdController,
 );
 router.post(

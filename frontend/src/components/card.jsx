@@ -4,8 +4,11 @@ import viewIcon from "../images/icons/viewIcon.png";
 import favourite from "../images/icons/heart.png";
 import favSelected from "../images/icons/heartSelected.png";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { COVER_BASE_URL } from "../context/authContext.jsx";
 
 function BookCard({
+  book,
   imageSrc,
   title,
   author,
@@ -13,9 +16,14 @@ function BookCard({
   genre,
   className = "",
 }) {
+  if (!book) {
+    return null; // Return null or a placeholder if book is undefined
+  }
+
   const [isFav, setIsFav] = useState(false);
   const [label, setLabel] = useState("Read");
   const [visible, setVisible] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,6 +37,11 @@ function BookCard({
     return () => clearInterval(interval);
   }, []);
 
+  // function to handle the click event on the "Read" or "Borrow" button
+  function handleBorrowClick() {
+    navigate(`/book/${book.bId}`); //pass book id to the book view page to render specific book details
+  }
+
   function toggleFav() {
     setIsFav(!isFav);
   }
@@ -38,7 +51,7 @@ function BookCard({
     >
       {/* image div */}
       <img
-        src={imageSrc || bookimg}
+        src={`${COVER_BASE_URL}/${book.coverImage}`}
         className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         alt=""
       />
@@ -47,7 +60,10 @@ function BookCard({
       <div className="absolute bottom-0 left-0 w-full bg-white/90 rounded-t-2xl translate-y-0 group-hover:translate-y-full opacity-100 group-hover:opacity-0 transition-all duration-500 p-2 flex flex-col items-center justify-between gap-1">
         <h3 className="text-lg font-bold">{title}</h3>
         <p className="text-sm text-gray-600">by {author}</p>
-        <button className="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300">
+        <button
+          onClick={handleBorrowClick} //pass book id to the book view page to render specific book details
+          className="bg-purple-800 w-full py-2 px-4 rounded-md text-white font-semibold hover:bg-purple-600 transition-colors duration-300"
+        >
           <span
             style={{
               display: "inline-block",
@@ -84,7 +100,10 @@ function BookCard({
         </div>
       </div>
       <div className="btn opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute bottom-2 left-1/2 transform -translate-x-1/2 w-11/12">
-        <button className="border-2 border-purple-800 w-full py-2 px-4 rounded-md bg-white/40 text-purple-800 font-semibold hover:text-purple-600 transition-colors duration-300 cursor-pointer ml-0.5">
+        <button
+          onClick={handleBorrowClick} //pass book id to the book view page to render specific book details
+          className="border-2 border-purple-800 w-full py-2 px-4 rounded-md bg-white/40 text-purple-800 font-semibold hover:text-purple-600 transition-colors duration-300 cursor-pointer ml-0.5"
+        >
           <span
             style={{
               display: "inline-block",

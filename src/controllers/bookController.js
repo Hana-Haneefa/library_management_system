@@ -4,6 +4,10 @@ import {
   createBook,
   updateBook,
   deleteBook,
+  searchBookData,
+  countBooksData,
+  searchBookService,
+  getDistinctGenres,
 } from "../services/bookService.js";
 
 // controller for get all books
@@ -16,9 +20,11 @@ export async function getAllBooksController(req, res) {
       data: books,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to fetch books", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to fetch books",
+      details: error.message,
+    });
   }
 }
 
@@ -26,18 +32,24 @@ export async function getAllBooksController(req, res) {
 export async function getBookByIdController(req, res) {
   const id = parseInt(req.params.id, 10);
   if (isNaN(id) || id <= 0) {
-    return res.status(400).json({ error: "Invalid book ID" });
+    return res.status(400).json({ success: false, error: "Invalid book ID" });
   }
   try {
     const book = await getBookById(id);
     if (!book) {
-      return res.status(404).json({ error: "Book not found" });
+      return res.status(404).json({ success: false, error: "Book not found" });
     }
-    res.status(200).json({ message: "Book fetched successfully", data: book });
+    res.status(200).json({
+      success: true,
+      message: "Book fetched successfully",
+      data: book,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to fetch book", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to fetch book",
+      details: error.message,
+    });
   }
 }
 
@@ -68,13 +80,17 @@ export async function createBookController(req, res) {
       coverImg,
     });
 
-    res
-      .status(201)
-      .json({ message: "Book created successfully", data: newBook });
+    res.status(201).json({
+      success: true,
+      message: "Book created successfully",
+      data: newBook,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to create book", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to create book",
+      details: error.message,
+    });
   }
 }
 
@@ -124,17 +140,17 @@ export async function updateBookController(req, res) {
     if (!updatedBook) {
       return res.status(404).json({ error: "Book not found" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Book updated successfully",
-        data: updatedBook,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Book updated successfully",
+      data: updatedBook,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Failed to update book", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to update book",
+      details: error.message,
+    });
   }
 }
 
@@ -149,10 +165,52 @@ export async function deleteBookController(req, res) {
     res.status(200).json({ success: true, message: result.message });
   } catch (error) {
     if (error.message === "Book not found") {
-      return res.status(404).json({ error: "Book not found" });
+      return res.status(404).json({ success: false, error: "Book not found" });
     }
-    res
-      .status(500)
-      .json({ error: "Failed to delete book", details: error.message });
+    res.status(500).json({
+      success: false,
+      error: "Failed to delete book",
+      details: error.message,
+    });
+  }
+}
+
+//search book controller
+export async function searchBookController(req, res) {
+  const { query, genre, author, page = 1, limit = 10 } = req.query;
+
+  try {
+    const result = await searchBookService({
+      query,
+      genre,
+      author,
+      page: Number(page),
+      limit: Number(limit),
+    });
+    res.status(200).json({
+      success: true,
+      msg: "Books retrieved successfully",
+      data: result.books,
+      pagination: result.pagination,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error searching books",
+      error: err.message,
+    });
+  }
+}
+
+export async function getGenresController(req, res) {
+  try {
+    const genres = await getDistinctGenres();
+    res.status(200).json({ success: true, data: genres });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error fetching genres",
+      error: err.message,
+    });
   }
 }
