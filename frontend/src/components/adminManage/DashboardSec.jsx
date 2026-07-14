@@ -4,6 +4,19 @@ import borrowIcon from "../../images/icons/borrow.png";
 import billIcon from "../../images/icons/bill.png";
 import { useState, useRef, useEffect } from "react";
 import api from "../../services/api.js";
+import {
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 function DashboardSec() {
   const [activeTab, setActiveTab] = useState("charts");
@@ -17,6 +30,25 @@ function DashboardSec() {
   const [error, setError] = useState(null);
 
   const contentRef = useRef(null);
+
+  // dummy data for template graphs (component scope - available in JSX)
+  const borrowTrendData = [
+    { month: "Jan", borrows: 30 },
+    { month: "Feb", borrows: 45 },
+    { month: "Mar", borrows: 38 },
+    { month: "Apr", borrows: 55 },
+    { month: "May", borrows: 42 },
+    { month: "Jun", borrows: 60 },
+  ];
+
+  const genreData = [
+    { name: "Fiction", value: 35 },
+    { name: "Science", value: 25 },
+    { name: "History", value: 20 },
+    { name: "Others", value: 20 },
+  ];
+
+  const COLORS = ["#a78bfa", "#c4b5fd", "#8b5cf6", "#6d28d9"];
 
   useEffect(() => {
     // Fade-in animation
@@ -55,10 +87,30 @@ function DashboardSec() {
   }, []);
 
   const cardData = [
-    { title: "Total Books", value: stats.totalBooks, suffix: "", icon: bookIcon },
-    { title: "Total Members", value: stats.totalMembers, suffix: "", icon: memberIcon },
-    { title: "Active Borrows", value: stats.activeBorrows, suffix: "", icon: borrowIcon },
-    { title: "Pending Fines", value: stats.pendingFines, suffix: " LKR", icon: billIcon },
+    {
+      title: "Total Books",
+      value: stats.totalBooks,
+      suffix: "",
+      icon: bookIcon,
+    },
+    {
+      title: "Total Members",
+      value: stats.totalMembers,
+      suffix: "",
+      icon: memberIcon,
+    },
+    {
+      title: "Active Borrows",
+      value: stats.activeBorrows,
+      suffix: "",
+      icon: borrowIcon,
+    },
+    {
+      title: "Pending Fines",
+      value: stats.pendingFines,
+      suffix: " LKR",
+      icon: billIcon,
+    },
   ];
 
   return (
@@ -140,7 +192,8 @@ function DashboardSec() {
                 <p className="text-sm font-bold text-red-300">Error</p>
               ) : (
                 <p className="text-3xl font-bold text-white">
-                  {card.value.toLocaleString()}{card.suffix}
+                  {card.value.toLocaleString()}
+                  {card.suffix}
                 </p>
               )}
             </div>
@@ -153,8 +206,73 @@ function DashboardSec() {
 
       {/* graphs */}
       <div className="graphs flex flex-col lg:flex-row h-auto gap-4 mt-4 min-h-64">
-        <div className="w-full lg:w-2/3 h-64 lg:h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
-        <div className="w-full lg:w-1/3 h-64 lg:h-full bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg"></div>
+        {/* Line chart - Borrow Trend */}
+        <div className="w-full lg:w-2/3 h-64 lg:h-80 bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg p-4">
+          <h3 className="text-white font-semibold mb-2">
+            Borrow Trend (Sample)
+          </h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <LineChart data={borrowTrendData}>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="rgba(255,255,255,0.1)"
+              />
+              <XAxis dataKey="month" stroke="rgba(255,255,255,0.6)" />
+              <YAxis stroke="rgba(255,255,255,0.6)" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(30,20,60,0.9)",
+                  border: "1px solid rgba(167,139,250,0.4)",
+                  borderRadius: "8px",
+                  color: "#fff",
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="borrows"
+                stroke="#a78bfa"
+                strokeWidth={3}
+                dot={{ fill: "#a78bfa", r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Pie chart - Genre Distribution */}
+        <div className="w-full lg:w-1/3 h-64 lg:h-80 bg-white/20 rounded-2xl border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg p-4">
+          <h3 className="text-white font-semibold mb-2">
+            Genre Split (Sample)
+          </h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <PieChart>
+              <Pie
+                data={genreData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={70}
+                label
+              >
+                {genreData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(30,20,60,0.9)",
+                  border: "1px solid rgba(167,139,250,0.4)",
+                  borderRadius: "8px",
+                  color: "#fff",
+                }}
+              />
+              <Legend wrapperStyle={{ color: "#fff", fontSize: "12px" }} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
