@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../context/authContext";
 import img from "../images/testimg.jpg";
 import icon from "../images/icons/heart.png";
 import dashboardIcon from "../images/icons/dashboard.png";
@@ -19,8 +20,9 @@ import MemberManage from "../components/adminManage/MemberManage";
 import BorrowManageSec from "../components/adminManage/BorrowManageSec";
 
 function AdminDashboard() {
+  const { user } = useAuth();
   const [activeSection, setActiveSection] = useState("dashboard");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar එක පාලනය කිරීමට
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar control
 
   const containerRef = useRef(null);
   const leftRef = useRef(null);
@@ -56,7 +58,7 @@ function AdminDashboard() {
 
   return (
     <div className="admin-dashboard relative overflow-x-hidden">
-      {/* 🌫️ Mobile Overlay (පසුබිම බොඳ කිරීම) */}
+      {/* overlay blur */}
       {isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(false)}
@@ -73,7 +75,7 @@ function AdminDashboard() {
           backgroundPosition: "center",
         }}
       >
-        {/* 📋 Side Navigation Menu */}
+        {/* Side Navigation Menu */}
         <div
           id="dashSideMenu"
           ref={leftRef}
@@ -107,7 +109,7 @@ function AdminDashboard() {
             />
           </div>
           <p className="text-gray-200 md:text-gray-500 font-semibold text-sm text-center mt-4">
-            ID:12345
+            ID:{user?.hId}
           </p>
 
           <div className="tabs pb-5 flex flex-col items-start gap-4 mt-12 font-semibold text-lg px-5 w-full text-white">
@@ -247,7 +249,7 @@ function AdminDashboard() {
           >
             <div className="flex flex-col items-start justify-center">
               <h1 className="text-2xl md:text-3xl font-bold font-serif text-white">
-                Hello, Admin!
+                Hello, {user?.hName || "Admin"}!
               </h1>
               <span className="text-white/70">Admin Account</span>
             </div>

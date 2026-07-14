@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/authContext"; // ඔයාගේ actual path එකට adjust කරන්න
 import bgimg from "../../images/adminBg.jpg";
 import stimg from "../../images/adminFormLeft.png";
 
 function AdminLogin() {
+  const { login } = useAuth();
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -84,8 +86,8 @@ function AdminLogin() {
     try {
       const res = await axios.post("/api/head-users/login", formData); //send form data to backend
 
-      //save the token
-      localStorage.setItem("token", res.data.token);
+      // save token AND user data into AuthContext (+ localStorage inside login())
+      login(res.data.token, res.data.data);
 
       setSuccess("Login successful!"); //show success message
 
