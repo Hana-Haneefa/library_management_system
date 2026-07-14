@@ -7,7 +7,10 @@ import editIcon from "../../images/icons/edit.png";
 import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
-import icon from "../../images/icons/heart.png";
+import registerIcon from "../../images/icons/register.png";
+import memberIcon from "../../images/icons/member.png";
+import billIcon from "../../images/icons/bill.png";
+import faceIcon from "../../images/icons/face.png";
 import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
@@ -107,31 +110,34 @@ function LibrarianManage() {
       {/* 𝘤𝘢𝘳𝘥𝘴 */}
       <div className="cards w-full h-40 grid grid-cols-4 gap-4 mt-2">
         {[
-          "Total Registered Librarians",
-          "Currently Active Librarians",
-          "Librarians Salary Manage",
-          "Past Librarians",
-        ].map((title, i) => (
+          { title: "Total Registered Librarians", value: librarians.filter(l => l.hRole === "librarian").length, suffix: "", icon: registerIcon },
+          { title: "Currently Active Librarians", value: librarians.filter(l => l.hRole === "librarian").length, suffix: "", icon: memberIcon },
+          { title: "Librarians Salary Manage", value: librarians.filter(l => l.hRole === "librarian").length * 45000, suffix: " LKR", icon: billIcon },
+          { title: "Past Librarians", value: 0, suffix: "", icon: faceIcon },
+        ].map((card, i) => (
           <div
             key={i}
             className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
               <img
-                src={icon}
-                alt={title}
+                src={card.icon}
+                alt={card.title}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="content p-4">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="text-3xl font-bold text-white">1,234</p>
+              <h2 className="text-xl font-semibold text-white">{card.title}</h2>
+              {loading ? (
+                <div className="h-8 w-20 bg-white/20 animate-pulse rounded-md mt-1" />
+              ) : (
+                <p className="text-3xl font-bold text-white mt-1">
+                  {card.value.toLocaleString()}{card.suffix}
+                </p>
+              )}
             </div>
             <span className="absolute bottom-2 right-4 text-xs text-white/70">
-              +5% from last month
-            </span>
-            <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Read more
+              Real-time DB Data
             </span>
           </div>
         ))}

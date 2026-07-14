@@ -208,3 +208,26 @@ export async function getActiveBorrowByBookId(bId) {
     throw new Error(`Error fetching active borrow data: ${err.message}`);
   }
 }
+
+export async function getDashboardStats() {
+  try {
+    const [[{ totalBooks }]] = await pool.query("SELECT COUNT(*) AS totalBooks FROM books");
+    const [[{ totalMembers }]] = await pool.query("SELECT COUNT(*) AS totalMembers FROM users");
+    const [[{ activeBorrows }]] = await pool.query("SELECT COUNT(*) AS activeBorrows FROM borrows WHERE brStatus = 'borrowed'");
+    const [[{ pendingFines }]] = await pool.query(
+      "SELECT COALESCE(SUM(DATEDIFF(NOW(), brReturnDate) * 50), 0) AS pendingFines FROM borrows WHERE brStatus = 'borrowed' AND brReturnDate < NOW()"
+    );
+    const [[{ overdueCount }]] = await pool.query(
+      "SELECT COUNT(*) AS overdueCount FROM borrows WHERE brStatus = 'borrowed' AND brReturnDate < NOW()"
+    );
+    return {
+      totalBooks,
+      totalMembers,
+      activeBorrows,
+      pendingFines,
+      overdueCount,
+    };
+  } catch (err) {
+    throw new Error(`Error fetching dashboard stats: ${err.message}`);
+  }
+}

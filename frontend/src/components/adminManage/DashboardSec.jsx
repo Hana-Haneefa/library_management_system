@@ -1,25 +1,65 @@
-import icon from "../../images/icons/heart.png";
+import bookIcon from "../../images/icons/book.png";
+import memberIcon from "../../images/icons/member.png";
+import borrowIcon from "../../images/icons/borrow.png";
+import billIcon from "../../images/icons/bill.png";
 import { useState, useRef, useEffect } from "react";
+import api from "../../services/api.js";
 
 function DashboardSec() {
   const [activeTab, setActiveTab] = useState("charts");
+  const [stats, setStats] = useState({
+    totalBooks: 0,
+    totalMembers: 0,
+    activeBorrows: 0,
+    pendingFines: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const contentRef = useRef(null);
 
   useEffect(() => {
+    // Fade-in animation
     const content = contentRef.current;
+    if (content) {
+      content.style.opacity = "0";
+      content.style.transform = "translateY(50px)";
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          content.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          content.style.opacity = "1";
+          content.style.transform = "translateY(0)";
+        }, 100);
+      });
+    }
 
-    content.style.opacity = "0";
-    content.style.transform = "translateY(50px)";
+    // Fetch actual statistics
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get("/api/borrows/dashboard-stats");
+        if (res.data.success) {
+          setStats(res.data.data);
+        } else {
+          setError("Failed to fetch dashboard stats");
+        }
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+        setError("Server error while fetching stats");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        content.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-        content.style.opacity = "1";
-        content.style.transform = "translateY(0)";
-      }, 1500);
-    });
+    fetchStats();
   }, []);
+
+  const cardData = [
+    { title: "Total Books", value: stats.totalBooks, suffix: "", icon: bookIcon },
+    { title: "Total Members", value: stats.totalMembers, suffix: "", icon: memberIcon },
+    { title: "Active Borrows", value: stats.activeBorrows, suffix: "", icon: borrowIcon },
+    { title: "Pending Fines", value: stats.pendingFines, suffix: " LKR", icon: billIcon },
+  ];
 
   return (
     <div ref={contentRef}>
@@ -80,32 +120,32 @@ function DashboardSec() {
 
       {/* cards */}
       <div className="cards w-full h-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          "Total Books",
-          "Total Members",
-          "Active Borrows",
-          "Pending Fines",
-        ].map((title, i) => (
+        {cardData.map((card, i) => (
           <div
             key={i}
             className="h-40 w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
               <img
-                src={icon}
-                alt={title}
+                src={card.icon}
+                alt={card.title}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="content p-4">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="text-3xl font-bold text-white">1,234</p>
+              <h2 className="text-xl font-semibold text-white">{card.title}</h2>
+              {loading ? (
+                <div className="h-8 w-20 bg-white/20 animate-pulse rounded-md mt-1" />
+              ) : error ? (
+                <p className="text-sm font-bold text-red-300">Error</p>
+              ) : (
+                <p className="text-3xl font-bold text-white">
+                  {card.value.toLocaleString()}{card.suffix}
+                </p>
+              )}
             </div>
             <span className="absolute bottom-2 right-4 text-xs text-white/70">
-              +5% from last month
-            </span>
-            <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Read more
+              Real-time DB Data
             </span>
           </div>
         ))}

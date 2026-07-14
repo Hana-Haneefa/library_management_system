@@ -9,6 +9,10 @@ import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
 import icon from "../../images/icons/heart.png";
+import docIcon from "../../images/icons/doc.png";
+import borrowIcon from "../../images/icons/borrow.png";
+import repeatIcon from "../../images/icons/repeat.png";
+import bellIcon from "../../images/icons/bell.png";
 import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
@@ -222,35 +226,36 @@ function BorrowManageSec() {
       {/* 𝘤𝘢𝘳𝘥𝘴 — 1 col on mobile, 2 on sm, 4 on lg */}
       <div className="cards w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
         {[
-          "Total Borrows",
-          "Borrow Analysis",
-          "Recent Borrows",
-          "Overdue Borrows",
-        ].map((title, i) => (
+          { title: "Total Borrows", value: borrows.length, icon: docIcon },
+          { title: "Active Borrows", value: borrows.filter(b => b.brStatus === "borrowed").length, icon: borrowIcon },
+          { title: "Returned Borrows", value: borrows.filter(b => b.brStatus === "returned").length, icon: repeatIcon },
+          { title: "Overdue Borrows", value: borrows.filter(b => b.brStatus === "borrowed" && new Date(b.brReturnDate) < new Date()).length, icon: bellIcon },
+        ].map((card, i) => (
           <div
             key={i}
             className="h-36 sm:h-40 w-full bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-8 h-8 sm:w-10 sm:h-10 rounded-full absolute top-3 right-3 sm:top-4 sm:right-4">
               <img
-                src={icon}
-                alt={title}
+                src={card.icon}
+                alt={card.title}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="content p-3 sm:p-4">
               <h2 className="text-base sm:text-xl font-semibold text-white leading-tight">
-                {title}
+                {card.title}
               </h2>
-              <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
-                1,234
-              </p>
+              {loading ? (
+                <div className="h-8 w-20 bg-white/20 animate-pulse rounded-md mt-1" />
+              ) : (
+                <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  {card.value.toLocaleString()}
+                </p>
+              )}
             </div>
             <span className="absolute bottom-2 right-4 text-xs text-white/70 hidden sm:block">
-              +5% from last month
-            </span>
-            <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Read more
+              Real-time DB Data
             </span>
           </div>
         ))}
@@ -561,7 +566,7 @@ function BorrowManageSec() {
                   className="underline text-blue-500 cursor-pointer"
                   onClick={() =>
                     navigate(
-                      `/api/borrows/verify-return/${returnTarget.brBookId}`,
+                      `/verify-return/${returnTarget.brBookId}`,
                     )
                   }
                 >

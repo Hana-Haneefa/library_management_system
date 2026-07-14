@@ -7,7 +7,11 @@ import editIcon from "../../images/icons/edit.png";
 import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
-import icon from "../../images/icons/heart.png";
+import bookIcon from "../../images/icons/book.png";
+import browsIcon from "../../images/icons/copies.png";
+import borrowIcon from "../../images/icons/borrow.png";
+import bellIcon from "../../images/icons/overdue.png";
+import qrcodeIcon from "../../images/icons/qrw.png";
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
 
 function BookManageSec() {
@@ -31,6 +35,10 @@ function BookManageSec() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("allCategories");
   const [selectedStatus, setSelectedStatus] = useState("allStatus");
+  const [stats, setStats] = useState({
+    activeBorrows: 0,
+    overdueCount: 0,
+  });
 
   const filteredBooks = books.filter((book) => {
     const query = searchQuery.toLowerCase().trim();
@@ -73,6 +81,10 @@ function BookManageSec() {
       });
       if (res.data.data) {
         setBooks(res.data.data);
+      }
+      const statsRes = await api.get("/api/borrows/dashboard-stats");
+      if (statsRes.data.success) {
+        setStats(statsRes.data.data);
       }
     } catch (err) {
       console.error("Error fetching books: ", err);
@@ -244,36 +256,45 @@ function BookManageSec() {
       {/* stat cards */}
       <div className="cards w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-2">
         {[
-          "Total Titles",
-          "Available",
-          "Borrowed",
-          "Overdue",
-          "QR Generated",
-        ].map((title, i) => (
+          { title: "Total Titles", value: books.length, icon: bookIcon },
+          {
+            title: "Available Copies",
+            value: books.reduce((sum, b) => sum + (b.bQuantity || 0), 0),
+            icon: browsIcon,
+          },
+          { title: "Borrowed", value: stats.activeBorrows, icon: borrowIcon },
+          { title: "Overdue", value: stats.overdueCount || 0, icon: bellIcon },
+          {
+            title: "QR Generated",
+            value: books.filter((b) => b.bId).length,
+            icon: qrcodeIcon,
+          },
+        ].map((card, i) => (
           <div
             key={i}
             className="h-36 sm:h-40 w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-8 h-8 sm:w-10 sm:h-10 rounded-full absolute top-3 right-3">
               <img
-                src={icon}
-                alt={title}
+                src={card.icon}
+                alt={card.title}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="content p-3 sm:p-4">
               <h2 className="text-sm sm:text-base lg:text-xl font-semibold text-white leading-tight">
-                {title}
+                {card.title}
               </h2>
-              <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
-                1,234
-              </p>
+              {loading ? (
+                <div className="h-8 w-20 bg-white/20 animate-pulse rounded-md mt-1" />
+              ) : (
+                <p className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                  {card.value.toLocaleString()}
+                </p>
+              )}
             </div>
             <span className="absolute bottom-2 right-3 text-xs text-white/70 hidden sm:block">
-              +5% from last month
-            </span>
-            <span className="absolute bottom-2 left-3 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Read more
+              Real-time DB Data
             </span>
           </div>
         ))}

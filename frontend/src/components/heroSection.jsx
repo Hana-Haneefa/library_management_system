@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import book1 from "../images/booknobg.png";
+import book1 from "../images/book1nobg.png";
 import book2 from "../images/booknobg.png";
-import book3 from "../images/booknobg.png";
+import book3 from "../images/book1.jpg";
 
 /* ─── Slide data (images only — text is static now) ─── */
 const slides = [{ imgUrl: book1 }, { imgUrl: book2 }, { imgUrl: book3 }];
