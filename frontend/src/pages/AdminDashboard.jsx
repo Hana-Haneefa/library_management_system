@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 import img from "../images/testimg.jpg";
 import icon from "../images/icons/heart.png";
 import dashboardIcon from "../images/icons/dashboard.png";
@@ -20,10 +21,15 @@ import MemberManage from "../components/adminManage/MemberManage";
 import BorrowManageSec from "../components/adminManage/BorrowManageSec";
 
 function AdminDashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar control
 
+  const handleLogout = () => {
+    logout();
+    navigate("/admin-login");
+  };
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -227,7 +233,10 @@ function AdminDashboard() {
               </span>
               Settings
             </p>
-            <div className="flex text-left w-full mt-6 pr-1 justify-end items-center gap-4 hover:text-purple-400 transition-colors duration-300 cursor-pointer">
+            <div
+              onClick={handleLogout}
+              className="flex text-left w-full mt-6 pr-1 justify-end items-center gap-4 hover:text-purple-400 transition-colors duration-300 cursor-pointer"
+            >
               <p>Logout</p>
               <span>
                 <img
