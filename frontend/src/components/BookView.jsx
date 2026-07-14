@@ -259,7 +259,7 @@ function BookView() {
 
               {borrowMessage && (
                 <p
-                  className={`mt-2 text-sm text-center transition-transform duration-300 ease-in-out ${borrowMessage.includes("successfully") ? "text-green-500" : "text-red-500"}`}
+                  className={`mt-2 text-sm text-center border transition-transform duration-300 ease-in-out ${borrowMessage.includes("successfully") ? "text-green-500" : "text-red-500"}`}
                 >
                   {borrowMessage}
                 </p>

@@ -556,8 +556,19 @@ function BorrowManageSec() {
                 Manual Book Return
               </p>
               <h2 style={{ fontSize: "1.35rem", fontWeight: 800, margin: 0 }}>
-                Confirm Return
+                Confirm Return <br /> or{" "}
+                <span
+                  className="underline text-blue-500 cursor-pointer"
+                  onClick={() =>
+                    navigate(
+                      `/api/borrows/verify-return/${returnTarget.brBookId}`,
+                    )
+                  }
+                >
+                  Click to scan the QR
+                </span>
               </h2>
+
               <p
                 style={{
                   fontSize: "0.8rem",
@@ -565,7 +576,7 @@ function BorrowManageSec() {
                   marginTop: "0.25rem",
                 }}
               >
-                No QR scan required — confirm the details below.
+                Confirm the details below.
               </p>
             </div>
 

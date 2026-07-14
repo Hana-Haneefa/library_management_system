@@ -385,6 +385,7 @@ function BookManageSec() {
             <tr>
               <th className="w-1.5"></th>
               <th className="py-3 w-16 text-xs">ISBN</th>
+              <th className="w-10">Book Id</th>
               <th className="w-14 text-xs">Cover</th>
               <th className="w-24 text-xs">Title</th>
               <th className="w-24 text-xs">Author</th>
@@ -415,6 +416,7 @@ function BookManageSec() {
                   >
                     {book.bISBN}
                   </td>
+                  <td>{book.bId}</td>
                   <td className="py-2">
                     {book.coverImage ? (
                       <img
