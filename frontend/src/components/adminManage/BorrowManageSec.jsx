@@ -58,6 +58,14 @@ function BorrowManageSec() {
   const [selectedCategory, setSelectedCategory] = useState("allCategories");
   const [selectedStatus, setSelectedStatus] = useState("allStatus");
 
+  // format any date string to show only DD/MM/YYYY (no time)
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "—";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return "—";
+    return d.toLocaleDateString("en-GB"); // dd/mm/yyyy format
+  };
+
   const filteredBorrows = borrows.filter((borrow) => {
     const query = searchQuery.toLowerCase().trim();
     // Match search query against Title, Author, Genre, Student ID, Book ID, ISBN
@@ -227,9 +235,25 @@ function BorrowManageSec() {
       <div className="cards w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
         {[
           { title: "Total Borrows", value: borrows.length, icon: docIcon },
-          { title: "Active Borrows", value: borrows.filter(b => b.brStatus === "borrowed").length, icon: borrowIcon },
-          { title: "Returned Borrows", value: borrows.filter(b => b.brStatus === "returned").length, icon: repeatIcon },
-          { title: "Overdue Borrows", value: borrows.filter(b => b.brStatus === "borrowed" && new Date(b.brReturnDate) < new Date()).length, icon: bellIcon },
+          {
+            title: "Active Borrows",
+            value: borrows.filter((b) => b.brStatus === "borrowed").length,
+            icon: borrowIcon,
+          },
+          {
+            title: "Returned Borrows",
+            value: borrows.filter((b) => b.brStatus === "returned").length,
+            icon: repeatIcon,
+          },
+          {
+            title: "Overdue Borrows",
+            value: borrows.filter(
+              (b) =>
+                b.brStatus === "borrowed" &&
+                new Date(b.brReturnDate) < new Date(),
+            ).length,
+            icon: bellIcon,
+          },
         ].map((card, i) => (
           <div
             key={i}
@@ -382,8 +406,9 @@ function BorrowManageSec() {
               <th className="py-4 w-24">Borrow ID</th>
               <th className="w-24">Student ID</th>
               <th className="w-40">Book ID</th>
-              <th className="w-32">Monitor ID</th>
-              <th className="w-20">Copies</th>
+              <th className="w-32">Borrow Date</th>
+              <th className="w-32">Due Date</th>
+              <th className="w-32">Return Date</th>
               <th className="w-36">Status</th>
               <th className="w-20">Return</th>
               <th className="w-12">Edit</th>
@@ -424,8 +449,11 @@ function BorrowManageSec() {
                   <td className="py-3 text-sm">{borrow.brId}</td>
                   <td className="text-sm">{borrow.brStudentId}</td>
                   <td className="text-sm">{borrow.brBookId}</td>
-                  <td className="text-sm">{borrow.brMonitorId}</td>
-                  <td>3</td>
+                  <td className="text-sm">{formatDate(borrow.brBorrowDate)}</td>
+                  <td className="text-sm">{formatDate(borrow.brReturnDate)}</td>
+                  <td className="text-sm">
+                    {formatDate(borrow.brActualReturnDate)}
+                  </td>
                   <td className="py-2 px-2">
                     <div className="flex items-center justify-center">
                       <p
@@ -565,9 +593,7 @@ function BorrowManageSec() {
                 <span
                   className="underline text-blue-500 cursor-pointer"
                   onClick={() =>
-                    navigate(
-                      `/verify-return/${returnTarget.brBookId}`,
-                    )
+                    navigate(`/verify-return/${returnTarget.brBookId}`)
                   }
                 >
                   Click to scan the QR
