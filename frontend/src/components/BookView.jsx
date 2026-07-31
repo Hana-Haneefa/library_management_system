@@ -297,10 +297,10 @@ function BookView() {
                   }`}
                 >
                   {borrowLoading
-                    ? "Borrowing..."
+                    ? "Reserving..."
                     : isBorrowed
-                      ? "Borrowed"
-                      : "Borrow"}
+                      ? "Reserved"
+                      : "Reserve"}
                 </button>
               </div>
 
