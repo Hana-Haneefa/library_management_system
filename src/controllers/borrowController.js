@@ -5,6 +5,7 @@ import {
   updateBorrowData,
   deleteBorrowData,
   getActiveBorrowByBookId,
+  getDashboardStats,
 } from "../services/borrowService.js";
 
 export async function addBorrowDataController(req, res) {
@@ -192,6 +193,23 @@ export async function returnBookController(req, res) {
     res.status(500).json({
       success: false,
       msg: "Error returning book",
+      error: err.message,
+    });
+  }
+}
+
+export async function getDashboardStatsController(req, res) {
+  try {
+    const stats = await getDashboardStats();
+    res.status(200).json({
+      success: true,
+      msg: "Dashboard statistics retrieved successfully",
+      data: stats,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: "Error retrieving dashboard statistics",
       error: err.message,
     });
   }

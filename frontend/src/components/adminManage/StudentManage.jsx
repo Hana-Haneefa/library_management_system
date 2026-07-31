@@ -7,7 +7,10 @@ import editIcon from "../../images/icons/edit.png";
 import deleteIcon from "../../images/icons/delete.png";
 import filterIcon from "../../images/icons/filter.png";
 import sortIcon from "../../images/icons/sort.png";
-import icon from "../../images/icons/heart.png";
+import registerIcon from "../../images/icons/register.png";
+import memberIcon from "../../images/icons/member.png";
+import borrowIcon from "../../images/icons/borrow.png";
+import bellIcon from "../../images/icons/bell.png";
 import eyeIcon from "../../images/icons/eye.png";
 // import animation function
 import { Animation } from "../../helpingFunctions/AnimateFunction.jsx";
@@ -19,6 +22,10 @@ function StudentManage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null); //for edit and view
   const [isModalOpen, setIsModalOpen] = useState(false); //to control edit modal
+  const [stats, setStats] = useState({
+    borrowedCount: 0,
+    overdueCount: 0,
+  });
 
   //to fetch data from backend when page loads
   useEffect(() => {
@@ -33,6 +40,21 @@ function StudentManage() {
       const res = await api.get("/api/users/all-users");
       if (res.data.success) {
         setStudents(res.data.data);
+      }
+      
+      const borrowsRes = await api.get("/api/borrows/all-borrows");
+      if (borrowsRes.data.success) {
+        const borrowsList = borrowsRes.data.data || [];
+        const uniqueBorrowedStudents = new Set(borrowsList.map(b => b.brStudentId)).size;
+        const uniqueOverdueStudents = new Set(
+          borrowsList
+            .filter(b => b.brStatus === "borrowed" && new Date(b.brReturnDate) < new Date())
+            .map(b => b.brStudentId)
+        ).size;
+        setStats({
+          borrowedCount: uniqueBorrowedStudents,
+          overdueCount: uniqueOverdueStudents,
+        });
       }
     } catch (err) {
       console.error("Error fetching students: ", err);
@@ -106,31 +128,34 @@ function StudentManage() {
       {/* 𝘤𝘢𝘳𝘥𝘴 */}
       <div className="cards w-full h-40 grid grid-cols-4 gap-4 mt-2">
         {[
-          "Total Registered Students",
-          "Currently Active Students",
-          "Total Book Borrowed Students",
-          "Overdue Students",
-        ].map((title, i) => (
+          { title: "Total Registered Students", value: students.length, icon: registerIcon },
+          { title: "Currently Active Students", value: students.length, icon: memberIcon },
+          { title: "Total Book Borrowed Students", value: stats.borrowedCount, icon: borrowIcon },
+          { title: "Overdue Students", value: stats.overdueCount, icon: bellIcon },
+        ].map((card, i) => (
           <div
             key={i}
             className="h-full w-auto bg-white/20 border-t-2 border-r-2 border-r-white/20 border-t-white/30 shadow-lg hover:scale-105 transition-all duration-300 rounded-2xl relative flex justify-start items-center group"
           >
             <div className="icon w-10 h-10 rounded-full absolute top-4 right-4">
               <img
-                src={icon}
-                alt={title}
+                src={card.icon}
+                alt={card.title}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="content p-4">
-              <h2 className="text-xl font-semibold text-white">{title}</h2>
-              <p className="text-3xl font-bold text-white">1,234</p>
+              <h2 className="text-xl font-semibold text-white">{card.title}</h2>
+              {loading ? (
+                <div className="h-8 w-20 bg-white/20 animate-pulse rounded-md mt-1" />
+              ) : (
+                <p className="text-3xl font-bold text-white mt-1">
+                  {card.value.toLocaleString()}
+                </p>
+              )}
             </div>
             <span className="absolute bottom-2 right-4 text-xs text-white/70">
-              +5% from last month
-            </span>
-            <span className="absolute bottom-2 left-4 text-xs text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              Read more
+              Real-time DB Data
             </span>
           </div>
         ))}

@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/authContext";
-import { useNavigate } from "react-router-dom";
 import img from "../images/testimg.jpg";
 import icon from "../images/icons/heart.png";
 import dashboardIcon from "../images/icons/dashboard.png";
@@ -12,24 +11,19 @@ import reportsIcon from "../images/icons/doc.png";
 import settingsIcon from "../images/icons/setting.png";
 import arrowRight from "../images/icons/arrowRight.png";
 
-import bgimg from "../images/adminBg.jpg";
+import bgimg from "../images/librarianBg.png";
 
 // content component import
-import DashboardSec from "../components/adminManage/DashboardSec";
-import BookManageSec from "../components/adminManage/BookManageSec";
-import MemberManage from "../components/adminManage/MemberManage";
-import BorrowManageSec from "../components/adminManage/BorrowManageSec";
+import DashboardSec from "../components/adminManage/DashboardSec.jsx";
+import BookManageSec from "../components/adminManage/BookManageSec.jsx";
+import MemberManage from "../components/librarianManage/LMemberManage.jsx";
+import BorrowManageSec from "../components/adminManage/BorrowManageSec.jsx";
 
-function AdminDashboard() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+function LibrarianDashboard() {
+  const { user } = useAuth();
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Mobile sidebar control
 
-  const handleLogout = () => {
-    logout();
-    navigate("/admin-login");
-  };
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -85,24 +79,24 @@ function AdminDashboard() {
         <div
           id="dashSideMenu"
           ref={leftRef}
-          className={`fixed inset-y-0 left-0 z-40 w-72 h-screen pb-5 md:pb-0 border-b-2 border-white bg-purple-950/90 md:bg-white/20 transition-transform duration-300 md:translate-x-0 md:static md:block md:w-96 md:rounded-2xl
+          className={`fixed inset-y-0 left-0 z-40 w-72 h-screen pb-5 md:pb-0 border-b-2 border-white bg-green-950/90 md:bg-white/20 transition-transform duration-300 md:translate-x-0 md:static md:block md:w-96 md:rounded-2xl
             ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
           `}
           style={{
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)", // safari support
-            borderColor: "rgba(167, 139, 250, 0.4)",
+            borderColor: "rgba(74, 222, 128, 0.4)",
             borderTop: "1px solid rgba(255, 255, 255, 0.3)",
             borderRight: "1px solid rgba(255, 255, 255, 0.1)",
             boxShadow:
-              "0 8px 32px rgba(80, 40, 160, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
+              "0 8px 32px rgba(21, 128, 61, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
           }}
         >
           {/* Close Button for Mobile */}
           <button
             id="dashClose"
             onClick={() => setIsSidebarOpen(false)}
-            className="md:hidden flex justify-end w-full text-lg mt-5 pr-8 text-white hover:text-purple-400 cursor-pointer"
+            className="md:hidden flex justify-end w-full text-lg mt-5 pr-8 text-white hover:text-green-400 cursor-pointer"
           >
             X
           </button>
@@ -124,7 +118,7 @@ function AdminDashboard() {
                 setActiveSection("dashboard");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "dashboard" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "dashboard" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -141,7 +135,7 @@ function AdminDashboard() {
                 setActiveSection("books");
                 setIsSidebarOpen(false);
               }}
-              className={`${activeSection === "books" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={`${activeSection === "books" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -158,7 +152,7 @@ function AdminDashboard() {
                 setActiveSection("members");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "members" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "members" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -175,7 +169,7 @@ function AdminDashboard() {
                 setActiveSection("borrows");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "borrows" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "borrows" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -192,7 +186,7 @@ function AdminDashboard() {
                 setActiveSection("fines");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "fines" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "fines" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -209,7 +203,7 @@ function AdminDashboard() {
                 setActiveSection("reports");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "reports" ? "bg-violet-400" : "bg-violet-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "reports" ? "bg-green-400" : "bg-green-400/40"} w-full px-4 py-2 rounded-lg shadow-sm border-t-2 border-right-2 border-white/40 hover:scale-105 transition-all duration-300 shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img src={reportsIcon} alt="Reports icon" className="w-7 h-7" />
@@ -222,7 +216,7 @@ function AdminDashboard() {
                 setActiveSection("settings");
                 setIsSidebarOpen(false);
               }}
-              className={` ${activeSection == "settings" ? "bg-violet-400" : "bg-violet-400/40"} transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4 cursor-pointer`}
+              className={` ${activeSection == "settings" ? "bg-green-400" : "bg-green-400/40"} transition-colors duration-300 w-full px-4 py-2 rounded-lg shadow-sm shadow-gray-800 flex items-center gap-4 cursor-pointer`}
             >
               <span>
                 <img
@@ -233,10 +227,7 @@ function AdminDashboard() {
               </span>
               Settings
             </p>
-            <div
-              onClick={handleLogout}
-              className="flex text-left w-full mt-6 pr-1 justify-end items-center gap-4 hover:text-purple-400 transition-colors duration-300 cursor-pointer"
-            >
+            <div className="flex text-left w-full mt-6 pr-1 justify-end items-center gap-4 hover:text-green-400 transition-colors duration-300 cursor-pointer">
               <p>Logout</p>
               <span>
                 <img
@@ -258,9 +249,9 @@ function AdminDashboard() {
           >
             <div className="flex flex-col items-start justify-center">
               <h1 className="text-2xl md:text-3xl font-bold font-serif text-white">
-                Hello, {user?.hName || "Admin"}!
+                Hello, {user?.hName || "Librarian"}!
               </h1>
-              <span className="text-white/70">Admin Account</span>
+              <span className="text-white/70">Librarian Account</span>
             </div>
 
             {/* Hamburger Button for Mobile */}
@@ -298,4 +289,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default LibrarianDashboard;

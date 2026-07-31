@@ -7,6 +7,7 @@ import {
   deleteBorrowDataController,
   getActiveBorrowController,
   returnBookController,
+  getDashboardStatsController,
 } from "../controllers/borrowController.js";
 import {
   authenticateToken,
@@ -52,5 +53,6 @@ router.delete(
 
 router.get("/active-by-book/:bookId", getActiveBorrowController);
 router.put("/return-book/:borrowId", returnBookController);
+router.get("/dashboard-stats", getDashboardStatsController);
 
 export default router;

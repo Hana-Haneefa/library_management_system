@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
@@ -30,6 +30,43 @@ function BookView() {
   const [loading, setLoading] = useState(true);
   const [similarBooks, setSimilarBooks] = useState([]);
   const [isBorrowed, setIsBorrowed] = useState(false);
+
+  const containerRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
+  // fade-in animation once book details finish loading
+  useEffect(() => {
+    if (loading || !bookDetails) return;
+
+    const container = containerRef.current;
+    const left = leftRef.current;
+    const right = rightRef.current;
+
+    if (!container || !left || !right) return;
+
+    container.style.opacity = "0";
+    left.style.opacity = "0";
+    left.style.transform = "translateX(-50px)";
+    right.style.opacity = "0";
+    right.style.transform = "translateX(50px)";
+
+    requestAnimationFrame(() => {
+      container.style.transition = "opacity 0.5s ease";
+      container.style.opacity = "1";
+
+      setTimeout(() => {
+        left.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        left.style.opacity = "1";
+        left.style.transform = "translateX(0)";
+        setTimeout(() => {
+          right.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          right.style.opacity = "1";
+          right.style.transform = "translateX(0)";
+        }, 500);
+      }, 600);
+    });
+  }, [loading, bookDetails]);
 
   // fetch book details on component mount or when bookId changes
   useEffect(() => {
@@ -84,9 +121,13 @@ function BookView() {
     }
   };
 
-  setTimeout(() => {
-    setBorrowMessage("");
-  }, 3000); // Clear the message after 3 seconds
+  useEffect(() => {
+    if (!borrowMessage) return;
+    const timer = setTimeout(() => {
+      setBorrowMessage("");
+    }, 3000); // Clear the message after 3 seconds
+    return () => clearTimeout(timer);
+  }, [borrowMessage]);
 
   // fetch similar books based on genre when bookDetails is available
   useEffect(() => {
@@ -138,9 +179,15 @@ function BookView() {
       </div>
 
       {/* ── main content card ── */}
-      <div className="relative z-10 w-full min-h-screen md:min-h-0 md:absolute md:top-15 md:left-1/8 md:w-5/6 md:h-5/6 border-t-0 md:border-t-2 border-r-0 md:border-r-2 border-white/30 shadow-lg md:rounded-2xl bg-white/20 backdrop-blur-lg flex flex-col lg:flex-row p-4 sm:p-5 gap-4 lg:gap-2">
+      <div
+        ref={containerRef}
+        className="relative z-10 w-full min-h-screen md:min-h-0 md:absolute md:top-15 md:left-1/8 md:w-5/6 md:h-5/6 border-t-0 md:border-t-2 border-r-0 md:border-r-2 border-white/30 shadow-lg md:rounded-2xl bg-white/20 backdrop-blur-lg flex flex-col lg:flex-row p-4 sm:p-5 gap-4 lg:gap-2"
+      >
         {/* left: book image */}
-        <div className="leftBookimg flex flex-col justify-center items-center w-full lg:w-2/4 shrink-0">
+        <div
+          ref={leftRef}
+          className="leftBookimg flex flex-col justify-center items-center w-full lg:w-2/4 shrink-0"
+        >
           <div className="img w-2/3 h-64 sm:h-80 lg:h-7/8 rounded-lg overflow-hidden">
             <img
               src={`${COVER_BASE_URL}/${bookDetails.coverImage}`}
@@ -168,7 +215,7 @@ function BookView() {
         </div>
 
         {/* right: details */}
-        <div className="rightDetails w-full lg:w-3/4">
+        <div ref={rightRef} className="rightDetails w-full lg:w-3/4">
           {/* tab buttons */}
           <div className="flex gap-1 sm:gap-2 border-b border-white/30 mb-6 overflow-x-auto">
             {["info", "reviews", "similar"].map((tab) => (
@@ -250,10 +297,10 @@ function BookView() {
                   }`}
                 >
                   {borrowLoading
-                    ? "Borrowing..."
+                    ? "Reserving..."
                     : isBorrowed
-                      ? "Borrowed"
-                      : "Borrow"}
+                      ? "Reserved"
+                      : "Reserve"}
                 </button>
               </div>
 

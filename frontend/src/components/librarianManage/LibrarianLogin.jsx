@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/authContext"; // ඔයාගේ actual path එකට adjust කරන්න
 import bgimg from "../../images/librarianBg.png";
 import stimg from "../../images/librarianFormLeft.png";
 
@@ -7,6 +9,8 @@ function LibrarianLogin() {
   const containerRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
+  const navigate = useNavigate(); // component top level එකට move කළා
+  const { login } = useAuth(); // add කළා
 
   useEffect(() => {
     const container = containerRef.current;
@@ -82,6 +86,9 @@ function LibrarianLogin() {
     try {
       const res = await axios.post("/api/head-users/login", formData); //send form data to backend
 
+      // save token AND user data into AuthContext (+ localStorage inside login())
+      login(res.data.token, res.data.data);
+
       setSuccess("Login successful!"); //show success message
 
       //clear form data
@@ -89,6 +96,10 @@ function LibrarianLogin() {
         email: "",
         password: "",
       });
+
+      setTimeout(() => {
+        navigate("/librarian-dashboard");
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.error || "Login failed, please try again.");
     } finally {

@@ -27,6 +27,7 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 
 import Profile from "./components/Profile.jsx";
 import AllBooksPage from "./pages/AllBooksPage.jsx";
+import LibrarianDashboard from "./pages/LibrarianDashboard.jsx";
 
 function App() {
   return (
@@ -44,6 +45,8 @@ function App() {
       <Route path="/add-student" element={<AddStudentForm />} />
       {/* LIBRARIAN management */}
       <Route path="/add-librarian" element={<AddLibrarianForm />} />
+      <Route path="/librarian-dashboard" element={<LibrarianDashboard />} />
+
       {/* login routes */}
       <Route path="/student-login" element={<StudentLogin />} />
       <Route path="/librarian-login" element={<LibrarianLogin />} />

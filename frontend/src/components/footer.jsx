@@ -1,11 +1,11 @@
-import logo from "../images/testimg.jpg";
+import logo from "../images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export function Footer() {
   return (
     <div className="footer w-full mt-10 text-white flex flex-col">
-      <div className="up grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 bg-gradient-to-br from-violet-950 via-purple-900 to-indigo-950 rounded-2xl shadow-xl shadow-purple-900/40 m-4 pt-8 pb-0 overflow-hidden text-center md:text-left text-white">
+      <div className="up grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 bg-linear-to-br from-violet-950 via-purple-900 to-indigo-950 rounded-2xl shadow-xl shadow-purple-900/40 m-4 pt-8 pb-0 overflow-hidden text-center md:text-left text-white">
         <div className="sec1 flex items-center gap-2 flex-col pb-4">
           <img src={logo} alt="logo" className="w-40 h-auto" />
           <h1 className="text-4xl font-serif mb-3">BOOKIE</h1>
@@ -81,7 +81,10 @@ export function Footer() {
           </ul>
         </div>
         <div className="bg-purple-950 text-center text-white/70 py-4 w-full col-span-full border-t border-white/10">
-          <p className="text-sm">© 2026 <span className="font-bold text-white">BOOKIE</span>. All rights reserved.</p>
+          <p className="text-sm">
+            © 2026 <span className="font-bold text-white">BOOKIE</span>. All
+            rights reserved.
+          </p>
         </div>
       </div>
     </div>

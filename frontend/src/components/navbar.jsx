@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authContext.jsx";
-import logo from "../images/testimg.jpg";
+import logo from "../images/logo.png";
 import DarkMode from "./darkmode.jsx";
 
 // Add this component
